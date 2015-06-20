@@ -1,0 +1,44 @@
+
+
+<center>
+	
+	<table border="0" cellspacing="5" cellpadding="5">
+		<thead>
+		<tr>
+			<th>N0</th>
+			<th>Model</th>
+			<th>Number</th>
+			<% n=1 %>
+				<% while n<32 do %>
+					<th><%= n %>
+			        </th>         
+  				<% n += 1 %>
+				<% end %>
+		</tr>
+		</thead>
+		<tbody>
+		<% i=0 %>
+		<% @cars.each do |fc| %>	
+		<tr>
+			<% i=i+1 %>
+			<td><%= i%></td>
+			<td><%= link_to fc.marca%></td>
+			<td><%= fc.gnum%></td>
+				<% n=0 %>
+				<% while n<31 do %>
+					<% if (n%2 == 1)%>
+					<td bgcolor="#FF0000">+
+			        </td>         
+			        <% else %>
+			        <td bgcolor="green">-
+			        </td>
+			        <% end %>
+  				<% n += 1 %>
+				<% end %>
+		</tr>	
+		<% end %>
+		</tbody>
+	
+	
+</center>
+

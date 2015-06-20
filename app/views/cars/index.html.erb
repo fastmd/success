@@ -1,0 +1,34 @@
+<center>
+	
+	<table border="0" cellspacing="5" cellpadding="5">
+		<thead>
+		<tr>
+			<th>N0</th>
+			<th>Model</th>
+			<th>Number</th>
+			<th>Contracts</th>
+			<th>Action</th>
+			<th>Action</th>
+		</tr>
+		</thead>
+		<tbody>
+		<% i=0 %>
+		<% @cars.each do |fc| %>	
+		<tr>
+			<% i=i+1 %>
+			<td><%= i%></td>
+			<td><%= fc.marca%></td>
+			<td><%= fc.gnum%></td>
+			<td><% fc.contracts.each do |d| %>
+				<%= d.order_date%>
+				<% end %>
+			</td>
+			<td><%= i%></td>
+			<td><%= i%></td>
+		</tr>	
+		<% end %>
+		</tbody>
+	
+	
+</center>
+	
