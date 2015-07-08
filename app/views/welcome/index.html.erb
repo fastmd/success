@@ -1,7 +1,7 @@
 
 
 <center>
-	
+	<center>         </center>
 	<table border="0" cellspacing="5" cellpadding="5">
 		<thead>
 		<tr>
@@ -22,19 +22,20 @@
 		<tr>
 			<% i=i+1 %>
 			<td><%= i%></td>
-			<td><%= link_to fc.marca%></td>
+			<td><%= link_to fc.marca, car_path(fc) %></td>
 			<td><%= fc.gnum%></td>
 				<% n=0 %>
 				<% while n<31 do %>
 					<% if (n%2 == 1)%>
-					<td bgcolor="#FF0000">+
+					<td bgcolor="white">
 			        </td>         
 			        <% else %>
-			        <td bgcolor="green">-
+			        <td bgcolor="orange">B
 			        </td>
 			        <% end %>
   				<% n += 1 %>
 				<% end %>
+				<td><%= link_to "Договор"%></td>
 		</tr>	
 		<% end %>
 		</tbody>

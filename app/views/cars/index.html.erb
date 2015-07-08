@@ -1,5 +1,5 @@
 <center>
-	
+	<center><p>Июль</p></center>
 	<table border="0" cellspacing="5" cellpadding="5">
 		<thead>
 		<tr>
@@ -17,7 +17,7 @@
 		<tr>
 			<% i=i+1 %>
 			<td><%= i%></td>
-			<td><%= fc.marca%></td>
+			<td><%= link_to fc.marca, car_path(fc) %></td>
 			<td><%= fc.gnum%></td>
 			<td><% fc.contracts.each do |d| %>
 				<%= d.order_date%>
