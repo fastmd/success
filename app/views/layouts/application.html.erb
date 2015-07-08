@@ -7,9 +7,7 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
-	
-	
+<body>	
 	<li class="has-form">
   	<div class="large-4 small-3 columns">
       
@@ -18,8 +16,8 @@
 		<div class="small-6 large-centered columns">
  		<% if user_signed_in? %>
   			<li>
- 				<p style="color:red"><%= current_user.username %></p>
-  				<%= link_to('Logout', destroy_user_session_path, :method => :delete) %>        
+  				<br>
+  				<%= link_to('Выход', destroy_user_session_path, :method => :delete) %>        
   			</li>
 	
 		<% end %>
@@ -32,7 +30,6 @@
     
   </div>
 </li>
-	 
 <%= yield %>
 
 </body>

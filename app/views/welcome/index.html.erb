@@ -1,13 +1,14 @@
-
-
 <center>
 	<center>         </center>
 	<table border="0" cellspacing="5" cellpadding="5">
 		<thead>
+			<tr><th>Июль</th></tr>
+		</thead>
+		<thead>	
 		<tr>
 			<th>N0</th>
 			<th>Model</th>
-			<th>Number</th>
+			
 			<% n=1 %>
 				<% while n<32 do %>
 					<th><%= n %>
@@ -22,24 +23,31 @@
 		<tr>
 			<% i=i+1 %>
 			<td><%= i%></td>
-			<td><%= link_to fc.marca, car_path(fc) %></td>
-			<td><%= fc.gnum%></td>
+			<td><%= link_to fc.marca.to_s + " " +fc.gnum.to_s, car_path(fc) %></td>
+			
 				<% n=0 %>
+				
 				<% while n<31 do %>
-					<% if (n%2 == 1)%>
-					<td bgcolor="white">
-			        </td>         
-			        <% else %>
-			        <td bgcolor="orange">B
+					<% n1=0 %>
+					
+					<% if (@buz.include? n)%>
+					<td bgcolor="orange">Б 
+					<% if 1 == 0 %>
+						<br><p bgcolor="red">M</p>
+					<% end %>	
 			        </td>
-			        <% end %>
+					         
+			        <% else %>
+			        <td bgcolor="white">
+			        </td>
+			        <% end %>    
+			    
   				<% n += 1 %>
 				<% end %>
-				<td><%= link_to "Договор"%></td>
+				<td><%= link_to "Бронь"%></td>
 		</tr>	
 		<% end %>
 		</tbody>
 	
 	
 </center>
-
