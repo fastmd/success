@@ -1,7 +1,14 @@
 source 'https://rubygems.org'
 
+gem 'jquery-datatables-rails'
+gem 'foundation-datetimepicker-rails'
+gem 'momentjs-rails'
+gem 'country_select'
+gem 'rails4-autocomplete'
+
 gem 'devise'
 gem 'rails_admin'
+gem 'protected_attributes'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'

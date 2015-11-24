@@ -6,9 +6,10 @@ class WelcomeController < ApplicationController
     @buz = []
      @cars.each do |ca|
       ca.contracts.each do |co|
-      @buz[i] = co.order_date.to_s[5..6].to_i 
-      i = i + 1  
+      @buz[i] = @buz[i].to_s + co.order_date.to_s[8..9].to_s + ","   
     end
+    i = i + 1
+    @buz[i] = ""
     end
   end
 end

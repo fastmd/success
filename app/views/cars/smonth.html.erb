@@ -1,0 +1,177 @@
+<% year = Date.today.to_s[0..3].to_i %>
+<% month = Date.today.to_s[5..6].to_i %>
+<% day = Date.today.to_s[8..9].to_i %>
+<script>
+  
+   
+</script>  
+<html>
+<body onload="myFunction()">  
+	<center>
+		<div class="row">
+			<div class="small-2 large-4 columns">
+				<%= link_to 'Клиенты' , clients_path,:class =>"button tiny" %>
+			</div>
+  			<div class="small-4 large-4 columns">
+  				<%= select_tag :assignee_id, options_for_select([["2015",1],["2016",2]]), 
+          :onchange => :smonth,:num => @i,:class=>"button tiny" %>
+  			</div>
+  			<div class="small-6 large-4 columns">
+  				<center><%= button_to 'Бронь' , car_rez_path,:class =>"button tiny" %></center>
+  			</div>	  
+        </div>  
+		<div class="row">
+    	<center>
+  <div class="small-25 columns">
+  		<table  border="0" cellspacing="5" cellpadding="5">
+		<thead>
+			<tr>
+			   
+				Месяц	
+				<% @i=1
+				while @i<13
+				%>	
+				<% if @i == @mn.to_i%>	
+			      <th bgcolor="orange"><%= link_to @i,:action => :smonth,:num => @i %> </th>
+				<% else %>
+			      <th ><%= link_to @i,:action => :smonth,:num => @i %> </th>
+				<% end %>		
+				<% @i=@i+1 %>
+				<% end	%>
+				
+				<!--		
+				<th id="t1" ><%= link_to "Январь",:action => :smonth,:num => 1 %> </th>
+				<th id="t2"><%= link_to "Февраль",:action => :smonth,:num => 2 %></th>
+				<th id="t3"><%= link_to "Март",:action => :smonth,:num => 3 %></th>
+				<th id="t4"><%= link_to "Апрель",:action => :smonth,:num => 4 %></th>
+				<th id="t5"><%= link_to "Май",:action => :smonth,:num => 5 %></th>
+				<th id="t6"><%= link_to "Июнь",:action => :smonth,:num => 6 %></th>
+				<th id="t7"><%= link_to "Июль",:action => :smonth,:num => 7 %></th>
+				<th id="t8"><%= link_to "Август" ,:action => :smonth,:num => 8%></th>
+				<th id="t9"><%= link_to "Сентябрь",:action => :smonth,:num => 9 %></th>
+				<th id="t10"><%=link_to "Октябрь",:action => :smonth,:num => 10 %></th>
+				<th id="t11"><%=link_to "Ноябрь",:action => :smonth,:num => 11 %></th>
+				<th id="t12"><%=link_to "Декабрь",:action => :smonth,:num => 12 %></th>
+					-->
+			</tr>	
+		</thead>
+		</table>
+		</div>
+		</center>
+		   
+  </div>
+ </center> 
+	
+	
+	
+	
+	<% if ((@mn.to_i == 11) || (@mn.to_i == 9) || (@mn.to_i == 6) || (@mn.to_i == 4)) %>
+	<%	daycount = 30  %>
+	<% elsif @mn.to_i == 2 %>
+	<%	daycount = 28  %>
+	<% else %>
+	<% daycount = 31   %>
+	<% end %>
+	<% daycount %>	
+	<center>
+		
+		<h4 style="color: blue">Брони в работу на сегодня</h4>
+		<table id="b1">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Автомобиль</th>
+					<th>Дата начала</th>
+					<th>Дата окончания</th>
+					<th>Залог</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				
+					<% @cars.each do |mobil| %>
+						<% mobil.contracts.each do |con|%>
+						<% if con.order_date.to_date == Date.today.to_date %>
+							<tr><td><%= con.cnum %></td>
+							<td><%= mobil.marca + " " + mobil.gnum%></td>
+							<td><%= day %>.<%= month %>.<%= year %></td>
+							<td><%= con.diff %></td>
+							<td><%= con.user %></td>
+							<td><%= link_to "Контракт",contract_path(con.cnum)  %></td>
+							</tr>
+						<% end %>
+						<% end %>	
+					<% end %>
+			</tbody>	
+			</table>	
+			
+			<h4 style="color: blue">Текущие брони и контракты по машинам</h4>
+	<table id="m1"> <!-- </table> border="0" cellspacing="5" cellpadding="5">  -->	
+		<thead>	
+		<tr><%= @buz.to_s %>
+			<th>No</th>
+			<th>Автомобиль</th>
+			
+			<% n=1 %>
+				<% while n<= daycount do %>
+					<% if ((n == day) and(month.to_i == @mn.to_i))%>
+					<th bgcolor="orange"><%= n %></th>
+					<%else%>        
+					<th ><%= n %></th>
+					<%end%>
+  					<% n += 1 %>
+				<% end %>
+		</tr>
+		</thead>
+		<tbody>
+		<% i=0 %>
+			<% n1=0 %>
+		<% @cars.each do |fc| %>	
+		<tr>
+			<td><%= i+1%></td>
+			<td><%= link_to fc.marca.to_s + " " +fc.gnum.to_s, car_path(fc) %></td>
+			
+				<% n=1 %>
+				
+				<% while n<=daycount do %>
+				<% str = n.to_s %>
+					<% if n <10 %>
+						<% str = '0'.to_s + str.to_s  %>
+					<% end %>	
+						<% if (@buz[n1].to_s.include? str)%>
+							<% t = n %>
+							<% t1 = n %>
+								<% while t1 < (t + @buz1[n1].to_i) && t1<32 %>
+									<% if (@mn.to_i > month)  %>
+									<td bgcolor="red"><%= link_to "Б"%></td>
+									<% elsif ((@mn.to_i == month) and (t1>=day)) %>
+									<td bgcolor="red"><%= link_to "Б"%></td>
+									<% else %>
+									<% while t1 < (t + @buz1[n1].to_i) && t1<32 %>
+										<td bgcolor="green"><%= link_to "К"%></td>
+										<% t1= t1+1 %>
+										<% n += 1 %>
+									<% end %>
+									<% end %>
+									<% t1 = t1 + 1 %>
+									<% n += 1 %>
+								<% end %>
+								<% if n <32%>
+									<td bgcolor="white"></td>
+								<% end %>
+			        	<% else %>
+			        		<td bgcolor="white"></td>
+			        	<% end %>    
+  					<% n += 1 %>
+				<% end %>
+					<% @car = fc%>
+				
+		</tr>	
+		<% i=i+1 %>
+		<% n1 = n1 + 1 %>
+		<% end %>
+		</tbody>
+	</table>
+	</center>
+</body>
+</html>

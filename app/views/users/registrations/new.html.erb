@@ -7,10 +7,20 @@
     <%= f.label :username %><br />
     <%= f.text_field :username, autofocus: true %>
   </div>
+  
+  <div class="field">
+    <%= f.label :"Имя" %><br />
+    <%= f.text_field :name, autofocus: true %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :"Фамилия" %><br />
+    <%= f.text_field :surname, autofocus: true %>
+  </div>
   	
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= f.email_field :email%>
   </div>
 
   <div class="field">

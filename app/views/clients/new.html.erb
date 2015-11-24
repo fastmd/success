@@ -1,0 +1,22 @@
+
+<center>
+  
+  <div class="small-6 large-4 columns">
+  	<div class="panel">
+  	<p>Новый клиент</p>
+  	<% @my_arr = [1,2,3,4,5]%>
+  	<%= form_for([Contract.build]) do |f| %>
+  	<%= f.label :"Фамилия"%>
+  	<%= f.text_field :sname%>
+  	<%= f.label :"Имя"%>
+  	<%= f.text_field :name%>
+  	<%= f.label :"Отчество"%>
+  	<%= f.text_field :fname%>
+  	</div>
+  	<%= f.submit "Содать клиента" %>
+  	<% end %>
+  	
+  	</div>
+  </div>
+	
+</center>

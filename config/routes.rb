@@ -1,18 +1,36 @@
 Rails.application.routes.draw do
   
-  resources :cars
-  get 'cars/index'
-  get 'cars/show'
+  get 'clients/index'
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users
   get 'welcome/index'
+  get "car/smonth/:num" => 'cars#smonth'
+  get "welcome/smonth/:num" => 'welcome#smonth'
+  post "car/rez" => 'cars#rez'
+  post "reznew" => 'cars#reznew'
+  post "car/contractnew" => 'cars#contractnew'
+  
 
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'welcome#index'
+  root 'cars#smonth'
+  #resources :contracts  do
+   # end
+  resources :clients  do
+    end  
+  resources :contracts  do
+    end
+   resources :cars do
+     get :autocomplete_client_sname, :on => :collection
+    resources :contracts  do
+    end
+    resources :wlongs  do
+    end
+  end
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

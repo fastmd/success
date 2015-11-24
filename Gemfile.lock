@@ -51,6 +51,13 @@ GEM
       execjs
     coffee-script-source (1.9.1.1)
     columnize (0.9.0)
+    countries (1.2.1)
+      currencies (~> 0.4.2)
+      i18n_data (~> 0.7.0)
+    country_select (2.5.1)
+      countries (~> 1.2.0)
+      sort_alphabetical (~> 1.0)
+    currencies (0.4.2)
     debug_inspector (0.0.2)
     devise (3.5.1)
       bcrypt (~> 3.0)
@@ -63,14 +70,21 @@ GEM
     execjs (2.5.2)
     font-awesome-rails (4.3.0.0)
       railties (>= 3.2, < 5.0)
+    foundation-datetimepicker-rails (0.2.1)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     haml (4.0.6)
       tilt
     i18n (0.7.0)
+    i18n_data (0.7.0)
     jbuilder (2.2.16)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
+    jquery-datatables-rails (3.3.0)
+      actionpack (>= 3.1)
+      jquery-rails
+      railties (>= 3.1)
+      sass-rails
     jquery-rails (4.0.3)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
@@ -88,11 +102,15 @@ GEM
     mime-types (2.6.1)
     mini_portile (0.6.2)
     minitest (5.7.0)
+    momentjs-rails (2.10.6)
+      railties (>= 3.1)
     multi_json (1.11.1)
     nested_form (0.3.2)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     orm_adapter (0.5.0)
+    protected_attributes (1.0.9)
+      activemodel (>= 4.0.1, < 5.0)
     rack (1.6.1)
     rack-pjax (0.8.0)
       nokogiri (~> 1.5)
@@ -118,6 +136,8 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
+    rails4-autocomplete (1.1.1)
+      rails (>= 3.0)
     rails_admin (0.6.6)
       builder (~> 3.1)
       coffee-rails (~> 4.0)
@@ -154,6 +174,8 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    sort_alphabetical (1.0.2)
+      unicode_utils (>= 1.2.2)
     spring (1.3.6)
     sprockets (3.2.0)
       rack (~> 1.0)
@@ -172,6 +194,7 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unicode_utils (1.4.0)
     warden (1.2.3)
       rack (>= 1.0)
     web-console (2.1.2)
@@ -186,10 +209,16 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
+  country_select
   devise
+  foundation-datetimepicker-rails
   jbuilder (~> 2.0)
+  jquery-datatables-rails
   jquery-rails
+  momentjs-rails
+  protected_attributes
   rails (= 4.2.1)
+  rails4-autocomplete
   rails_admin
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

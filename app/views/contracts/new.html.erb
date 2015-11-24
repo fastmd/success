@@ -1,0 +1,31 @@
+<%= form_for([@car,@carcontracts.build])  do |f| %>
+
+	<% if @car.errors.any? %>
+	<% end %>
+
+<% end %>
+
+<center>
+  
+  <div class="small-6 large-4 columns">
+  	<div class="panel">
+  	<p>Новый контракт</p>
+  	<% @my_arr = [1,2,3,4,5]%>
+  	<%= form_for([@car,@car.contracts.build]) do |f| %>
+  	<%= f.label :"Номер договора"%>
+  	<%= f.text_field :cnum%>
+  	<%= f.text_field :client%>
+  	<%= f.label :"Дата начала договора"%>
+  	
+  		<%= f.text_field :order_date, :value => Date.today.to_s, :id => "modelname" %>
+                           	
+  	<%= f.label :"Длительность договора в днях"%>
+  	<%= f.text_field :diff%>
+  	</div>
+  	<%= f.submit "Содать контракт" %>
+  	<% end %>
+  	
+  	</div>
+  </div>
+	
+</center>

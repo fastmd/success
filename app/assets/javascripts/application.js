@@ -12,7 +12,12 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
-//= require_tree .
+//= require jquery-ui.min
+//= require jquery-ui
+//= require autocomplete-rails
 //= require foundation
-$(document).foundation();
+//= require foundation-datetimepicker
+//= require_tree .
+//= require jquery.dataTables
+
+$(function(){ $(document).foundation(); });

@@ -1,0 +1,66 @@
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#mcl').dataTable( {
+    	 "order": [[ 1, "desc" ]]
+} );
+} );
+ 
+</script> 
+
+<div class="row">
+	
+			<div class="small-2 large-4 columns">
+				<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
+			</div>
+  			<div class="small-4 large-4 columns">
+  				<center><%= button_to "Новый клиент", new_client_path,:method => :get, :class=>"button tiny"%></center>
+  			</div>
+  			<div class="small-6 large-4 columns">...</div>	  
+        </div>
+
+<center>
+<table id="mcl" border="0" cellspacing="5" cellpadding="5">
+		<thead>
+			<tr>
+			   <th>N0</th>
+			   <th>Фамилия</th>
+			   <th>Имя</th>
+			   <th>Отчество</th>
+			   <th>Дата рождения</th>
+			   <th>Серия</th>
+			   <th>Телефон</th>
+			   <th>Адрес</th>
+			   <th>IDNO</th>
+			   <th>Дата выдачи</th>
+			   <th>E-mail</th>
+			</tr>	
+		</thead>
+		<tbody>
+					<% @clients.each do |cl| %>
+					<tr>
+						<td><%= cl.id %></td>
+						<td><%= cl.sname %></td>
+						<td><%= cl.name %></td>
+						<td><%= cl.fname %></td>
+						<th><%= cl.bdate %></th>
+						<td><%= cl.pseria %></td>
+						<td><%= cl.tel %></td>
+						<td><%= cl.address %></td>
+						<td><%= cl.idno %></td>
+						<td><%= cl.dn %></td>
+						<td><%= cl.pemail %></td>
+					</tr>		
+					<% end %>
+			
+		</tbody>
+</table>
+</center>

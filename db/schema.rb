@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150707103656) do
+ActiveRecord::Schema.define(version: 20151123123359) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 20150707103656) do
     t.string   "tel"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "bdate"
+    t.string   "pemail"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -50,6 +52,8 @@ ActiveRecord::Schema.define(version: 20150707103656) do
     t.datetime "updated_at", null: false
     t.string   "user"
     t.string   "diff"
+    t.integer  "flag"
+    t.string   "country"
   end
 
   add_index "contracts", ["car_id"], name: "index_contracts_on_car_id"
@@ -69,10 +73,24 @@ ActiveRecord::Schema.define(version: 20150707103656) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "username"
+    t.string   "name"
+    t.string   "surname"
+    t.date     "bdate"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
+
+  create_table "wlongs", force: :cascade do |t|
+    t.string   "wlong"
+    t.string   "manager"
+    t.datetime "wdate"
+    t.integer  "car_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "wlongs", ["car_id"], name: "index_wlongs_on_car_id"
 
 end

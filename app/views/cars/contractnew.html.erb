@@ -1,0 +1,140 @@
+<html lang="en">
+	 
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Datepicker - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="datepicker-ar.js"></script>
+  <script src="datepicker-fr.js"></script>
+  <script src="datepicker-he.js"></script>
+  <script src="datepicker-zh-TW.js"></script>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation/foundation.js"></script>
+  <script src="js/foundation/foundation.magellan.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+    $(function() {
+        $( "#dt" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+       dateFormat: 'dd-mm-yy' }).val();
+      
+    $( "#format" ).change(function() {
+      $( "#dt" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });
+    });
+  
+    $(function() {
+    $( "#dt1" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd-mm-yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt1" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });
+  });
+  
+  $(function() {
+    $( "#dt2" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd.mm.yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt2" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });  
+});  
+ 
+  
+    $(function() {
+    $( "#dt3" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd.mm.yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt3" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });  
+});
+  
+  
+    $(function() {
+    $( "#accordion" ).accordion();
+  });
+  
+  $(function() {
+    $("#pan").toggle()
+  });
+  $(function() {
+  $("#rem1").change( function() {
+    $("#pan").toggle()
+  });
+  });
+  </script>
+  
+</head>
+
+<%= form_for([@car,@car.contracts.build])  do |f| %>
+
+	<% if @car.errors.any? %>
+	<% end %>
+
+<% end %>
+<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
+<div class="row">
+  <div class="large-6 columns">
+  	<div class="panel">
+  	<p>Новый контракт</p>
+  	<% @my_arr = [1,2,3,4,5]%>
+  	
+  	<%= form_for([@car,@car.contracts.build]) do |f| %>
+  	<%= f.label :"Номер договора"%>
+  	<%= f.text_field :cnum, :value => Contract.maximum(:id) + 1, :readonly => true%>
+  	<%= f.label :"Клиент"%>
+  	<%= text_field_tag 'kli'%>
+  	<p>
+  <input type="checkbox" class="toggle" name="remind" id="rem1" value="0" rel="toggle[remind_off]" />
+  <label for="remind">Создать нового клиента</label>
+  
+</p>
+  	<div id="pan" class="panel">
+  		<p>Новый клиент</p>
+  		<%= label_tag 'Фамилия' %>
+    	<%= text_field_tag 'surname'%>
+    	<%= label_tag 'Имя' %>
+    	<%= text_field_tag 'name'%>
+    	<%= label_tag 'Отчество' %>
+    	<%= text_field_tag 'fname'%>
+    	<%= label_tag 'Серия паспорта' %>
+    	<%= text_field_tag 'pseria'%>
+    	<%= label_tag 'Дата выдачи' %>
+    	<%= text_field_tag 'dn',DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%>
+    	<%= label_tag 'Персональный номер' %>
+    	<%= text_field_tag 'idnp'%>
+    	<%= label_tag 'Год рождения' %>
+    	<%= text_field_tag 'bdate',DateTime.now.strftime('%d.%m.%Y'),:id => "dt3" %>
+    	<%= country_select("contract", "country", 
+    	priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "RU")%>
+    	<%= label_tag 'Адрес проживания' %>
+    	<%= text_field_tag 'address'%>
+    	<%= label_tag 'E-mail' %>
+    	<%= text_field_tag 'pemail'%>
+    	<%= label_tag 'Контактный телефон' %>
+    	<%= text_field_tag 'tel'%>
+  	</div>
+  	<%= f.text_field :user, :value => current_user.username, :readonly => true%>
+  	<%= f.label :"Дата начала договора"%>
+  	<%= f.text_field :order_date, :value => DateTime.now.strftime('%d.%m.%Y'), :id => "dt" %>	                  	
+  	<%= f.label :"Дата окончания договора"%>
+  	<%= f.text_field :diff, :value => DateTime.now.strftime('%d.%m.%Y'), :id => "dt1" %>
+  	
+  	<!-- ><p>Date: <input type="text" id="dt"></p>  -->
+  	<center><%= f.submit "Печать контракта",:class=>"button tiny" %></center>
+  	<% end %>
+  	</div>
+</div>
+</div>
+

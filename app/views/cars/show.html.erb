@@ -1,33 +1,95 @@
-<center>
-
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
+<script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation/foundation.js"></script>
+  <script src="js/foundation/foundation.magellan.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+<script>
+$(document).ready( function () {
+    $('#m1').dataTable( {
+    	 "order": [[ 1, "desc" ]]
+} );
+} );
+ 
+</script> 
 <div class="row">
   <div class="small-2 large-4 columns">
-  	<div class="panel"> 
-	
-	<p>Марка : <%= @car.marca %></p><br>
-	<p>Номер : <%= @car.gnum %></p><br>
-	<p>Номер кузова : <%= @car.cuznum %></p><br>
-	<p>Цвет : <%= @car.color %></p><br>
-	<p>Обьем двигателя : <%= @car.vmot %></p><br>
-	<p>Цена : <%= @car.tsumm %></p><br>
-	
-	</div>
+  	<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
   </div>
   <div class="small-4 large-4 columns">
-  	<div class="panel"> 
-	<% @car.contracts.each do |co| %>
-	<p>Номер контракта : <%= co.cnum %>
-	Дата заключения : <%= co.order_date.to_s[5..6] %>
-	Длительность : <%= co.diff %></p><br>
-	<% end %>
-	
-	</div>
+  	<a>Текущий пробег : </a>
+ 	<a  style="color: red">	<%= if @car.wlongs.last
+ 			@car.wlongs.last.wlong
+ 		end	 %>
+ 	</a>	  	
   </div>
   <div class="small-6 large-4 columns">
-  	..
+  	<a>
+	<%= form_for([@car,@car.wlongs.build]) do |f| %>
+  	<%= f.hidden_field :manager%>
+  	<%= f.label :"Введите пробег"%>
+  	<%= f.text_field :wlong%>
+  	<%= f.hidden_field :wdate, :value => Date.today.to_s, :id => "modelname" %>
+  	<%= f.submit "Сохранить пробег",:class => "button tiny" %>
+  	<% end %>        
+  	</a>
   </div>
 </div>
-	
-</center>
+       
+
+        <% carid = @car.id %>
+<center><%=  button_to 'Новый контракт',:action => :contractnew, :num => carid , :class=>"button tiny"%></center>	  
+<div class="row">
+	<%= form_for @car do |f| %>
+  <% if @car.errors.any? %>
+    <div class="error_messages">
+      <h2><%= pluralize(@car.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <ul>
+      <% @car.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% end %>
+  
+  <center>
+  
+ <table id="m1">
+  <thead>
+    <tr>
+      <th>Договор #</th>
+      <th>Дата начала</th>
+      <th>Дата окончания</th>
+      <th>Агент</th>
+      <th>Действие</th>
+      <th>Действие</th>
+    </tr>
+  </thead>
+  <tbody>
+  	
+  	<% @car.contracts.each do |co| %>
+  	<tr>
+  	<td><%= link_to co.cnum, contract_path(co.cnum) %></td>
+  	<td><%= co.order_date.to_s %></td>
+  	<td><%= co.diff %></td>
+  	<td><%= co.user %></td>
+  	<td><%= link_to "Редактировать"%></td>
+  	<td>
+  		<% if co.user == current_user %>
+  		<%= link_to "Edit"%></td>
+  		<% end %>
+  	</tr>
+  	<% end %>
+  
+  </tbody>
+</table>
 
 
+</div>
