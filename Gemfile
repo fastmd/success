@@ -1,10 +1,16 @@
 source 'https://rubygems.org'
 
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem "pdfkit"
 gem 'jquery-datatables-rails'
 gem 'foundation-datetimepicker-rails'
 gem 'momentjs-rails'
 gem 'country_select'
 gem 'rails4-autocomplete'
+gem 'exception_notification'
+gem 'prawn'
+gem 'caracal'
 
 gem 'devise'
 gem 'rails_admin'

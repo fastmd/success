@@ -8,16 +8,31 @@
 <html>
 <body onload="myFunction()">  
 	<center>
+		
 		<div class="row">
-			<div class="small-2 large-4 columns">
+  <div class="medium-3 columns">
+  	
+  </div>
+  <div class="medium-3 columns">
+  	
+  	
+  </div>
+  <div class="medium-3 columns"></div>
+		</div>
+		
+		<div class="row">
+			<div class="small-2 large-3 columns">
 				<%= link_to 'Клиенты' , clients_path,:class =>"button tiny" %>
 			</div>
-  			<div class="small-4 large-4 columns">
+  			<div class="small-3 large-3 columns">
   				<%= select_tag :assignee_id, options_for_select([["2015",1],["2016",2]]), 
           :onchange => :smonth,:num => @i,:class=>"button tiny" %>
   			</div>
-  			<div class="small-6 large-4 columns">
-  				<center><%= button_to 'Бронь' , car_rez_path,:class =>"button tiny" %></center>
+  			<div class="small-3 large-3 columns">
+  				<%= button_to 'ТО авто' , car_rez_path,:class =>"button tiny" %>
+  			</div>	
+  			<div class="small-3 large-3 columns">
+  				<%= button_to 'Бронь' , car_rez_path,:class =>"button tiny" %>
   			</div>	  
         </div>  
 		<div class="row">
@@ -62,9 +77,6 @@
   </div>
  </center> 
 	
-	
-	
-	
 	<% if ((@mn.to_i == 11) || (@mn.to_i == 9) || (@mn.to_i == 6) || (@mn.to_i == 4)) %>
 	<%	daycount = 30  %>
 	<% elsif @mn.to_i == 2 %>
@@ -72,9 +84,17 @@
 	<% else %>
 	<% daycount = 31   %>
 	<% end %>
-	<% daycount %>	
-	<center>
-		
+	<% daycount %>
+	<% ndate = Date.today.to_date%>
+	<% @fl = 0 %>	
+
+		<% @broni = Contract.where(:flag => 1) %>
+		<% if @broni.count(:conditions => "Contract.order_date == Date.today.to_date") > 0 %>
+		<% @fl = 1 %>
+		<%end%>
+<center>		
+	<% if @fl == 1%>	
+	
 		<h4 style="color: blue">Брони в работу на сегодня</h4>
 		<table id="b1">
 			<thead>
@@ -83,32 +103,85 @@
 					<th>Автомобиль</th>
 					<th>Дата начала</th>
 					<th>Дата окончания</th>
+					<th>Клиент</th>
 					<th>Залог</th>
+					<th>Сумма договора</th>
+					<th>Пробег</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				
+					
 					<% @cars.each do |mobil| %>
 						<% mobil.contracts.each do |con|%>
 						<% if con.order_date.to_date == Date.today.to_date %>
+						<% if con.flag == 1%>
 							<tr><td><%= con.cnum %></td>
 							<td><%= mobil.marca + " " + mobil.gnum%></td>
 							<td><%= day %>.<%= month %>.<%= year %></td>
 							<td><%= con.diff %></td>
 							<td><%= con.user %></td>
-							<td><%= link_to "Контракт",contract_path(con.cnum)  %></td>
+							<td><%= con.zalog %></td>
+							<td><%= text_field_tag "summ","",:class=>"cost_tag" %></td>
+							<td><%= con.flag %></td>
+							<% coid = con.id %>
+							<td><%= link_to "Контракт",:action => :rez_to_contract,:num => coid %></td>
 							</tr>
+						<% end %>	
+						<% end %>
+						<% end %>	
+					<% end %>
+			</tbody>	
+			</table>
+			<% end %>	
+						<% enddate = day.to_s %>
+						<% enddate = enddate.to_s+ "." + month.to_s %>
+						<% enddate = enddate.to_s + "."+ year.to_s%>
+						<% enddate%>	
+		
+		<% @cont_today = Contract.where(:flag => 2) %>
+		<% if @cont_today.count(:conditions => "Contract.diff.to_s == enddate.to_s") > 0 %>
+		<% @fl = 2 %>	
+		
+		<% end %>
+		<% if @fl == 2%>
+		<h4 style="color: blue">Контракты к закрытию на сегодня</h4>
+		<table id="b1">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Автомобиль</th>
+					<th>Дата начала</th>
+					<th>Дата окончания</th>
+					<th>Клиент</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+					<% @cars.each do |mobil| %>
+						<% mobil.contracts.each do |con|%>
+						<% if con.diff.to_s == enddate %>
+						<% if con.flag == 2%>
+							<tr><td><%= con.cnum %></td>
+							<td><%= mobil.marca + " " + mobil.gnum%></td>
+							<td><%= day %>.<%= month %>.<%= year %></td>
+							<td><%= con.diff %></td>
+							<td><%= con.user %></td>
+								<% coid = con.id%>
+							<td><%= link_to "Закрыть",:action => :contract_to_arh,:num => coid %></td>
+							</tr>
+						<% end %>
 						<% end %>
 						<% end %>	
 					<% end %>
 			</tbody>	
 			</table>	
+			<% end %>
 			
 			<h4 style="color: blue">Текущие брони и контракты по машинам</h4>
 	<table id="m1"> <!-- </table> border="0" cellspacing="5" cellpadding="5">  -->	
 		<thead>	
-		<tr><%= @buz.to_s %>
+		<tr><!-- <%= @buz.to_s %> -->
 			<th>No</th>
 			<th>Автомобиль</th>
 			

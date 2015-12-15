@@ -13,7 +13,17 @@ class ContractsController < ApplicationController
   
   def show
     @contract = Contract.find(params[:id])
-    
+    @car = Car.find(@contract.car_id)
+    @contract.id do |format|
+    format.html # show.html.erb
+    format.xml { render :xml => @item }
+    format.msword { set_header('doc', "#{@item.title}.doc") }
+    format.doc { set_header('doc', "#{@item.title}.doc") }
+    format.pdf do
+        render :pdf => 'Coming soon...', :layout => false
+    end
+  end
+
   end
   
       

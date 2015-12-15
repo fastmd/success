@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'welcome/index'
   get "car/smonth/:num" => 'cars#smonth'
   get "welcome/smonth/:num" => 'welcome#smonth'
+  get "reztocontract/:num" => 'cars#rez_to_contract'
+  get "contract_to_arh/:num" => 'cars#contract_to_arh'
   post "car/rez" => 'cars#rez'
   post "reznew" => 'cars#reznew'
   post "car/contractnew" => 'cars#contractnew'

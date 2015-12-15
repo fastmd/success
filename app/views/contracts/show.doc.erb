@@ -1,26 +1,62 @@
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+						
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <%= javascript_include_tag "http://code.jquery.com/jquery-1.10.0.min.js" %>
   <%= javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" %>
         <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
 
 
+<script type="text/javascript">
+  $(function () {
+        var doc = new jsPDF();
+        // We'll make our own renderer to skip this editor
+var specialElementHandlers = {
+	'#editor': function(element, renderer){
+		return true;
+	}
+};
+
+// All units are in the set measurement for the document
+// This can be changed to "pt" (points), "mm" (Default), "cm", "in"
+doc.fromHTML($('#body').get(0), 15, 15, {
+	'width': 170, 
+	'elementHandlers': specialElementHandlers
+});
+        
+
+        
+     $('#cmd').click(function () {
+            doc.fromHTML($('#target').html(), 150, 150, {
+                'width': 700,'elementHandlers': specialElementHandlers
+            });
+            doc.save('sample-file.pdf');
+        });  
+    });
+
+  </script>
 <html>
-<div class="row">
-  <div class="large-3 columns">
-  	<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
-  </div>
-  <div class="large-6 columns">
-  	
-  </div>
-  <div class="large-3 columns">
-  	
-<p id="word_link"><%= link_to "Download Contract (WORD)", contract_path(:format => "doc") %></p>
 
-  </div>
-</div>
-
-
+<body>
+<div id="target">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+	
+	<STYLE TYPE="text/css">
+	<!--
+		@page { margin-left: 0.5in; margin-right: 0.39in }
+		P { margin-bottom: 0.08in; direction: ltr; widows: 2; orphans: 2 }
+		P.western { font-family: "Calibri", serif; so-language: it-IT }
+		P.cjk { font-family: "Times New Roman" }
+		P.ctl { font-family: "Times New Roman" }
+		A:link { color: #0000ff }
+		A.western:link { so-language: zxx }
+		A.cjk:link { so-language: zxx }
+		A.ctl:link { font-family: "Times New Roman"; so-language: zxx }
+	-->
+	</STYLE>
+</HEAD>
 <BODY LANG="ru-RU" LINK="#0000ff" DIR="LTR">
 <P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
 <A CLASS="western" HREF="http://www.success.md"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>www.success.md</B></SPAN></FONT></FONT></A><FONT COLOR="#002060"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><U><B>
@@ -68,46 +104,46 @@ titlu oneros, următorul automobil: </SPAN></FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Modelul,
 marca                                                                
                                                                  
-CHEVROLET AVEO</SPAN></FONT></FONT></P>
+<%= @car.marca %></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
 de înmatriculare                                                    
-                                                              KTL 387</SPAN></FONT></FONT></P>
+                                                              <%= @car.gnum%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
 caroseriei                                                           
                                                                 
-KL1SF69DJAB117995</SPAN></FONT></FONT></P>
+<%= @car.cuznum%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
 motorului                                                            
                                                                
-B12D1255021KC3</SPAN></FONT></FONT></P>
+<%= @car.motnum%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Anul
 producerii                                                           
                                                                      
- 2010</SPAN></FONT></FONT></P>
+ <%= @car.aprod%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Culoarea
                                                                      
                                                                      
- ARGINTIU</SPAN></FONT></FONT></P>
+ <%= @car.color%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Capacitatea
 cilindrică, cm</SPAN></FONT></FONT><SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3</SPAN></FONT></FONT></SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">
                                                                      
-                                          1206</SPAN></FONT></FONT></P>
+                                          <%= @car.capcil%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Masa
 totală, kg                                                          
                                                                      
-  1115  </SPAN></FONT></FONT>
+  <%= @car.tmasa%></SPAN></FONT></FONT>
 </P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Valoare
 automobil                                                            
-                                                                 6000
+                                                                 <%= @car.tsumm%>
 EURO</SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>III.
@@ -824,3 +860,5 @@ _____________________
 </P>
 </BODY>
 </HTML>
+ 
+

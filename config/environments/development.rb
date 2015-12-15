@@ -1,5 +1,23 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+  config.action_mailer.raise_delivery_errors = true
+
+# set delivery method to :smtp, :sendmail or :test
+config.action_mailer.delivery_method = :smtp
+
+# these options are only needed if you choose smtp delivery
+config.action_mailer.smtp_settings = {
+  :address        => 'smtp.yandex.ru',
+  :port           => 25,
+  :domain         => 'www.yandex.ru',
+  :authentication => :login,
+  :user_name      => 'sergelus',
+  :password       => 'fast2015'
+}
+
+config.action_mailer.perform_deliveries = true
+config.action_mailer.raise_delivery_errors = true
+
  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 config.assets.precompile += %w( vendor/modernizr.js )
   # In the development environment your application's code is reloaded on
@@ -39,4 +57,14 @@ config.assets.precompile += %w( vendor/modernizr.js )
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+  
+  Rails.application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[PREFIX] ",
+    :sender_address => %{"sergelus" <sergelus@yandex.ru>},
+    :exception_recipients => %w{sergelus84@gmail.com}
+  }
+  
 end
+
+

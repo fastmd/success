@@ -28,11 +28,28 @@ class CarsController < ApplicationController
     @contract = @car.contracts.create
     @contract.cnum = Contract.maximum(:id) + 1
     date = params[:nstdate]
-    @contract.order_date = date 
+    @contract.order_date = date
+    @contract.flag = 1 
+    @contract.zalog = params[:zalog]
     @contract.diff = params[:enddate]
     @contract.save
     redirect_to root_path
   end  
+  
+  def rez_to_contract
+    @contract = Contract.find(params[:num])
+    @contract.flag = 2
+    @contract.save
+    redirect_to root_path
+  end
+  
+  def contract_to_arh
+    @contract = Contract.find(params[:num])
+    @contract.flag = 3
+    @contract.save
+    redirect_to root_path
+  end
+  
   def contractnew
     @car = Car.find(params[:num])
   end
@@ -46,7 +63,8 @@ class CarsController < ApplicationController
     if params[:num]
         mnum = params[:num]
     else
-        mnum = 11
+        mnum = Date.today.to_s[5..6].to_i
+        
     end 
     if (mnum.to_i % 2)
       @daycount = 31

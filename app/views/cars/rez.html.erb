@@ -76,7 +76,8 @@ document.getElementById("#clname").disabled=true;
     	<%=label_tag 'Имя клиента',"Клиент", :id => "clname" %>
     	<%= autocomplete_field_tag 'name', '', autocomplete_client_sname_cars_path, :size => 75 %>
     	<%= label_tag 'Залог' %>
-    	<%= text_field_tag 'psum'%>
+    	<%= text_field_tag 'zalog'%>
+    	
     	<p>
   <input type="checkbox" class="toggle" name="remind" id="rem1" value="0" rel="toggle[remind_off]" />
   <label for="remind">Создать нового клиента</label>
