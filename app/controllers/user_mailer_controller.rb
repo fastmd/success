@@ -1,11 +1,13 @@
 class UserMailerController < ApplicationController
 
-def registration_confirmation(user)
-  recipients  user.email
-  from        "webmaster@example.com"
-  subject     "Thank you for Registering"
-  body        :user => user
-end
+  default :from => 'sergelus@yandex.ru'
+
+  # send a signup email to the user, pass in the user object that   contains the user's email address
+  def send_signup_email(user)
+    
+    mail( :to => email,
+    :subject => 'Thanks for signing up for our amazing app' )
+  end
 
 
 end

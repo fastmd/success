@@ -87,12 +87,13 @@
 	<% daycount %>
 	<% ndate = Date.today.to_date%>
 	<% @fl = 0 %>	
-
+	
 		<% @broni = Contract.where(:flag => 1) %>
-		<% if @broni.count(:conditions => "Contract.order_date == Date.today.to_date") > 0 %>
+		<% if @broni.count(:conditions => "Contract.order_date == Date.today.to_date") > 1 %>
 		<% @fl = 1 %>
 		<%end%>
 <center>		
+	<%= @broni.count(:conditions => "Contract.order_date == Date.today.to_date")%>
 	<% if @fl == 1%>	
 	
 		<h4 style="color: blue">Брони в работу на сегодня</h4>
@@ -140,9 +141,9 @@
 						<% enddate%>	
 		
 		<% @cont_today = Contract.where(:flag => 2) %>
-		<% if @cont_today.count(:conditions => "Contract.diff.to_s == enddate.to_s") > 0 %>
+		<% if @cont_today.count(:conditions => "Contract.diff.to_date == enddate.to_date") > 0 %>
 		<% @fl = 2 %>	
-		
+		<%= @cont_today.count %>
 		<% end %>
 		<% if @fl == 2%>
 		<h4 style="color: blue">Контракты к закрытию на сегодня</h4>
@@ -225,6 +226,7 @@
 										<% t1= t1+1 %>
 										<% n += 1 %>
 									<% end %>
+									<td bgcolor="white"></td>
 									<% end %>
 									<% t1 = t1 + 1 %>
 									<% n += 1 %>
