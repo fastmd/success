@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.timepicker.js
 //= require jquery_ujs
 //= require jquery-ui.min
 //= require jquery-ui
@@ -19,5 +20,10 @@
 //= require foundation-datetimepicker
 //= require_tree .
 //= require jquery.dataTables
+//= require jquery-ui
+//= require jquery-ui-timepicker-addon
+
+//= require jquery-ui/autocomplete
+//= require autocomplete-rails
 
 $(function(){ $(document).foundation(); });

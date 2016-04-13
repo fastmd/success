@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem "combined_time_select"
+gem 'jquery-timepicker-rails'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem "pdfkit"
@@ -7,7 +9,7 @@ gem 'jquery-datatables-rails'
 gem 'foundation-datetimepicker-rails'
 gem 'momentjs-rails'
 gem 'country_select'
-gem 'rails4-autocomplete'
+gem 'rails-jquery-autocomplete'
 gem 'exception_notification'
 gem 'prawn'
 gem 'caracal'
@@ -31,6 +33,7 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

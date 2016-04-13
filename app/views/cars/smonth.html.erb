@@ -1,13 +1,19 @@
+<head>
 <% year = Date.today.to_s[0..3].to_i %>
 <% month = Date.today.to_s[5..6].to_i %>
 <% day = Date.today.to_s[8..9].to_i %>
+
 <script>
-  
-   
-</script>  
+
+</script>
+
+</head>
 <html>
+	
+
 <body onload="myFunction()">  
 	<center>
+		<% md = day.to_s + "." + month.to_s + "." + year.to_s %>
 		
 		<div class="row">
   <div class="medium-3 columns">
@@ -23,9 +29,10 @@
 		<div class="row">
 			<div class="small-2 large-3 columns">
 				<%= link_to 'Клиенты' , clients_path,:class =>"button tiny" %>
+				
 			</div>
   			<div class="small-3 large-3 columns">
-  				<%= select_tag :assignee_id, options_for_select([["2015",1],["2016",2]]), 
+  				<%= select_tag :assignee_id, options_for_select([["2016",1],["2017",2]]), 
           :onchange => :smonth,:num => @i,:class=>"button tiny" %>
   			</div>
   			<div class="small-3 large-3 columns">
@@ -80,7 +87,11 @@
 	<% if ((@mn.to_i == 11) || (@mn.to_i == 9) || (@mn.to_i == 6) || (@mn.to_i == 4)) %>
 	<%	daycount = 30  %>
 	<% elsif @mn.to_i == 2 %>
-	<%	daycount = 28  %>
+		<% if Date.today.leap? %>
+		<% daycount = 29 %>
+		<% else %>
+		<%	daycount = 28  %>
+		<% end %>
 	<% else %>
 	<% daycount = 31   %>
 	<% end %>
@@ -89,11 +100,20 @@
 	<% @fl = 0 %>	
 	
 		<% @broni = Contract.where(:flag => 1) %>
-		<% if @broni.count(:conditions => "Contract.order_date == Date.today.to_date") > 1 %>
-		<% @fl = 1 %>
-		<%end%>
-<center>		
-	<%= @broni.count(:conditions => "Contract.order_date == Date.today.to_date")%>
+		<% k = 0 %>
+		<% while  k < @qord.count %>
+		<% if (@qord[k+2].to_i == 1) and (@qord[k+3].to_date == ndate) %>
+		   <% if @qord[k+2].to_i == 1 %>
+			 <% @fl = 1%>	
+			 <% break %>
+		  <% end %>	 
+ 		<% end %>
+ 		<% k = k + 5%>
+ 		<% end %>
+		
+<center>	
+		
+	
 	<% if @fl == 1%>	
 	
 		<h4 style="color: blue">Брони в работу на сегодня</h4>
@@ -104,31 +124,51 @@
 					<th>Автомобиль</th>
 					<th>Дата начала</th>
 					<th>Дата окончания</th>
-					<th>Клиент</th>
+					<th>Агент</th>
+					<th>Пробег</th>
 					<th>Залог</th>
 					<th>Сумма договора</th>
-					<th>Пробег</th>
+					<th>Время начала</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 					
 					<% @cars.each do |mobil| %>
+					
 						<% mobil.contracts.each do |con|%>
+						
 						<% if con.order_date.to_date == Date.today.to_date %>
 						<% if con.flag == 1%>
+						<%= form_tag '/rez_to_contract' do %>
 							<tr><td><%= con.cnum %></td>
 							<td><%= mobil.marca + " " + mobil.gnum%></td>
-							<td><%= day %>.<%= month %>.<%= year %></td>
-							<td><%= con.diff %></td>
+							<td><%= Date.today.to_date.strftime("%d.%m.%Y") %></td>
+							<td><%= (con.diff)%></td>
 							<td><%= con.user %></td>
+							<td><a  style="color: red">	
+							<%= if mobil.wlongs.last
+ 								mobil.wlongs.last.wlong
+ 							end	 %>
+ 							</a>	</td>
+ 							
 							<td><%= con.zalog %></td>
-							<td><%= text_field_tag "summ","",:class=>"cost_tag" %></td>
-							<td><%= con.flag %></td>
-							<% coid = con.id %>
-							<td><%= link_to "Контракт",:action => :rez_to_contract,:num => coid %></td>
+    							
+        						<% coid = con.id %>
+        						<%= hidden_field_tag 'contrid', coid  %>
+							
+							<td><%= text_field_tag 'summ',"",:class=>"cost_tag" %></td>
+							<td><%= text_field_tag 'sttime', Time.now.strftime('%R') %></td>
+						    
+							<% @sttime %>
+							<%  %>
+							
+							<td><%= submit_tag "Открыть" %></td>
+							<% end %>
 							</tr>
-						<% end %>	
+							
+						
+						<% end %>
 						<% end %>
 						<% end %>	
 					<% end %>
@@ -140,12 +180,20 @@
 						<% enddate = enddate.to_s + "."+ year.to_s%>
 						<% enddate%>	
 		
-		<% @cont_today = Contract.where(:flag => 2) %>
-		<% if @cont_today.count(:conditions => "Contract.diff.to_date == enddate.to_date") > 0 %>
-		<% @fl = 2 %>	
-		<%= @cont_today.count %>
-		<% end %>
-		<% if @fl == 2%>
+		<% k = 0 %>
+		<% while  k < @qord.count %>
+		<% if (@qord[k+2].to_i == 2) and (@qord[k+4].to_date == ndate) %>
+		   <% if @qord[k+2].to_i == 2 %>
+			 <% @fl1 = 2%>	
+			 <% break %>
+		  <% end %>	 
+ 		<% end %>
+ 		<% k = k + 5%>
+ 		<% end %>
+ 		
+		
+		<% if @fl1 == 2%>
+		
 		<h4 style="color: blue">Контракты к закрытию на сегодня</h4>
 		<table id="b1">
 			<thead>
@@ -154,42 +202,54 @@
 					<th>Автомобиль</th>
 					<th>Дата начала</th>
 					<th>Дата окончания</th>
-					<th>Клиент</th>
+					<th>Время окончания</th>
+					<th>Агент</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>
 					<% @cars.each do |mobil| %>
 						<% mobil.contracts.each do |con|%>
-						<% if con.diff.to_s == enddate %>
+						<% if con.diff.to_date == Date.today.to_date %>
 						<% if con.flag == 2%>
+						<%= form_tag '/contract_to_arh' do %>
+						<%= hidden_field_tag 'contrfid', con.id  %>
 							<tr><td><%= con.cnum %></td>
 							<td><%= mobil.marca + " " + mobil.gnum%></td>
-							<td><%= day %>.<%= month %>.<%= year %></td>
+							<td><%= con.order_date.to_date.strftime("%d.%m.%Y") %></td>
 							<td><%= con.diff %></td>
+							<td><%= text_field_tag "endtime",Time.now.strftime('%R'),:class=>"cost_tag"  %></td>
 							<td><%= con.user %></td>
 								<% coid = con.id%>
-							<td><%= link_to "Закрыть",:action => :contract_to_arh,:num => coid %></td>
+							<td><%= submit_tag "Закрыть" %></td>
 							</tr>
+							<% end %>
 						<% end %>
-						<% end %>
+						<% end %> 
 						<% end %>	
 					<% end %>
 			</tbody>	
 			</table>	
 			<% end %>
-			
+		
 			<h4 style="color: blue">Текущие брони и контракты по машинам</h4>
 	<table id="m1"> <!-- </table> border="0" cellspacing="5" cellpadding="5">  -->	
 		<thead>	
 		<tr><!-- <%= @buz.to_s %> -->
 			<th>No</th>
 			<th>Автомобиль</th>
-			
+			<% md =0%>
+			<% nd =0%>
 			<% n=1 %>
 				<% while n<= daycount do %>
-					<% if ((n == day) and(month.to_i == @mn.to_i))%>
+				<% md = n.to_s + "." + @mn.to_s + "." + year.to_s %>
+				<% nd = Date.parse(md).wday %>
+					<% if ((n == day) and (month.to_i == @mn.to_i))%>
 					<th bgcolor="orange"><%= n %></th>
+					<% elsif  (nd == 0)%>
+					<th bgcolor="red"><%= n  %></th>
+					<% elsif  (nd == 6)%>
+					<th bgcolor="red"><%= n %></th>
 					<%else%>        
 					<th ><%= n %></th>
 					<%end%>
@@ -198,30 +258,68 @@
 		</tr>
 		</thead>
 		<tbody>
-		<% i=0 %>
+		<% carnum=0 %>
 			<% n1=0 %>
 		<% @cars.each do |fc| %>	
 		<tr>
-			<td><%= i+1%></td>
+			<td><%= carnum+1%></td>
 			<td><%= link_to fc.marca.to_s + " " +fc.gnum.to_s, car_path(fc) %></td>
-			
-				<% n=1 %>
-				
-				<% while n<=daycount do %>
-				<% str = n.to_s %>
-					<% if n <10 %>
+				<% if ((@mn.to_i == 11) || (@mn.to_i == 9) || (@mn.to_i == 6) || (@mn.to_i == 4)) %>
+	<%	daycount = 30  %>
+	<% elsif @mn.to_i == 2 %>
+		<% if Date.today.leap? %>
+		<% daycount = 29 %>
+		<% else %>
+		<%	daycount = 28  %>
+		<% end %>
+	<% else %>
+	<% daycount = 31   %>
+	<% end %>
+		<% drec = 1 %>
+		<% ind = 0 %>
+		<% while drec <= daycount do %>
+			<% tmpdate = drec.to_s+ "." + @mn.to_s + "." + year.to_s %>
+			<% @prn = 0 %>
+			<% ind = 0 %>
+				   <% while (ind < (@qord.count)) do %>
+     <% if ((@qord[ind] == carnum+1) and ((tmpdate.to_date >= @qord[ind+3].to_date)and(tmpdate.to_date <= @qord[ind+4].to_date))) %>
+        <% if @qord[ind+2].to_i == 2 %>
+			<td bgcolor="green"><%= 'К' %></td>
+			<% @prn = 1 %>
+			<%break%>
+		<% end %>
+		<% if @qord[ind+2].to_i == 1 %>
+			<td bgcolor="magenta"><%= 'Б' %></td>
+			<% @prn = 1 %>
+			<%break%>
+		<% end %>
+		<% if @qord[ind+2].to_i == 3 %>
+			<td bgcolor="silver"><%= 'X' %></td>
+			<% @prn = 1 %>
+			<%break%>
+		<% end %>	
+	<% end %>
+					<% ind += 5 %>
+					<% end %>			
+			  <% if @prn == 0 %>
+			  	<td bgcolor="white"></td>
+			  <% end %>      
+   		    <% drec += 1 %>
+		<% end %>		
+					
+				<!-- <% str = n.to_s %>
+									<% if n < 10 %>
 						<% str = '0'.to_s + str.to_s  %>
 					<% end %>	
 						<% if (@buz[n1].to_s.include? str)%>
 							<% t = n %>
 							<% t1 = n %>
-								<% while t1 < (t + @buz1[n1].to_i) && t1<32 %>
-									<% if (@mn.to_i > month)  %>
-									<td bgcolor="red"><%= link_to "Б"%></td>
-									<% elsif ((@mn.to_i == month) and (t1>=day)) %>
+								 <% while t1 < (t + @buz1[n1].to_i)  %>
+									
+									<% if ((@mn.to_i == month) and (t1>=day) and (@buz2[n1]==1)) %>
 									<td bgcolor="red"><%= link_to "Б"%></td>
 									<% else %>
-									<% while t1 < (t + @buz1[n1].to_i) && t1<32 %>
+									<% while t1 < (t + @buz1[n1].to_i) and (t1<32) %>
 										<td bgcolor="green"><%= link_to "К"%></td>
 										<% t1= t1+1 %>
 										<% n += 1 %>
@@ -234,15 +332,16 @@
 								<% if n <32%>
 									<td bgcolor="white"></td>
 								<% end %>
+								
 			        	<% else %>
 			        		<td bgcolor="white"></td>
-			        	<% end %>    
-  					<% n += 1 %>
-				<% end %>
+			        	<% end %>-->    
+  				
+				
 					<% @car = fc%>
 				
 		</tr>	
-		<% i=i+1 %>
+		<% carnum=carnum+1 %>
 		<% n1 = n1 + 1 %>
 		<% end %>
 		</tbody>

@@ -12,7 +12,7 @@ config.action_mailer.smtp_settings = {
   :domain         => 'www.yandex.ru',
   :authentication => :login,
   :user_name      => 'sergelus',
-  :password       => 'fast2015'
+  :password       => 'Fast@2016'
 }
 
 config.action_mailer.perform_deliveries = true

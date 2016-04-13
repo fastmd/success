@@ -92,7 +92,14 @@
   	
   	<%= form_for([@car,@car.contracts.build]) do |f| %>
   	<%= f.label :"Номер договора"%>
-  	<%= f.text_field :cnum, :value => Contract.maximum(:id) + 1, :readonly => true%>
+  	<%
+  	 if Contract.maximum(:id) != nil
+  	 	conmax = Contract.maximum(:id)
+  	 else 
+  	 	conmax = 0
+  	 end		
+  	%>
+  	<%= f.text_field :cnum, :value => conmax + 1, :readonly => true%>
   	<%= f.label :"Клиент"%>
   	<%= text_field_tag 'kli'%>
   	<p>
@@ -129,7 +136,7 @@
   	<%= f.label :"Дата начала договора"%>
   	<%= f.text_field :order_date, :value => DateTime.now.strftime('%d.%m.%Y'), :id => "dt" %>	                  	
   	<%= f.label :"Дата окончания договора"%>
-  	<%= f.text_field :diff, :value => DateTime.now.strftime('%d.%m.%Y'), :id => "dt1" %>
+  	<%= f.text_field :enddate, :value => DateTime.now.strftime('%d.%m.%Y'), :id => "dt1" %>
   	
   	<!-- ><p>Date: <input type="text" id="dt"></p>  -->
   	<center><%= f.submit "Печать контракта",:class=>"button tiny" %></center>

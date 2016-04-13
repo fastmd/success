@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   get "contract_to_arh/:num" => 'cars#contract_to_arh'
   post "car/rez" => 'cars#rez'
   post "reznew" => 'cars#reznew'
+  post "rez_to_contract" => 'cars#rez_to_contract'
+  post "contract_to_arh" => 'cars#contract_to_arh'
   post "car/contractnew" => 'cars#contractnew'
   
 
@@ -22,16 +24,19 @@ Rails.application.routes.draw do
   root 'cars#smonth'
   #resources :contracts  do
    # end
+   
   resources :clients  do
     end  
   resources :contracts  do
     end
    resources :cars do
-     get :autocomplete_client_sname, :on => :collection
+     get :autocomplete_client_pseria, :on => :collection
     resources :contracts  do
     end
     resources :wlongs  do
     end
+  resources :user_notifier  do
+    end  
   end
 
   # Example of regular route:

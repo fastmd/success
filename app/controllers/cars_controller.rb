@@ -1,6 +1,5 @@
 class CarsController < ApplicationController
-  autocomplete :client, :sname
-  
+  autocomplete :client, :pseria , :extra_data => [:sname],:extra_data => [:fname],:full => true
   def index
    @cars = Car.all
     i = 0;
@@ -24,28 +23,42 @@ class CarsController < ApplicationController
   
   def reznew
     num = params[:car_num]
+    
     @car = Car.find(num)
     @contract = @car.contracts.create
-    @contract.cnum = Contract.maximum(:id) + 1
+    
+     if Contract.maximum(:id) != nil
+      conmax = Contract.maximum(:id)
+     else 
+      conmax = 0
+     end    
+    
+    @contract.cnum = conmax + 1
     date = params[:nstdate]
     @contract.order_date = date
     @contract.flag = 1 
     @contract.zalog = params[:zalog]
     @contract.diff = params[:enddate]
+    @contract.user = current_user.username
+    @contract.client_id = params[:client_id]
     @contract.save
     redirect_to root_path
   end  
   
   def rez_to_contract
-    @contract = Contract.find(params[:num])
+    
+    @contract = Contract.find(params[:contrid]) 
     @contract.flag = 2
+    @contract.summ = params[:summ]
+    @contract.sttime = params[:sttime]
     @contract.save
     redirect_to root_path
   end
   
   def contract_to_arh
-    @contract = Contract.find(params[:num])
+    @contract = Contract.find(params[:contrfid])
     @contract.flag = 3
+    @contract.endtime = params[:endtime]
     @contract.save
     redirect_to root_path
   end
@@ -70,6 +83,7 @@ class CarsController < ApplicationController
       @daycount = 31
     else
       @daycount = 30
+      
     end
         
     @cars = Car.all
@@ -79,21 +93,41 @@ class CarsController < ApplicationController
     @mn = mnum
     @buz = []
     @buz1 = []
+    @buz2 = []
     @dd = []
+    @qord = []
+    j = 0
      @cars.each do |ca|
       ca.contracts.each do |co|
         mon = co.order_date.to_s[5..6]
         if mon.to_i == mnum.to_i  
-          @dd[i] = co.order_date.to_s.to_s + ","
+          @qord[j] = ca.id
+          j = j + 1
+          @qord[j] = co.id.to_s
+          j = j+1
+          @qord[j] = co.flag.to_s
+          j = j+1
+          @qord[j] = co.order_date.to_s
+          j = j + 1
+          @qord[j] = co.diff.to_s
+          j = j+1
+          @dd[i] = co.order_date.to_s + ","
           stdate = co.order_date.to_s[8..9].to_i
           @buz[i] = co.order_date.to_s[8..9].to_s
           diff = (co.diff.to_s[0..1].to_i+1) - stdate    
           @buz1[i] = diff.to_s
-        end     
+          @buz2[i] = co.flag
+        end
+        i = i + 1     
     end
     i = i + 1
     @buz[i] = ""
     end
   end
+  
+ 
+    def user_params
+      params.require(:user).permit(:first_name, :last_name, :other_stuff)
+    end 
   
 end

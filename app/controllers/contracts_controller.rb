@@ -14,8 +14,10 @@ class ContractsController < ApplicationController
   def show
     @contract = Contract.find(params[:id])
     @car = Car.find(@contract.car_id)
+    @client = Client.find(@contract.client_id)
     mmail = "octa_c@moldelectrica.md;sergelus@yandex.ru"
-    UserNotifier.welcome_email(mmail,@contract.id).deliver
+    Usernot.send_email(mmail,@contract.id).deliver
+    
 
 
     @contract.id do |format|

@@ -77,13 +77,13 @@ Părțile contractante:</B></SPAN></FONT></FONT></P>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>SRL
  Success &amp; DivesGroup  </B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">în
  persoana  directorului  Sârbu  Sergiu  în  calitate  de  locator, 
-pe  de  o  parte,  și  cet. </SPAN></FONT></FONT>
+pe  de  o  parte,  și  cet. <%= @client.sname + " " + @client.name + "  "%></SPAN></FONT></FONT>
 </P>
 <P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <BR>
 </P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">____________________________________________în
+<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"> în
 calitate de locatar, pe de altă parte, au convenit să încheie
 prezentul contract de                  Locațiune, cu respectarea
 următoarelor clauze: </SPAN></FONT></FONT>
@@ -149,10 +149,11 @@ EURO</SPAN></FONT></FONT></P>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>III.
 Termenul locațiunii</B></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
+	<% a = @contract.diff.to_date - @contract.order_date.to_date%>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3.1.Termenul
-locațiunii este de _____zile, începând cu data de
-__________________, ora _____, până pe data de
-__________&shy;&shy;&shy;_______, ora ____. </SPAN></FONT></FONT>
+locațiunii est1e de <%= a.to_i %> zile, începând cu data de
+<%= @contract.order_date.strftime('%d.%m.%Y') %>, ora <%= @contract.sttime.strftime('%R') %>, până pe data de
+<%= @contract.diff %>, ora <%= @contract.endtime.strftime('%R') %>. </SPAN></FONT></FONT>
 </P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3.2.
@@ -282,8 +283,14 @@ scopuri taximetrice. </SPAN></FONT></FONT>
 Chiria și modul de achitare</B></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">5.1.
-Chiria zilnică constituie ______________________, respectiv pentru
-________zile. Locatarul urmează să achite _____________________.</SPAN></FONT></FONT></P>
+Chiria zilnică constituie 
+<%=   if a > 0
+		@contract.summ/a
+	  else
+	  	@contract.summ
+	  end		 
+%>, respectiv pentru
+<%= a.to_i %> zile. Locatarul urmează să achite <%= @contract.summ %>.</SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">5.2.
 Plata se va efectua integral în avans.</SPAN></FONT></FONT></P>
@@ -637,7 +644,7 @@ ______________________</B></SPAN></FONT></FONT></P>
 DE PREDARE-PRIMIRE A AUTOVEHICULULUI</B></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Mun.
-Chișinău 									           Data_____________________</B></SPAN></FONT></FONT></P>
+Chișinău 									           Data <%= @contract.diff %></B></SPAN></FONT></FONT></P>
 <P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <BR>
 </P>
@@ -646,7 +653,7 @@ Chișinău 									           Data_____________________</B></SPAN></FONT></FONT
 </B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">numită
 în continuare </SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><U><B>Locator,
 </B></U></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">pe
-de o parte și ____________________________________________, numit în
+de o parte și <%= @client.sname + " " + @client.name %>, numit în
 continuare </SPAN></FONT></FONT>
 </P>
 <P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
@@ -656,7 +663,7 @@ continuare </SPAN></FONT></FONT>
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><U><B>Locatar,
 </B></U></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">pe
 de altă parte, în baza contractului de locațiune nr.
-________________________ din __________________- au încheiat
+<%= @contract.cnum %>  din <%= @contract.order_date.to_date.strftime("%d.%m.%Y")%> - au încheiat
 prezentul act despre următoarele: </SPAN></FONT></FONT>
 </P>
 <P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
@@ -677,49 +684,48 @@ autovehiculului</B></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Modelul,
 marca                                                                
-                                                                  
-CHEVROLET AVEO</SPAN></FONT></FONT></P>
+                                                                 
+<%= @car.marca %></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
 de înmatriculare                                                    
-                                                                KTL
-387</SPAN></FONT></FONT></P>
+                                                              <%= @car.gnum%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
 caroseriei                                                           
-                                                                  
-KL1SF69DJAB117995</SPAN></FONT></FONT></P>
+                                                                
+<%= @car.cuznum%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
 motorului                                                            
-                                                                 
-B12D1255021KC3</SPAN></FONT></FONT></P>
+                                                               
+<%= @car.motnum%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Anul
 producerii                                                           
                                                                      
-  2010</SPAN></FONT></FONT></P>
+ <%= @car.aprod%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Culoarea
                                                                      
                                                                      
-  ARGINTIU</SPAN></FONT></FONT></P>
+ <%= @car.color%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Capacitatea
 cilindrică, cm</SPAN></FONT></FONT><SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3</SPAN></FONT></FONT></SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">
                                                                      
-                                           1206</SPAN></FONT></FONT></P>
+                                          <%= @car.capcil%></SPAN></FONT></FONT></P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Masa
 totală, kg                                                          
                                                                      
-    1115  </SPAN></FONT></FONT>
+  <%= @car.tmasa%></SPAN></FONT></FONT>
 </P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Valoare
 automobil                                                            
-                                                                 
-6000 EURO</SPAN></FONT></FONT></P>
+                                                                 <%= @car.tsumm%>
+EURO</SPAN></FONT></FONT></P>
 <P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <BR>
 </P>
@@ -814,7 +820,7 @@ II. Restituirea autovehiculului </B></SPAN></FONT></FONT>
 </P>
 <P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Mun.
-Chișinău 									Data ___________________</B></SPAN></FONT></FONT></P>
+Chișinău 									Data  <%= @contract.diff %></B></SPAN></FONT></FONT></P>
 <P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
 <BR>
 </P>
