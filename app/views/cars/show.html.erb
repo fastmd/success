@@ -18,6 +18,7 @@ $(document).ready( function () {
 } );
  
 </script> 
+
 <div class="row">
   <div class="small-2 large-4 columns">
   	<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
@@ -36,12 +37,11 @@ $(document).ready( function () {
   	<%= f.label :"Введите пробег"%>
   	<%= f.text_field :wlong%>
   	<%= f.hidden_field :wdate, :value => Date.today.to_s, :id => "modelname" %>
-  	<%= f.submit "Сохранить пробег",:class => "button tiny" %>
+  	<%= f.submit "Сохранить пробег" %>
   	<% end %>        
   	</a>
   </div>
 </div>
-       
 
         <% carid = @car.id %>
 <center><%=  button_to 'Новый контракт',:action => :contractnew, :num => carid , :class=>"button tiny"%></center>	  
@@ -66,26 +66,27 @@ $(document).ready( function () {
     <tr>
       <th>Договор #</th>
       <th>Дата начала</th>
+      <th>Время начала</th>
       <th>Дата окончания</th>
+      <th>Время окончания</th>
       <th>Агент</th>
       <th>Действие</th>
-      <th>Действие</th>
+      
     </tr>
   </thead>
   <tbody>
   	
   	<% @car.contracts.each do |co| %>
   	<tr>
-  	<td><%= link_to co.cnum, contract_path(co.cnum) %></td>
-  	<td><%= co.order_date.to_s %></td>
-  	<td><%= co.diff %></td>
+  	<td><%= link_to co.id,  contract_path(co,:format => "doc")%></td>
+  	<td><%= co.order_date.strftime("%d.%m.%Y") %></td>
+  	<td><%= co.sttime.strftime('%R') %></td>
+  	<td><%= co.diff.to_date.strftime("%d.%m.%Y") %></td>
+  	<td><%= co.endtime.strftime('%R') %></td>
   	<td><%= co.user %></td>
-  	<td><%= link_to "Редактировать"%></td>
-  	<td>
-  		<% if co.user == current_user %>
-  		<%= link_to "Edit"%></td>
-  		<% end %>
-  	</tr>
+  	<td><%=  button_to "Скачать договор (WORD)", contract_path(co.cnum,:format => "doc"), 
+  		 :method => :get %></td>
+  	
   	<% end %>
   
   </tbody>

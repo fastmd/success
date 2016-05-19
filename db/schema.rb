@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322214747) do
+ActiveRecord::Schema.define(version: 20160509200136) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -50,8 +50,8 @@ ActiveRecord::Schema.define(version: 20160322214747) do
     t.datetime "order_date"
     t.integer  "car_id"
     t.integer  "client_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.string   "user"
     t.string   "diff"
     t.integer  "flag"
@@ -61,10 +61,25 @@ ActiveRecord::Schema.define(version: 20160322214747) do
     t.date     "enddate"
     t.time     "sttime"
     t.time     "endtime"
+    t.date     "fenddate"
+    t.time     "fendtime"
+    t.string   "garant_summ"
   end
 
   add_index "contracts", ["car_id"], name: "index_contracts_on_car_id"
   add_index "contracts", ["client_id"], name: "index_contracts_on_client_id"
+
+  create_table "tehservices", force: :cascade do |t|
+    t.string   "stype"
+    t.string   "manager"
+    t.string   "sprice"
+    t.datetime "sdate"
+    t.integer  "car_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "tehservices", ["car_id"], name: "index_tehservices_on_car_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -94,8 +109,9 @@ ActiveRecord::Schema.define(version: 20160322214747) do
     t.string   "manager"
     t.datetime "wdate"
     t.integer  "car_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "tehservice_id"
   end
 
   add_index "wlongs", ["car_id"], name: "index_wlongs_on_car_id"

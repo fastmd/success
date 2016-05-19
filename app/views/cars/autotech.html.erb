@@ -1,0 +1,138 @@
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#mcl').dataTable( {
+    	 "order": [[ 1, "desc" ]]
+} );
+} );
+ 
+</script> 
+
+<div class="row">
+	
+  <div class="medium-3 columns">
+  	<a><%= button_to "Назад", root_path,:method => :get, :class=>"button tiny" %></a>
+  </div>
+  <div class="medium-3 columns">
+  	<a><%= button_to "Добавить ТО",tehservices_new_path,:method => :get, :class=>"button tiny" %> </a>
+  </div>
+</div>
+
+		<table id=id="mcl">
+			<thead>
+				<tr>
+					<th>No</th>
+					<th>Автомобиль</th>
+					<th>Текущий пробег</th>
+					<th>Дата последнего ТО</th>
+					<th>Необходимость замены масла</th>
+					<th>Необходимость замены фильтров</th>
+					<th>Стоимость обслуживания за текущий месяц</th>
+					<th>Стоимость обслуживания за текущий год</th>
+					<th>Действие</th>
+					
+				</tr>
+			</thead>
+			<tbody>	
+					<% @cars.each do |mobil| %>
+							<% 
+							@smprice = 0
+							@syprice = 0
+							mobil.tehservices.each do |th|
+								if th.sdate.to_date > (Date.today).at_beginning_of_month
+									@smprice = @smprice.to_i + th.sprice.to_i
+								end	
+								if th.sdate.to_date.strftime("%Y") == Date.today.to_date.strftime("%Y")
+									@syprice = @syprice.to_i + th.sprice.to_i
+								end	
+							end	
+							if mobil.wlongs.last != nil
+								wl = mobil.wlongs.last.wlong
+							else
+								wl = 0
+							end 
+							if mobil.tehservices.where(stype: "1").last != nil
+								if mobil.tehservices.last.sdate != nil
+								  tdate = mobil.tehservices.last.sdate.strftime('%d.%m.%Y')
+								end
+								@twl = mobil.tehservices.where(stype: "1").last.id
+								@stype = mobil.tehservices.where(stype: "1").last.stype
+								#wlid = @twl.stipe
+								#@wlg1 = Wlong.find_by tehservice_id: @twl
+								@wlg1 = Wlong.find_by(tehservice_id: @twl)
+								wlg = @wlg1.wlong
+							else
+								tdate = 0
+								twl = 0
+							end
+							if (@stype.to_i == 1)
+								if (wl.to_i - wlg.to_i > 5000) 
+								   zm =  "ДА"
+						    	else
+								   zm =  "НЕТ"
+								end 
+							end
+							
+							if mobil.tehservices.where(stype: "2").last != nil
+								if mobil.tehservices.last.sdate != nil
+								  tdate = mobil.tehservices.last.sdate.strftime('%d.%m.%Y')
+								end
+								@twl = mobil.tehservices.where(stype: "2").last.id
+								@stype = mobil.tehservices.where(stype: "2").last.stype
+								#wlid = @twl.stipe
+								#@wlg1 = Wlong.find_by tehservice_id: @twl
+								@wlg1 = Wlong.find_by(tehservice_id: @twl)
+								wlg = @wlg1.wlong
+							else
+								tdate = 0
+								twl = 0
+							end
+							
+							if (@stype.to_i == 2)
+								if (wl.to_i - wlg.to_i > 10000) 
+								   zf =  "ДА"
+						    	else
+								   zf =  "НЕТ"
+								end 
+							end
+							%>
+							<tr><td><%= mobil.id %></td>
+							<td><%= mobil.marca + " " + mobil.gnum%></td>
+							<td><%= wl %></td>
+							<td><%= tdate %></td>
+							<% if zm == 'ДА' %>
+							<td bgcolor='red' >
+								<%= zm %> 
+							</td>	
+							<% else %>
+							<td>
+								<%= zm %>
+							</td>	
+							<% end %>
+							
+							<% if zf == 'ДА' %>
+							<td bgcolor='red' >
+								<%= zf %> 
+							</td>	
+							<% else %>
+							<td>
+								<%= zf %>
+							</td>	
+							<% end %>
+							<td><%= @smprice %></td>
+							<td><%= @syprice %></td>
+							<td><% @i = mobil.id %>
+		<%= link_to @i, :controller => :tehservices, :action => :new ,:num => @i %>
+							</td>	
+							</tr>	
+					<% end %>
+			</tbody>	
+			</table>

@@ -6,6 +6,7 @@
 
 
 <html>
+	
 <div class="row">
   <div class="large-3 columns">
   	<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
@@ -15,14 +16,11 @@
   </div>
   <div class="large-3 columns">
   	
-<p id="word_link"><%= link_to "Download Contract (WORD)", contract_path(:format => "doc") %></p>
+<p id="word_link"><%= button_to "Download Contract (WORD)", contract_path(:format => "doc"), :method => :get %></p>
 
   </div>
 </div>
-
-
-
-						
+					
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <%= javascript_include_tag "http://code.jquery.com/jquery-1.10.0.min.js" %>
   <%= javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" %>

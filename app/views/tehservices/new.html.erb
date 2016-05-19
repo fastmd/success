@@ -1,0 +1,29 @@
+<%= button_to "Назад", car_autotech_path,:method => :get, :class=>"button tiny" %>
+<center>
+<div class="small-11 small-centered columns">
+	<div class="panel">
+  	<a> 
+	<%= form_tag '/tehservices/newto' do %>
+  	<%= hidden_field_tag :manager%>
+  	<%= label_tag 'Автомобиль' %>
+  	<%= 
+  	if params[:num] != nil
+  	  params[:num].to_s
+  	end%>
+    <%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
+  	<%= label_tag :"Введите текущий пробег"%>
+  	<%= text_field_tag :wlong,"100"%>
+  	<%= label_tag :"Введите тип сервиса"%>
+  	<% @yrs = [2011,2010,2009,2008] %>
+  	<%= select_tag :stype, options_for_select([['Замена масла', 1], ['Замена фильтров', 2], ['ТО', 3]] )%>
+  	<%= label_tag :"Введите стоимость сервиса"%>
+  	<%= text_field_tag :sprice%>
+  	<%= label_tag :"Дата проведения работ"%>
+  	<%= text_field_tag :sdate, DateTime.now.strftime('%d.%m.%Y'), :id => "modelname" %>
+  	<%= submit_tag "Сохранить ТО" %>
+  	<% end %>        
+  	</a>
+  	</div>
+  </div>
+  
+</center>

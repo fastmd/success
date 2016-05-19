@@ -31,26 +31,71 @@ class CarsController < ApplicationController
       conmax = Contract.maximum(:id)
      else 
       conmax = 0
-     end    
+     end
+         
+    @state = params[:active] || []
+    if @state != '1'
+      
+    @contract.cnum = conmax + 1
+    date = params[:nstdate]
+    @contract.order_date = date
+    @contract.flag = params[:flag] 
+    @contract.zalog = params[:zalog]
+    @contract.garant_summ = params[:garant_summ]
+    @contract.diff = params[:enddate]
+    @contract.sttime = params[:sttime]
+    @contract.endtime = params[:endtime]
+    @contract.user = current_user.username
+    @contract.client_id = params[:client_id]
+    @contract.save
+    end
     
+    
+    if @state == '1'
+      
+    @client = Client.create(params[:contract])
+    @client.name = params[:name]
+    @client.sname = params[:surname]
+    @client.fname = params[:fname]
+    @client.pseria = params[:pseria]
+    @client.address = params[:address]
+    @client.idno = params[:idnp]
+    @client.dn = params[:dn]
+    @client.de = params[:fname]
+    @client.tel = params[:tel]
+    @client.pemail = params[:pemail]
+    @client.save
+      
     @contract.cnum = conmax + 1
     date = params[:nstdate]
     @contract.order_date = date
     @contract.flag = 1 
-    @contract.zalog = params[:zalog]
+
     @contract.diff = params[:enddate]
     @contract.user = current_user.username
-    @contract.client_id = params[:client_id]
+    @contract.client_id = @client.id
     @contract.save
+    end
     redirect_to root_path
+    
   end  
   
   def rez_to_contract
-    
     @contract = Contract.find(params[:contrid]) 
     @contract.flag = 2
+    @contract.diff = params[:enddate]
+    @contract.endtime = params[:endtime]
     @contract.summ = params[:summ]
     @contract.sttime = params[:sttime]
+    @contract.garant_summ = params[:garant_summ]
+    
+    @car = @contract.car
+    @wl = params[:wlong]
+    @car.wlongs.create()
+    @wls = @car.wlongs.last
+    @wls.wlong = @wl
+    @wls.wdate = params[:sttime]
+    @wls.save
     @contract.save
     redirect_to root_path
   end
@@ -58,17 +103,28 @@ class CarsController < ApplicationController
   def contract_to_arh
     @contract = Contract.find(params[:contrfid])
     @contract.flag = 3
-    @contract.endtime = params[:endtime]
+    @contract.endtime = params[:fendtime]
+    @wl_end = params[:wlong_end]
+    @car_end = @contract.car
+    
+    @wls_end = @car_end.wlongs.create()
+    @wls_end.wlong = params[:wlongend]
+    @wls_end.wdate = params[:fendtime]
+    @wls_end.save
     @contract.save
     redirect_to root_path
   end
   
   def contractnew
-    @car = Car.find(params[:num])
+   # @car = Car.find(params[:num])
   end
   
   def show    
     @car = Car.find(params[:id])
+  end
+  
+  def autotech
+    @cars = Car.all
   end
  
   def smonth

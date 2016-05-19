@@ -31,15 +31,18 @@
 				<%= link_to 'Клиенты' , clients_path,:class =>"button tiny" %>
 				
 			</div>
-  			<div class="small-3 large-3 columns">
+  			<!-- ><div class="small-3 large-3 columns">
   				<%= select_tag :assignee_id, options_for_select([["2016",1],["2017",2]]), 
           :onchange => :smonth,:num => @i,:class=>"button tiny" %>
-  			</div>
+  			</div>  -->
   			<div class="small-3 large-3 columns">
-  				<%= button_to 'ТО авто' , car_rez_path,:class =>"button tiny" %>
+  				<%= button_to 'ТО авто' , car_autotech_path,:class =>"button tiny" %>
   			</div>	
   			<div class="small-3 large-3 columns">
   				<%= button_to 'Бронь' , car_rez_path,:class =>"button tiny" %>
+  			</div>	
+  			<div class="small-3 large-3 columns">
+  				<%=  button_to 'Новый контракт',car_contractnew_path, :class=>"button tiny"%>
   			</div>	  
         </div>  
 		<div class="row">
@@ -82,6 +85,7 @@
 		</center>
 		   
   </div>
+  			     
  </center> 
 	
 	<% if ((@mn.to_i == 11) || (@mn.to_i == 9) || (@mn.to_i == 6) || (@mn.to_i == 4)) %>
@@ -123,12 +127,14 @@
 					<th>No</th>
 					<th>Автомобиль</th>
 					<th>Дата начала</th>
+					<th>Время начала</th>
 					<th>Дата окончания</th>
+					<th>Время окончания</th>
 					<th>Агент</th>
 					<th>Пробег</th>
+					<th>Гарантийна сумма</th>
 					<th>Залог</th>
 					<th>Сумма договора</th>
-					<th>Время начала</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -144,21 +150,25 @@
 							<tr><td><%= con.cnum %></td>
 							<td><%= mobil.marca + " " + mobil.gnum%></td>
 							<td><%= Date.today.to_date.strftime("%d.%m.%Y") %></td>
-							<td><%= (con.diff)%></td>
+							<td><%= text_field_tag 'sttime', Time.now.strftime('%R') %></td>
+							<td><%= text_field_tag 'enddate', con.diff %></td>
+							<td><%= text_field_tag 'endtime', Time.now.strftime('%R') %></td>
 							<td><%= con.user %></td>
-							<td><a  style="color: red">	
-							<%= if mobil.wlongs.last
+							<td><a  style="color: red">
+							<%= text_field_tag 'wlong', if mobil.wlongs.last
  								mobil.wlongs.last.wlong
- 							end	 %>
+ 							end	 %>		
+							
  							</a>	</td>
  							
+ 							<td><%= text_field_tag 'garant_summ',"",:class=>"cost_tag" %></td>
 							<td><%= con.zalog %></td>
     							
         						<% coid = con.id %>
         						<%= hidden_field_tag 'contrid', coid  %>
 							
 							<td><%= text_field_tag 'summ',"",:class=>"cost_tag" %></td>
-							<td><%= text_field_tag 'sttime', Time.now.strftime('%R') %></td>
+							
 						    
 							<% @sttime %>
 							<%  %>
@@ -203,6 +213,7 @@
 					<th>Дата начала</th>
 					<th>Дата окончания</th>
 					<th>Время окончания</th>
+					<th>Пробег</th>
 					<th>Агент</th>
 					<th></th>
 				</tr>
@@ -214,12 +225,19 @@
 						<% if con.flag == 2%>
 						<%= form_tag '/contract_to_arh' do %>
 						<%= hidden_field_tag 'contrfid', con.id  %>
-							<tr><td><%= con.cnum %></td>
+			<tr><td><%= link_to con.cnum,  contract_path(con,:format => "doc")%></td>
 							<td><%= mobil.marca + " " + mobil.gnum%></td>
 							<td><%= con.order_date.to_date.strftime("%d.%m.%Y") %></td>
 							<td><%= con.diff %></td>
-							<td><%= text_field_tag "endtime",Time.now.strftime('%R'),:class=>"cost_tag"  %></td>
+							<td><%= text_field_tag "fendtime",Time.now.strftime('%R'),:class=>"cost_tag"  %></td>
+							<td><a  style="color: red">
+							<%= text_field_tag 'wlongend', if mobil.wlongs.last
+ 								mobil.wlongs.last.wlong
+ 							end	 %>		
+							
+ 							</a>	</td>
 							<td><%= con.user %></td>
+							
 								<% coid = con.id%>
 							<td><%= submit_tag "Закрыть" %></td>
 							</tr>

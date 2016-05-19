@@ -12,9 +12,10 @@
     $("#clname").attr('disabled', 'disabled');
   });
   $(function() {
-  $("#rem1").change( function() {
+  $("#rem2").change( function() {
     $("#pan").toggle()
-    $("#clname").attr('disabled', 'disabled');
+    $("#clname").toggle()
+    $("#pser").toggle()
   });
   });
   function disableElements()
@@ -29,7 +30,7 @@ document.getElementById("#clname").disabled=true;
       dateFormat: 'dd.mm.yy' }).val();
        
     $( "#format" ).change(function() {
-      $( "#dt" ).datepicker( "option", "dateFormat", $( this ).val() );
+      $( "#dt" ).datetimepicker( "option", "dateFormat", $( this ).val() );
     });
   });
     $(function() {
@@ -71,8 +72,9 @@ document.getElementById("#clname").disabled=true;
 <%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
 <div class="row">
   <div class="large-6 columns">
+  	<%= form_tag '/reznew' do %>
   	  <div class="panel">
-    <%= form_tag '/reznew' do %>
+    
     <%
   	 if Contract.maximum(:id) != nil
   	 	conmax = Contract.maximum(:id)
@@ -82,20 +84,21 @@ document.getElementById("#clname").disabled=true;
   	%>
     	<%= text_field_tag 'cnum', conmax + 1 , :readonly => true%>
     	<%=label_tag 'Имя клиента',"Серия паспорта", :id => "clname" %>
-    	<%= autocomplete_field_tag 'name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id", :size => 35 %>
+    	<%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
     	<%= hidden_field_tag :client_id  %>
+    	<%= hidden_field_tag :flag,1  %>
     	<%= label_tag params[:sname] %>
     	<%= label_tag 'Залог' %>
     	<%= text_field_tag 'zalog'%>
     	
     	<p>
-  <input type="checkbox" class="toggle" name="remind" id="rem1" value="0" rel="toggle[remind_off]" />
-  <label for="remind">Создать нового клиента</label>
-  
+  <%= check_box_tag 'active','1',false, :id => "rem2"  %>
+  <label for="rem_lab">Создать нового клиента</label>
+  		
 </p>
 	
     	<%= label_tag 'Номер автомобиля' %>
-    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.gnum, p.id ] }) %>
+    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
     	<%= label_tag 'Дата начала договора' %>
     	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt"%>
     	<%= label_tag 'Дата конца договора'%>
@@ -103,8 +106,8 @@ document.getElementById("#clname").disabled=true;
     	<%= label_tag 'Менеджер' %>
     	<%= text_field_tag 'user', current_user.username, :readonly => true%>
 	<center><%= submit_tag 'Сохранить',:class=>"button tiny" %>
-		<%= submit_tag 'Печать брони',:class=>"button tiny" %></center>
-	<% end %>
+		</center>
+	
   </div>
   </div>
   <div class="large-6 columns">
@@ -116,7 +119,7 @@ document.getElementById("#clname").disabled=true;
     	<%= text_field_tag 'name'%>
     	<%= label_tag 'Отчество' %>
     	<%= text_field_tag 'fname'%>
-    	<%= label_tag 'Серия паспорта' %>
+    	<%= label_tag 'Серия и номер паспорта' %>
     	<%= text_field_tag 'pseria'%>
     	<%= label_tag 'Дата выдачи' %>
     	<%= text_field_tag 'dn',DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%>
@@ -126,7 +129,7 @@ document.getElementById("#clname").disabled=true;
     	<%= text_field_tag 'bdate',DateTime.now.strftime('%d.%m.%Y'),:id => "dt3" %>
     	<%= label_tag 'Страна проживания' %>
     	<%= country_select("contract", "country", 
-    	priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "RU")%>
+    	priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "MD")%>
     	<%= label_tag 'Адрес проживания' %>
     	<%= text_field_tag 'address'%>
     	<%= label_tag 'E-mail' %>
@@ -134,6 +137,7 @@ document.getElementById("#clname").disabled=true;
     	<%= label_tag 'Контактный телефон' %>
     	<%= text_field_tag 'tel'%>
   	</div>
+  	<% end %>
   	</div>
 </div>
 

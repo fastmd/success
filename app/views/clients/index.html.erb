@@ -22,7 +22,7 @@ $(document).ready( function () {
 				<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
 			</div>
   			<div class="small-4 large-4 columns">
-  				<center><%= button_to "Новый клиент", new_client_path,:method => :get, :class=>"button tiny"%></center>
+  				<center><%=  button_to 'Новый клиент',client_new_path, :class=>"button tiny" %></center>
   			</div>
   			<div class="small-6 large-4 columns">...</div>	  
         </div>
@@ -46,7 +46,7 @@ $(document).ready( function () {
 		<tbody>
 					<% @clients.each do |cl| %>
 					<tr>
-						<td><%= cl.id %></td>
+						<td><%= link_to cl.id,edit_client_path(cl) %></td>
 						<td><%= cl.sname %></td>
 						<td><%= cl.name %></td>
 						<th><%= cl.bdate %></th>

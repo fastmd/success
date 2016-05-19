@@ -12,25 +12,29 @@ class ContractsController < ApplicationController
   end
   
   def show
+    
     @contract = Contract.find(params[:id])
-    @car = Car.find(@contract.car_id)
-    @client = Client.find(@contract.client_id)
+    
+    @car = @contract.car
+    
+    @client = @contract.client
+    
     mmail = "octa_c@moldelectrica.md;sergelus@yandex.ru"
-    Usernot.send_email(mmail,@contract.id).deliver
+    #Usernot.send_email(mmail,@contract.id).deliver
     
 
 
     @contract.id do |format|
     format.html # show.html.erb
     format.xml { render :xml => @item }
-    format.msword { set_header('doc', "#{@item.title}.doc") }
-    format.doc { set_header('doc', "#{@item.title}.doc") }
+    
     format.pdf do
         render :pdf => 'Coming soon...', :layout => false
     end
   end
 
   end
+  
   
       
 

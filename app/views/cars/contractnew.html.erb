@@ -1,40 +1,47 @@
-<html lang="en">
-	 
 <head>
   <meta charset="utf-8">
-  <title>jQuery UI Datepicker - Default functionality</title>
+  <title>jQuery UI Accordion - Default functionality</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <script src="datepicker-ar.js"></script>
-  <script src="datepicker-fr.js"></script>
-  <script src="datepicker-he.js"></script>
-  <script src="datepicker-zh-TW.js"></script>
-  <script src="js/vendor/jquery.js"></script>
-  <script src="js/foundation/foundation.js"></script>
-  <script src="js/foundation/foundation.magellan.js"></script>
+  
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script>
-    $(function() {
-        $( "#dt" ).datepicker({
+  $(function() {
+    $("#pan").toggle()
+    $("#clname").attr('disabled', 'disabled');
+  });
+  $(function() {
+  $("#rem2").change( function() {
+    $("#pan").toggle()
+    $("#clname").toggle()
+    $("#pser").toggle()
+  });
+  });
+  function disableElements()
+{
+document.getElementById("#clname").disabled=true;
+}
+  
+  $(function() {
+    $( "#dt" ).datepicker({
       changeMonth: true,
       changeYear: true,
-       dateFormat: 'dd-mm-yy' }).val();
-      
+      dateFormat: 'dd.mm.yy' }).val();
+       
     $( "#format" ).change(function() {
       $( "#dt" ).datepicker( "option", "dateFormat", $( this ).val() );
     });
-    });
-  
+  });
     $(function() {
     $( "#dt1" ).datepicker({
       changeMonth: true,
       changeYear: true,
-      dateFormat: 'dd-mm-yy' }).val();
+      dateFormat: 'dd.mm.yy' }).val();
        
     $( "#format" ).change(function() {
       $( "#dt1" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });
+    });  
   });
   
   $(function() {
@@ -46,8 +53,7 @@
     $( "#format" ).change(function() {
       $( "#dt2" ).datepicker( "option", "dateFormat", $( this ).val() );
     });  
-});  
- 
+  });
   
     $(function() {
     $( "#dt3" ).datepicker({
@@ -58,73 +64,78 @@
     $( "#format" ).change(function() {
       $( "#dt3" ).datepicker( "option", "dateFormat", $( this ).val() );
     });  
-});
-  
-  
-    $(function() {
-    $( "#accordion" ).accordion();
   });
   
-  $(function() {
-    $("#pan").toggle()
-  });
-  $(function() {
-  $("#rem1").change( function() {
-    $("#pan").toggle()
-  });
-  });
   </script>
-  
 </head>
 
-<%= form_for([@car,@car.contracts.build])  do |f| %>
-
-	<% if @car.errors.any? %>
-	<% end %>
-
-<% end %>
 <%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
 <div class="row">
   <div class="large-6 columns">
-  	<div class="panel">
-  	<p>Новый контракт</p>
-  	<% @my_arr = [1,2,3,4,5]%>
-  	
-  	<%= form_for([@car,@car.contracts.build]) do |f| %>
-  	<%= f.label :"Номер договора"%>
-  	<%
+  	<%= form_tag '/reznew' do %>
+  	  <div class="panel">
+    
+    <%
   	 if Contract.maximum(:id) != nil
   	 	conmax = Contract.maximum(:id)
   	 else 
   	 	conmax = 0
   	 end		
   	%>
-  	<%= f.text_field :cnum, :value => conmax + 1, :readonly => true%>
-  	<%= f.label :"Клиент"%>
-  	<%= text_field_tag 'kli'%>
-  	<p>
-  <input type="checkbox" class="toggle" name="remind" id="rem1" value="0" rel="toggle[remind_off]" />
-  <label for="remind">Создать нового клиента</label>
-  
+    	<%= text_field_tag 'cnum', conmax + 1 , :readonly => true%>
+    	<%=label_tag 'Имя клиента',"Серия паспорта", :id => "clname" %>
+    	<%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
+    	<%= hidden_field_tag :client_id  %>
+    	<%= hidden_field_tag :flag,2  %>
+    	<%= label_tag params[:sname] %>
+    	<%= label_tag 'Залог' %>
+    	<%= text_field_tag 'zalog'%>
+    	<%= label_tag 'Гарантийная сумма' %>
+    	<%= text_field_tag 'garant_summ'%>
+    	
+    	<p>
+  <%= check_box_tag 'active','1',false, :id => "rem2"  %>
+  <label for="rem_lab">Создать нового клиента</label>
+  		
 </p>
+	
+    	<%= label_tag 'Номер автомобиля' %>
+    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
+    	<%= label_tag 'Дата начала договора' %>
+    	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt"%>
+    	<%= label_tag 'Время начала договора' %>
+    	<%= text_field_tag 'sttime', Time.now.strftime('%R') %>
+    	<%= label_tag 'Дата окончания договора'%>
+    	<%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1"%>
+    	<%= label_tag 'Время окончания договора'%>
+    	<%= text_field_tag 'endtime', Time.now.strftime('%R') %>
+    	<%= label_tag 'Менеджер' %>
+    	<%= text_field_tag 'user', current_user.username, :readonly => true%>
+	<center><%= submit_tag 'Сохранить',:class=>"button tiny" %>
+		</center>
+	
+  </div>
+  </div>
+  <div class="large-6 columns">
   	<div id="pan" class="panel">
-  		<p>Новый клиент</p>
+  		
   		<%= label_tag 'Фамилия' %>
     	<%= text_field_tag 'surname'%>
     	<%= label_tag 'Имя' %>
     	<%= text_field_tag 'name'%>
     	<%= label_tag 'Отчество' %>
     	<%= text_field_tag 'fname'%>
-    	<%= label_tag 'Серия паспорта' %>
+    	<%= label_tag 'Серия и номер паспорта' %>
     	<%= text_field_tag 'pseria'%>
     	<%= label_tag 'Дата выдачи' %>
     	<%= text_field_tag 'dn',DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%>
     	<%= label_tag 'Персональный номер' %>
     	<%= text_field_tag 'idnp'%>
-    	<%= label_tag 'Год рождения' %>
+    	<%= label_tag 'Год рождения'%>
     	<%= text_field_tag 'bdate',DateTime.now.strftime('%d.%m.%Y'),:id => "dt3" %>
+    	<%= label_tag 'Страна проживания' %>
     	<%= country_select("contract", "country", 
-    	priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "RU")%>
+    	priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "MD")%>
     	<%= label_tag 'Адрес проживания' %>
     	<%= text_field_tag 'address'%>
     	<%= label_tag 'E-mail' %>
@@ -132,16 +143,7 @@
     	<%= label_tag 'Контактный телефон' %>
     	<%= text_field_tag 'tel'%>
   	</div>
-  	<%= f.text_field :user, :value => current_user.username, :readonly => true%>
-  	<%= f.label :"Дата начала договора"%>
-  	<%= f.text_field :order_date, :value => DateTime.now.strftime('%d.%m.%Y'), :id => "dt" %>	                  	
-  	<%= f.label :"Дата окончания договора"%>
-  	<%= f.text_field :enddate, :value => DateTime.now.strftime('%d.%m.%Y'), :id => "dt1" %>
-  	
-  	<!-- ><p>Date: <input type="text" id="dt"></p>  -->
-  	<center><%= f.submit "Печать контракта",:class=>"button tiny" %></center>
   	<% end %>
   	</div>
-</div>
 </div>
 

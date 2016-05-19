@@ -1,870 +1,1390 @@
 
-						
-		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <%= javascript_include_tag "http://code.jquery.com/jquery-1.10.0.min.js" %>
-  <%= javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" %>
-        <script src="//mrrio.github.io/jsPDF/dist/jspdf.debug.js"></script>
-  <link rel="stylesheet" href="/resources/demos/style.css">
+<title>Page Title</title>
+<head>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;
+	mso-font-charset:1;
+	mso-generic-font-family:roman;
+	mso-font-format:other;
+	mso-font-pitch:variable;
+	mso-font-signature:0 0 0 0 0 0;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;
+	mso-font-charset:204;
+	mso-generic-font-family:swiss;
+	mso-font-pitch:variable;
+	mso-font-signature:-536870145 1073786111 1 0 415 0;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+	mso-font-charset:0;
+	mso-generic-font-family:swiss;
+	mso-font-format:other;
+	mso-font-pitch:variable;
+	mso-font-signature:3 0 0 0 1 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{mso-style-unhide:no;
+	mso-style-qformat:yes;
+	mso-style-parent:"";
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:0cm;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-language:IT;
+	mso-fareast-language:EN-US;}
+a:link, span.MsoHyperlink
+	{mso-style-unhide:no;
+	font-family:"Times New Roman",serif;
+	mso-bidi-font-family:"Times New Roman";
+	color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	color:purple;
+	mso-themecolor:followedhyperlink;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoAcetate, li.MsoAcetate, div.MsoAcetate
+	{mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-link:"Текст выноски Знак";
+	margin:0cm;
+	margin-bottom:.0001pt;
+	mso-pagination:widow-orphan;
+	font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:Tahoma;
+	mso-ansi-language:IT;
+	mso-fareast-language:EN-US;}
+p.1, li.1, div.1
+	{mso-style-name:"Абзац списка1";
+	mso-style-unhide:no;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-language:IT;
+	mso-fareast-language:EN-US;}
+p.1CxSpFirst, li.1CxSpFirst, div.1CxSpFirst
+	{mso-style-name:"Абзац списка1CxSpFirst";
+	mso-style-unhide:no;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-language:IT;
+	mso-fareast-language:EN-US;}
+p.1CxSpMiddle, li.1CxSpMiddle, div.1CxSpMiddle
+	{mso-style-name:"Абзац списка1CxSpMiddle";
+	mso-style-unhide:no;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:0cm;
+	margin-left:36.0pt;
+	margin-bottom:.0001pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-language:IT;
+	mso-fareast-language:EN-US;}
+p.1CxSpLast, li.1CxSpLast, div.1CxSpLast
+	{mso-style-name:"Абзац списка1CxSpLast";
+	mso-style-unhide:no;
+	mso-style-type:export-only;
+	margin-top:0cm;
+	margin-right:0cm;
+	margin-bottom:10.0pt;
+	margin-left:36.0pt;
+	mso-add-space:auto;
+	line-height:115%;
+	mso-pagination:widow-orphan;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;
+	mso-fareast-font-family:"Times New Roman";
+	mso-bidi-font-family:"Times New Roman";
+	mso-ansi-language:IT;
+	mso-fareast-language:EN-US;}
+span.a
+	{mso-style-name:"Текст выноски Знак";
+	mso-style-noshow:yes;
+	mso-style-priority:99;
+	mso-style-unhide:no;
+	mso-style-locked:yes;
+	mso-style-link:"Текст выноски";
+	mso-ansi-font-size:8.0pt;
+	mso-bidi-font-size:8.0pt;
+	font-family:"Tahoma",sans-serif;
+	mso-ascii-font-family:Tahoma;
+	mso-fareast-font-family:"Times New Roman";
+	mso-hansi-font-family:Tahoma;
+	mso-bidi-font-family:Tahoma;
+	mso-ansi-language:IT;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	mso-default-props:yes;
+	font-family:"Calibri",sans-serif;
+	mso-ascii-font-family:Calibri;
+	mso-ascii-theme-font:minor-latin;
+	mso-fareast-font-family:Calibri;
+	mso-fareast-theme-font:minor-latin;
+	mso-hansi-font-family:Calibri;
+	mso-hansi-theme-font:minor-latin;
+	mso-bidi-font-family:"Times New Roman";
+	mso-bidi-theme-font:minor-bidi;
+	mso-fareast-language:EN-US;}
+.MsoPapDefault
+	{mso-style-type:export-only;
+	margin-bottom:10.0pt;
+	line-height:115%;}
+@page WordSection1
+	{size:595.3pt 841.9pt;
+	margin:1.0cm 1.0cm 1.0cm 36.0pt;
+	mso-header-margin:35.45pt;
+	mso-footer-margin:35.45pt;
+	mso-paper-source:0;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ @list l0
+	{mso-list-id:1982999140;
+	mso-list-type:hybrid;
+	mso-list-template-ids:514118502 68747279 68747289 68747291 68747279 68747289 68747291 68747279 68747289 68747291;}
+@list l0:level1
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level2
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level3
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-9.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level4
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level5
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level6
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-9.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level7
+	{mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level8
+	{mso-level-number-format:alpha-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:left;
+	text-indent:-18.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+@list l0:level9
+	{mso-level-number-format:roman-lower;
+	mso-level-tab-stop:none;
+	mso-level-number-position:right;
+	text-indent:-9.0pt;
+	mso-bidi-font-family:"Times New Roman";}
+ol
+	{margin-bottom:0cm;}
+ul
+	{margin-bottom:0cm;}
+-->
+</style>
+
+</head>
+<title>Page Title</title>
+<body lang=RU link=blue vlink=purple style='tab-interval:35.4pt'>
+
+<div class=WordSection1>
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><span lang=IT><a href="http://www.success.md"><b style='mso-bidi-font-weight:
+normal'><span lang=EN-US style='font-size:9.0pt;font-family:"Times New Roman",serif;
+mso-ansi-language:EN-US'>www.success.md</span></b></a></span><b
+style='mso-bidi-font-weight:normal'><u><span lang=IT style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:#002060;mso-ansi-language:EN-US'> </span></u></b><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'></span><span style='mso-spacerun:yes'></span>  SERGIU<span style='mso-spacerun:yes'>  </span>078777058; 078777059</span></b>
+<b style='mso-bidi-font-weight:
+normal'><u><span lang=EN-US style='font-size:9.0pt;font-family:"Times New Roman",serif;
+color:#002060;mso-ansi-language:EN-US'><o:p></o:p></span></u></b></p>
 
 
-<script type="text/javascript">
-  $(function () {
-        var doc = new jsPDF();
-        // We'll make our own renderer to skip this editor
-var specialElementHandlers = {
-	'#editor': function(element, renderer){
-		return true;
-	}
-};
 
-// All units are in the set measurement for the document
-// This can be changed to "pt" (points), "mm" (Default), "cm", "in"
-doc.fromHTML($('#body').get(0), 15, 15, {
-	'width': 170, 
-	'elementHandlers': specialElementHandlers
-});
-        
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>CONTRACT DE LOCA<span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'>&#538;IUNE nr. <span
+style='color:black'><%= @contract.cnum %></span><o:p></o:p></span></b></p>
 
-        
-     $('#cmd').click(function () {
-            doc.fromHTML($('#target').html(), 150, 150, {
-                'width': 700,'elementHandlers': specialElementHandlers
-            });
-            doc.save('sample-file.pdf');
-        });  
-    });
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>I. P&#259;r&#539;ile contractante:<o:p></o:p></span></b></p>
 
-  </script>
-<html>
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>SRL <span style='mso-spacerun:yes'> </span>Success &amp; DivesGroup <span
+style='mso-spacerun:yes'> </span></span></b><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>&icirc;n <span
+style='mso-spacerun:yes'> </span>persoana <span
+style='mso-spacerun:yes'> </span>directorului <span
+style='mso-spacerun:yes'> </span>S&acirc;rbu <span
+style='mso-spacerun:yes'> </span>Sergiu <span
+style='mso-spacerun:yes'> </span>&icirc;n <span
+style='mso-spacerun:yes'> </span>calitate <span
+style='mso-spacerun:yes'> </span>de <span style='mso-spacerun:yes'> </span>locator,
+<span style='mso-spacerun:yes'> </span>pe <span
+style='mso-spacerun:yes'> </span>de <span style='mso-spacerun:yes'> </span>o <span
+style='mso-spacerun:yes'> </span>parte, <span
+style='mso-spacerun:yes'> </span>&#537;i <span
+style='mso-spacerun:yes'> </span>cet. <a style='mso-spacerun:yes'>
+<%= @client.sname + " " + @client.name%></span></a><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>&icirc;n calitate de locatar, pe de alt&#259; parte, au convenit s&#259;
+&icirc;ncheie prezentul contract de Loca&#539;iune, cu respectarea
+urm&#259;toarelor clauze: <o:p></o:p></span></p>
 
-<body>
-<div id="target">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-<HEAD>
-	
-	<STYLE TYPE="text/css">
-	<!--
-		@page { margin-left: 0.5in; margin-right: 0.39in }
-		P { margin-bottom: 0.08in; direction: ltr; widows: 2; orphans: 2 }
-		P.western { font-family: "Calibri", serif; so-language: it-IT }
-		P.cjk { font-family: "Times New Roman" }
-		P.ctl { font-family: "Times New Roman" }
-		A:link { color: #0000ff }
-		A.western:link { so-language: zxx }
-		A.cjk:link { so-language: zxx }
-		A.ctl:link { font-family: "Times New Roman"; so-language: zxx }
-	-->
-	</STYLE>
-</HEAD>
-<BODY LANG="ru-RU" LINK="#0000ff" DIR="LTR">
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<A CLASS="western" HREF="http://www.success.md"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>www.success.md</B></SPAN></FONT></FONT></A><FONT COLOR="#002060"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><U><B>
-</B></U></SPAN></FONT></FONT></FONT><FONT COLOR="#000000"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>
-                                                                     
-                                                                     
-                            SERGIU    078777058  078777059 </B></SPAN></FONT></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-right: -0.01in; margin-bottom: 0in; line-height: 100%">
-                                                         <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>CONTRACT
-DE LOCA</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>ȚIUNE 
-nr. <%= @contract.id%>                                                                             
-        </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>I.
-Părțile contractante:</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>SRL
- Success &amp; DivesGroup  </B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">în
- persoana  directorului  Sârbu  Sergiu  în  calitate  de  locator, 
-pe  de  o  parte,  și  cet. <%= @client.sname + " " + @client.name + "  "%></SPAN></FONT></FONT>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"> în
-calitate de locatar, pe de altă parte, au convenit să încheie
-prezentul contract de                  Locațiune, cu respectarea
-următoarelor clauze: </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>II.
-Obiectul contractului </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Locatorul
-se obligă să transmită Locatarului în folosință temporară, cu
-titlu oneros, următorul automobil: </SPAN></FONT></FONT>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Modelul,
-marca                                                                
-                                                                 
-<%= @car.marca %></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
-de înmatriculare                                                    
-                                                              <%= @car.gnum%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
-caroseriei                                                           
-                                                                
-<%= @car.cuznum%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
-motorului                                                            
-                                                               
-<%= @car.motnum%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Anul
-producerii                                                           
-                                                                     
- <%= @car.aprod%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Culoarea
-                                                                     
-                                                                     
- <%= @car.color%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Capacitatea
-cilindrică, cm</SPAN></FONT></FONT><SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3</SPAN></FONT></FONT></SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">
-                                                                     
-                                          <%= @car.capcil%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Masa
-totală, kg                                                          
-                                                                     
-  <%= @car.tmasa%></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Valoare
-automobil                                                            
-                                                                 <%= @car.tsumm%>
-EURO</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>III.
-Termenul locațiunii</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<% a = @contract.diff.to_date - @contract.order_date.to_date%>
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3.1.Termenul
-locațiunii est1e de <%= a.to_i %> zile, începând cu data de
-<%= @contract.order_date.strftime('%d.%m.%Y') %>, ora <%= @contract.sttime.strftime('%R') %>, până pe data de
-<%= @contract.diff %>, ora <%= @contract.endtime.strftime('%R') %>. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3.2.
-Termenul Locațiunii poate fi prelungit doar cu acordul scris al
-ambelor părți. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>IV.
-Drepturile și obligațiunile părților </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">4.1.
-Locatorul este obligat să pună la dispoziția Locatarului
-autovehiculul în termenii stabiliți și într-o stare
-corespunzătoare folosirii sale conform destinației. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">4.2.
-Locatarul este obligat: </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">a)
-să achite chiria în termenul stabilit;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">b)
-să folosească cu diligența unui bun proprietar autovehiculul; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">c)
-să returneze autovehiculul Locatorului împreună cu actele de
-înmatriculare, cu accesoriile și echipamentul acestuia și în
-starea în care l-a primit, la ora și data specificată în
-contract; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">d)
-folosind autovehiculul să respecte prevederile Regulamentului
-circulației rutiere (Hotărârea Guvernului cu privire la aprobarea
-Regulamentului circulației rutiere, nr. 357 din 13.05.2009); </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">e)
-să respecte instrucțiunile și recomandările producătorului;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">f)
-să alimenteze autovehiculul doar cu carburant corespunzător și
-calitativ;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">g)
-să înapoieze autovehiculul cu același indice al rezervorului de
-carburant cu care l-a primit în chirie. Orice litru lipsă de
-combustibil va fi taxat cu 1.20 Euro/litru;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">h)
-să înapoieze autovehiculul cura în interior și la exterior;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">i)
-în caz că dorește returnarea anticipată a autovehiculului să
-preîntâmpine reprezentantul locatorului cu 5 ore înainte de
-returnare;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">j)
-să anunțe în decurs de 12 ore din momentul primirii
-autovehiculului despre orice defecțiune depistată
-(interior/exterior/tehnic) și nemenționată în actul de predare
-primire (care nu-i este imputabilă) în caz contrar defecțiunea va
-fi considerată imputabilă locatarului; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">k)
-să parcheze doar în locuri neinterzise, iar pe timp de noapte doar
-la parcări păzite. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">4.3.
-Locatarului îi sunt interzise următoarele acțiuni: </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">a)
-remorcarea, indiferent dacă este vorba de un alt vehicul sau
-remorcă; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">b)
-supraîncărcarea autovehiculului (numărul maxim de persoane care
-pot fi transportate concomitent este 5);</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">c)
-folosirea autovehiculului sub influența alcoolului, substanțelor
-narcotice sau psihotrope, barbiturice sau orice alte substanțe care
-pot afecta concentrarea sau abilitarea de a reacționa efectiv; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">d)
-folosirea autovehiculului în caz de defecțiune tehnică; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">e)
-folosirea autovehiculului în curse, teste sau concursuri de
-automobile;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">f)
-folosirea autovehiculului în afara drumurilor publice;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">g)
-lăsarea autovehiculului cu ușile, geamurile și/or portbagajul
-descuiate;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">h)
-să transmită autovehiculul pentru a fi condus unei alte persoane
-fără acordul expres al Locatorului indicat în actul de primire
-predare (chiria se va mări cu 10 Euro/zi pentru fiecare persoană
-indicată suplimentar):</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">i)
-să efectueze modificări în construcția autovehiculului sau în
-privința aspectului exterior al autovehiculului fără acordul scris
-și prealabil al Locatorului;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">j)
-să dea în sublocațiune autovehiculul, să cesioneze prezentul
-contract de Locațiune unui terț, să folosească autovehiculul în
-scopuri taximetrice. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>V.
-Chiria și modul de achitare</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">5.1.
-Chiria zilnică constituie 
-<%=   if a > 0
-		@contract.summ/a
-	  else
-	  	@contract.summ
-	  end		 
-%>, respectiv pentru
-<%= a.to_i %> zile. Locatarul urmează să achite <%= @contract.summ %>.</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">5.2.
-Plata se va efectua integral în avans.</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">5.3.
-Chemarea angajaților Locatorului în afara orelor de program
-(10.00-18.30) sau în alt punct din mun. Chișinău decât punctele
-de lucru ale Locatorului, se achită suplimentar cu 15 Euro (cauza
-chemării poate fi diferită primirea/predarea autovehiculului etc.)</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">5.4.
-Suplimentar, se achită: pentru deplasarea autovehiculului peste
-hotarele țării – 5,00 Euro/zi (pentru deplasarea peste hotare
-este obligatoriu acordul scris al Locatorului), scaunul pentru copil
-Euro/zi, navigatorul gps – 5,00 Euro/zi. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>VI.
-Garanția de închiriere </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">6.1.
-Locatarul este obligat să transmită Locatorului _____________</SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US">______</SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">
-cu titlu de garanție de închiriere până la începerea termenului
-Locațiunii. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">6.2.
-Garanția va fi restituită când autovehiculul va fi înapoiat în
-condițiile în care l-a primit de la Locator. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">6.3.
-Garanția nu se va restitui în caz de accident. Ea va fi folosită
-pentru recuperarea prejudiciului cauzat Locatorului prin faptul că
-acesta din urmă nu se va putea folosi de autovehicul. În cazul în
-care garanția nu va fi de ajuns pentru recuperarea prejudiciului,
-Locatarul va fi obligat să achite suplimentar chiria pentru zilele
-în care autoturismul va sta în reparație. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">6.4.
-Garanția va putea fi reținută și în alte cazuri în care
-Locatarul va avea obligații bănești față de Locator. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>VII.
-Răspunderea părților</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.1.
-Dacă autovehiculul va fi returnat murdar, Locatarul va achita o
-penalitate în mărime de 15 Euro. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.2.
-Dacă autovehiculul nu va fi returnat în termenii prevăzuți de
-prezentul contract, Locatarul va achita o penalitate după cum
-urmează: prima oră de întârziere va fi taxată cu 5 Euro,
-următoarele 2 ore cu 7 euro/ora. Pentru mau mult de 3 ore de
-întârziere Locatarul va fi taxat ca pentru o zi întreagă, iar
-Locatorul va sesiza organele de poliție, declarând autovehiculul
-dispărut. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.3.Locatarul
-va fi obligat la achitarea: unei penalități în mărime de 400 Euro
-/ unitate pentru pierderea deteriorarea actelor; 400 Euro / unitate
-pentru pierderea deteriorarea  cheilor, 10 Euro/unitate pentru
-pierderea deteriorarea foii de parcurs, 200 Euro / unitate pentru
-pierderea deteriorarea plăcuțelor de înmatriculare. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.4.
-În cazul în care autovehiculul nu va fi returnat în starea în
-care a fost primit (indiferent care este  cauza – accident, avarie,
-furt, calamitate naturală etc.; în caz de accident, nu prezintă
-importanță dacă Locatarul se face vinovat sau nu de producerea
-acestuia), iar defecțiunile nu sunt imputabile Locatorului,
-Locatarul va fi obligat să achite în întregime prejudiciul cauzat
-autovehiculului, până la valoarea autovehiculului stabilită de
-părți în prezentul contract (p. 2.1). </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.5.
-Locatarul va răspunde deplin și personal și pentru prejudiciul
-cauzat terților prin folosirea autovehiculului în perioada de
-acțiune a prezentului contract (până la restituirea
-autovehiculului). </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
- <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.6.
-Locatarul va achita suplimentar zilele în care autovehiculul nu va
-putea fi folosit urmare a cazului prevăzut de p. 7.4. dar și ca
-urmare a altor fapte ale Locatarului (de ex. nerestituirea cheii,
-documentelor, etc.) conform chiriei convenite în p. V. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.7.
-Reparația autovehiculului va fi efectuată doar la stațiile tehnice
-calificate aprobate de Locator și doar cu piese originale noi. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">7.8.
-Locatorul nu răspunde de pierderea, deteriorarea bunurilor lăsate
-în autovehicul. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>VIII.
-Accident, avarie, furt</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">8.1.
-În caz de accident Locatarul este obligat: </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">a)
-să nu părăsească autovehiculul fără a lua măsurile de
-precauție adecvate pentru siguranță și securitate; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">b)
-să obțină numele și adresa persoanelor implicate, a martorilor;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">c)
-să anunțe Locatorul prin intermediul telefonului imediat, chiar și
-în cazul unei defecțiuni minore;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">d)
-să anunțe imediat organele de poliție și să solicite întocmirea
-actelor privind cauzele și împrejurările accidentului. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">8.2.
-În caz de accident, furt sau avariere, Locatarul este obligat să
-prezinte următoarele acte: </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">a)
-cererea privind evenimentul produs înregistrată la asigurator; </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">b)
-copia procesului-verbal întocmit pe marginea accidentului produs;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">c)
-copia schemei locului accidentului;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">d)
-hotărârea organului poliției rutiere privind stabilirea persoanei
-vinovate;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">e)
-Actul de revizie a mijloacelor de transport auto deteriorate;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">f)
-Devizul reparației de restabilire;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">g)
-fotografiile autovehiculului deteriorat;</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">h)
-copia certificatului medical. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">8.3.
-În caz de accident, avarie sau furt, toată responsabilitatea o
-poartă Locatarul. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>IX.
-Locul de executare a contractului</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">9.1.
-Locul de executare a prezentului contract este mun. Chișinău,
-sectorul Botanica. </SPAN></FONT></FONT>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>X.
-Clauze finale</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">10.1.
-Modificarea prezentului contract se poate face numai prin acord
-adițional. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">10.2.
-Prezentul contract, împreună cu anexele sale, reprezintă voința
-părților și înlătură orice altă înțelegere verbală dintre
-acestea, anterioară sau ulterioară încheierii lui. </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>XI.
-Rechizitele și semnăturile </B></SPAN></FONT></FONT>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Locator
-                                                                     
-                                       Locatar </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                                              
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>SRL
-Success&amp;DivesGroup                                               
-     N.P. 
-</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>________________________________________________________</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>_______</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>MD
-– 2015 mu. Chișinău str.N.Titulescu 8, ap.22               </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>c/f
- 1014600011035,                                                      
-          ADRESA.</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>
-___________________________________________________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>BC
-Moldindconbank SA, fil.nr.2                                          
-                      </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>c/b
-225190 / c/d MOLDMD2X301                                        
-SERIA.</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>
-_____________________________________________________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                          
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                            <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>COD.IDNO.
-_________________________________________________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                         
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                            <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>D.N.
-________________________________________________________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                            
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%"><A NAME="_GoBack"></A>
-                                                                     
-                            <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>D.E.
-________________________________________________________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                            
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                           
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>EMAIL._____________________________________________________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                               
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                            <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>TEL.</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>
-_______________________________________________________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                                                              
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Success&amp;DivesGroup
-</B></SPAN></FONT></FONT>
-</P>
-<P LANG="en-US" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
- <SPAN DIR="LTR" STYLE="float: left; width: 4.18in; height: 0.97in; border: none; padding: 0.05in 0.1in; background: #ffffff">
-	<P LANG="it-IT" STYLE="margin-bottom: 0.14in"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Semnătura
-	</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">______________________
-	</SPAN></FONT></FONT>
-	</P>
-	<P LANG="ro-RO" STYLE="margin-bottom: 0.14in"><BR><BR>
-	</P>
-	<P LANG="it-IT" STYLE="margin-bottom: 0.14in"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Nume
-	Prenume__________________________________________________</B></SPAN></FONT></FONT></P>
-</SPAN>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Semnătura
-______________________</B></SPAN></FONT></FONT></P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
- 
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>L.Ș.
-</B></SPAN></FONT></FONT>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
- 
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>ACT
-DE PREDARE-PRIMIRE A AUTOVEHICULULUI</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Mun.
-Chișinău 									           Data <%= @contract.diff %></B></SPAN></FONT></FONT></P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Success&amp;DivesGroup
-</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">numită
-în continuare </SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><U><B>Locator,
-</B></U></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">pe
-de o parte și <%= @client.sname + " " + @client.name %>, numit în
-continuare </SPAN></FONT></FONT>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><U><B>Locatar,
-</B></U></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">pe
-de altă parte, în baza contractului de locațiune nr.
-<%= @contract.cnum %>  din <%= @contract.order_date.to_date.strftime("%d.%m.%Y")%> - au încheiat
-prezentul act despre următoarele: </SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=CENTER STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Partea
-I. Transmiterea autovehiculului către Locatar </B></SPAN></FONT></FONT>
-</P>
-<OL>
-	<LI><P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Locatorul
-	a transmis iar Locatarul a primit în folosință temporară
-	următorul autovehicul: </SPAN></FONT></FONT>
-	</P>
-</OL>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-                  <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Identificarea
-autovehiculului</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Modelul,
-marca                                                                
-                                                                 
-<%= @car.marca %></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
-de înmatriculare                                                    
-                                                              <%= @car.gnum%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
-caroseriei                                                           
-                                                                
-<%= @car.cuznum%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Numărul
-motorului                                                            
-                                                               
-<%= @car.motnum%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Anul
-producerii                                                           
-                                                                     
- <%= @car.aprod%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Culoarea
-                                                                     
-                                                                     
- <%= @car.color%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Capacitatea
-cilindrică, cm</SPAN></FONT></FONT><SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">3</SPAN></FONT></FONT></SUP><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">
-                                                                     
-                                          <%= @car.capcil%></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Masa
-totală, kg                                                          
-                                                                     
-  <%= @car.tmasa%></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Valoare
-automobil                                                            
-                                                                 <%= @car.tsumm%>
-EURO</SPAN></FONT></FONT></P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<OL START=2>
-	<LI><P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">În
-	prezentul punct sunt identificate defectele exterioare ale
-	autovehiculului.</SPAN></FONT></FONT></P>
-</OL>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-right: -0.13in; margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<IMG SRC="i_5bd1e29ac13c34bb_html_4dd26027.gif" NAME="Picture 3" ALIGN=BOTTOM WIDTH=671 HEIGHT=314 BORDER=0></P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<OL START=3>
-	<LI><P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Autovehiculul
-	se află în stare bună ce permite exploatarea acestuia conform
-	destinației. </SPAN></FONT></FONT>
-	</P>
-	<LI><P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Locatarul
-	declară că funcționarea corespunzătoare a autovehiculului i-a
-	fost demonstrată, de asemenea că s-a convins de integritatea
-	acestuia și că toate defectele (interioare și exterioare) au fost
-	indicate în prezentul act. </SPAN></FONT></FONT>
-	</P>
-	<LI><P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Autovehiculul
-	va fi condus de Locatar</SPAN></FONT></FONT></P>
-</OL>
-<P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-left: 0.5in; margin-bottom: 0in; line-height: 100%">
- 
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-                                      <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Locator
-</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>
-                                                                     
-                                     Locatar</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
- 
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Semnatura
-_________________</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="en-US"><B>
-</B></SPAN></FONT></FONT><SPAN DIR="LTR" STYLE="float: left; width: 3.56in; height: 0.93in; border: none; padding: 0.05in 0.1in; background: #ffffff">
-	<P LANG="it-IT" STYLE="margin-bottom: 0.14in"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Semnătura
-	</B></SPAN></FONT></FONT><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">_____________________</SPAN></FONT></FONT></P>
-	<P LANG="it-IT" STYLE="margin-bottom: 0.14in"><FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Nume
-	                                                                    
-	                                                                    
-	            Prenume_____________________________________</B></SPAN></FONT></FONT></P>
-</SPAN>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-         
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-                                                  
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-              <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>L
-. S .</B></SPAN></FONT></FONT></P>
-<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="en-US" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-    
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                    
-</P>
-<P LANG="ro-RO" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0in; line-height: 100%">
-                                                                     
-              <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Partea
-II. Restituirea autovehiculului </B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Mun.
-Chișinău 									Data  <%= @contract.diff %></B></SPAN></FONT></FONT></P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<OL START=6>
-	<LI><P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">Locatarul
-	a restituit iar Locatorul a primit autovehiculul identificat în
-	Partea I a prezentului Act de predare-primire. </SPAN></FONT></FONT>
-	</P>
-	<LI><P LANG="it-IT" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-	<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">În
-	afara defecțiunilor indicate în punctul 2 din prezentul Act de
-	predare-primire, au mai fost identificate următoarele defecțiuni: </SPAN></FONT></FONT>
-	</P>
-</OL>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">1
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>II. Obiectul contractului <o:p></o:p></span></b></p>
 
-________________________________________________________________________</SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO">2.
-________________________________________________________________________</SPAN></FONT></FONT></P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
- <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Locator
-</B></SPAN></FONT></FONT>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Semnatura
-_____________________                                                
-                                  L.Ș. </B></SPAN></FONT></FONT>
-</P>
-<P LANG="ro-RO" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
-<BR>
-</P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
- <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Locatar</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" ALIGN=JUSTIFY STYLE="margin-bottom: 0in; line-height: 100%">
- <FONT FACE="Times New Roman, serif"><FONT SIZE=2 STYLE="font-size: 9pt"><SPAN LANG="ro-RO"><B>Semnatura_____________________</B></SPAN></FONT></FONT></P>
-<P LANG="it-IT" CLASS="western" STYLE="margin-bottom: 0.14in"><BR><BR>
-</P>
-</BODY>
-</HTML>
- 
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Locatorul se oblig&#259; s&#259;
+transmit&#259; Locatarului &icirc;n folosin&#539;&#259; temporar&#259;, cu
+titlu oneros, urm&#259;torul automobil: <o:p></o:p></span></p>
 
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                                                                                                                    
+</span> <a>    </a><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Modelul, marca<span
+style='mso-spacerun:yes'>
+<span style='mso-spacerun:yes'>               </span>                                                                                                                    
+</span><span style='color:black'><%= @car.marca %></span><o:p></o:p></span></p>
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Num&#259;rul de
+&icirc;nmatriculare<span
+style='mso-spacerun:yes'>                                                                                                                    
+</span><span style='color:black'><%= @car.gnum %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Num&#259;rul caroseriei<span
+style='mso-spacerun:yes'>                                                                                                                
+</span><span style='mso-spacerun:yes'>              </span><span
+style='color:black'><%= @car.cuznum %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Num&#259;rul motorului <span
+style='mso-spacerun:yes'>                                                                                                                              </span><span
+style='color:black'><%= @car.motnum %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Anul producerii<span
+style='mso-spacerun:yes'>                                                 
+</span><span
+style='mso-spacerun:yes'>                                                                                  </span><span
+style='color:black'><%= @car.proddate %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Culoarea<span
+style='mso-spacerun:yes'>                                                                                                                                              
+</span><span style='color:black'><%= @car.color %></span><o:p></o:p></span></p>
+
+
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Capacitatea   cilindric&#259;  , cm<sup>3</sup>
+<span style='mso-spacerun:yes'>                      </span><span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                      </span><span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                      </span><span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'> </span>
+<span style='color:black'><a>  <%= @car.vmot %></a></span><span style='mso-spacerun:yes'>  </span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Masa total&#259;, kg<span
+style='mso-spacerun:yes'>                                                                                                       
+</span><span style='mso-spacerun:yes'>                             </span><span
+style='color:black'><%= @car.tmasa %></span><span style='mso-spacerun:yes'>  </span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Valoare automobil <span
+style='mso-spacerun:yes'>                                                                                                                              </span><span
+style='color:black'><%= @car.tsumm %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>III. Termenul loca&#539;iunii<o:p></o:p></span></b></p>
+<% if ((@contract.diff.to_date - @contract.order_date.to_date).to_i) == 0
+   tmp = 1
+   else
+   	tmp = ((@contract.diff.to_date - @contract.order_date.to_date).to_i)
+   end	 %>
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>3.1.Termenul loca&#539;iunii este
+de <span style='color:black'><%= tmp %></span> zile, &icirc;ncep&acirc;nd
+cu data de <span style='color:black'><%= @contract.order_date.strftime("%d.%m.%Y") %></span>, ora <span
+style='color:black'><%= @contract.sttime.strftime('%R') %></span>, p&acirc;n&#259; pe data de <span
+style='color:black'><%= @contract.diff %></span>, ora <span style='color:black'>
+	<%= @contract.endtime.strftime('%R') %></span>. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>3.2. Termenul Loca&#539;iunii
+poate fi prelungit doar cu acordul scris al ambelor p&#259;r&#539;i. <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>IV. Drepturile &#537;i obliga&#539;iunile p&#259;r&#539;ilor <o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>4.1. Locatorul este obligat
+s&#259; pun&#259; la dispozi&#539;ia Locatarului autovehiculul &icirc;n
+termenii stabili&#539;i &#537;i &icirc;ntr-o stare corespunz&#259;toare
+folosirii sale conform destina&#539;iei. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>4.2. Locatarul este obligat: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>a) s&#259; achite chiria &icirc;n
+termenul stabilit;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>b) s&#259; foloseasc&#259; cu
+diligen&#539;a unui bun proprietar autovehiculul; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>c) s&#259; returneze
+autovehiculul Locatorului &icirc;mpreun&#259; cu actele de &icirc;nmatriculare,
+cu accesoriile &#537;i echipamentul acestuia &#537;i &icirc;n starea &icirc;n
+care l-a primit, la ora &#537;i data specificat&#259; &icirc;n contract; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>d) folosind autovehiculul s&#259;
+respecte prevederile Regulamentului circula&#539;iei rutiere
+(Hot&#259;r&acirc;rea Guvernului cu privire la aprobarea Regulamentului
+circula&#539;iei rutiere, nr. 357 din 13.05.2009); <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>e) s&#259; respecte
+instruc&#539;iunile &#537;i recomand&#259;rile produc&#259;torului;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>f) s&#259; alimenteze
+autovehiculul doar cu carburant corespunz&#259;tor &#537;i calitativ;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>g) s&#259; &icirc;napoieze
+autovehiculul cu acela&#537;i indice al rezervorului de carburant cu care l-a
+primit &icirc;n chirie. Orice litru lips&#259; de combustibil va fi taxat cu
+1.20 Euro/litru;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>h) s&#259; &icirc;napoieze
+autovehiculul cura &icirc;n interior &#537;i la exterior;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>i) &icirc;n caz c&#259;
+dore&#537;te returnarea anticipat&#259; a autovehiculului s&#259;
+pre&icirc;nt&acirc;mpine reprezentantul locatorului cu 5 ore &icirc;nainte de
+returnare;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>j) s&#259; anun&#539;e &icirc;n
+decurs de 12 ore din momentul primirii autovehiculului despre orice
+defec&#539;iune depistat&#259; (interior/exterior/tehnic) &#537;i
+nemen&#539;ionat&#259; &icirc;n actul de predare primire (care nu-i este
+imputabil&#259;) &icirc;n caz contrar defec&#539;iunea va fi considerat&#259;
+imputabil&#259; locatarului; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>k) s&#259; parcheze doar &icirc;n
+locuri neinterzise, iar pe timp de noapte doar la parc&#259;ri p&#259;zite. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>4.3. Locatarului &icirc;i sunt
+interzise urm&#259;toarele ac&#539;iuni: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>a) remorcarea, indiferent
+dac&#259; este vorba de un alt vehicul sau remorc&#259;; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>b) supra&icirc;nc&#259;rcarea
+autovehiculului (num&#259;rul maxim de persoane care pot fi transportate
+concomitent este 5);<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>c) folosirea autovehiculului sub
+influen&#539;a alcoolului, substan&#539;elor narcotice sau psihotrope,
+barbiturice sau orice alte substan&#539;e care pot afecta concentrarea sau
+abilitarea de a reac&#539;iona efectiv; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>d) folosirea autovehiculului
+&icirc;n caz de defec&#539;iune tehnic&#259;; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>e) folosirea autovehiculului
+&icirc;n curse, teste sau concursuri de automobile;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>f) folosirea autovehiculului
+&icirc;n afara drumurilor publice;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>g) l&#259;sarea autovehiculului
+cu u&#537;ile, geamurile &#537;i/or portbagajul descuiate;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>h) s&#259; transmit&#259;
+autovehiculul pentru a fi condus unei alte persoane f&#259;r&#259; acordul
+expres al Locatorului indicat &icirc;n actul de primire predare (chiria se va
+m&#259;ri cu 10 Euro/zi pentru fiecare persoan&#259; indicat&#259;
+suplimentar):<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>i) s&#259; efectueze
+modific&#259;ri &icirc;n construc&#539;ia autovehiculului sau &icirc;n
+privin&#539;a aspectului exterior al autovehiculului f&#259;r&#259; acordul
+scris &#537;i prealabil al Locatorului;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>j) s&#259; dea &icirc;n
+subloca&#539;iune autovehiculul, s&#259; cesioneze prezentul contract de
+Loca&#539;iune unui ter&#539;, s&#259; foloseasc&#259; autovehiculul &icirc;n
+scopuri taximetrice. <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>V. Chiria &#537;i modul de achitare<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>5.1. Chiria zilnic&#259;
+
+constituie <span style='color:black'><%= @contract.summ.to_i / tmp %></span>,
+respectiv pentru <span style='color:black'><%= tmp %> </span>zile.
+Locatarul urmeaz&#259; s&#259; achite <span style='color:black'><%= @contract.summ %></span>.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>5.2. Plata se va efectua integral
+&icirc;n avans.<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>5.3. Chemarea angaja&#539;ilor
+Locatorului &icirc;n afara orelor de program (10.00-18.30) sau &icirc;n alt
+punct din mun. Chi&#537;in&#259;u dec&acirc;t punctele de lucru ale
+Locatorului, se achit&#259; suplimentar cu 15 Euro (cauza chem&#259;rii poate
+fi diferit&#259; primirea/predarea autovehiculului etc.)<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>5.4. Suplimentar, se achit&#259;:
+pentru deplasarea autovehiculului peste hotarele &#539;&#259;rii – 5,00 Euro/zi
+(pentru deplasarea peste hotare este obligatoriu acordul scris al Locatorului),
+scaunul pentru copil Euro/zi, navigatorul gps – 5,00 Euro/zi. <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>VI. Garan&#539;ia de &icirc;nchiriere <o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>6.1. Locatarul este obligat
+s&#259; transmit&#259; Locatorului <span style='color:black'>
+<%= @contract.garant_summ  %></span>
+ cu titlu de garan&#539;ie de &icirc;nchiriere
+p&acirc;n&#259; la &icirc;nceperea termenului Loca&#539;iunii. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:1
+"Times New Roman",serif;mso-ansi-language:RO'>6.2. Garan&#539;ia va fi
+restituit&#259; c&acirc;nd autovehiculul va fi &icirc;napoiat &icirc;n condi&#539;iile
+&icirc;n care l-a primit de la Locator. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>6.3. Garan&#539;ia nu se va
+restitui &icirc;n caz de accident. Ea va fi folosit&#259; pentru recuperarea
+prejudiciului cauzat Locatorului prin faptul c&#259; acesta din urm&#259; nu se
+va putea folosi de autovehicul. &Icirc;n cazul &icirc;n care garan&#539;ia nu
+va fi de ajuns pentru recuperarea prejudiciului, Locatarul va fi obligat
+s&#259; achite suplimentar chiria pentru zilele &icirc;n care autoturismul va
+sta &icirc;n repara&#539;ie. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>6.4. Garan&#539;ia va putea fi
+re&#539;inut&#259; &#537;i &icirc;n alte cazuri &icirc;n care Locatarul va avea
+obliga&#539;ii b&#259;ne&#537;ti fa&#539;&#259; de Locator. <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>VII. R&#259;spunderea p&#259;r&#539;ilor<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>7.1. Dac&#259; autovehiculul va
+fi returnat murdar, Locatarul va achita o penalitate &icirc;n m&#259;rime de 15
+Euro. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>7.2. Dac&#259; autovehiculul nu
+va fi returnat &icirc;n termenii prev&#259;zu&#539;i de prezentul contract,
+Locatarul va achita o penalitate dup&#259; cum urmeaz&#259;: prima or&#259; de
+&icirc;nt&acirc;rziere va fi taxat&#259; cu 5 Euro, urm&#259;toarele 2 ore cu 7
+euro/ora. Pentru mau mult de 3 ore de &icirc;nt&acirc;rziere Locatarul va fi
+taxat ca pentru o zi &icirc;ntreag&#259;, iar Locatorul va sesiza organele de
+poli&#539;ie, declar&acirc;nd autovehiculul disp&#259;rut. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>7.3.Locatarul va fi obligat la
+achitarea: unei penalit&#259;&#539;i &icirc;n m&#259;rime de 400 Euro / unitate
+pentru pierderea deteriorarea actelor; 400 Euro / unitate pentru pierderea
+deteriorarea<span style='mso-spacerun:yes'>  </span>cheilor, 10 Euro/unitate
+pentru pierderea deteriorarea foii de parcurs, 200 Euro / unitate pentru
+pierderea deteriorarea pl&#259;cu&#539;elor de &icirc;nmatriculare. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>7.4. &Icirc;n cazul &icirc;n care
+autovehiculul nu va fi returnat &icirc;n starea &icirc;n care a fost primit
+(indiferent care este<span style='mso-spacerun:yes'>  </span>cauza – accident,
+avarie, furt, calamitate natural&#259; etc.; &icirc;n caz de accident, nu
+prezint&#259; importan&#539;&#259; dac&#259; Locatarul se face vinovat sau nu
+de producerea acestuia), iar defec&#539;iunile nu sunt imputabile Locatorului,
+Locatarul va fi obligat s&#259; achite &icirc;n &icirc;ntregime prejudiciul
+cauzat autovehiculului, p&acirc;n&#259; la valoarea autovehiculului
+stabilit&#259; de p&#259;r&#539;i &icirc;n prezentul contract (p. 2.1). <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>7.5. Locatarul va r&#259;spunde
+deplin &#537;i personal &#537;i pentru prejudiciul cauzat ter&#539;ilor prin
+folosirea autovehiculului &icirc;n perioada de ac&#539;iune a prezentului
+contract (p&acirc;n&#259; la restituirea autovehiculului). <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'> </span>7.6. Locatarul va achita suplimentar zilele
+&icirc;n care autovehiculul nu va putea fi folosit urmare a cazului
+prev&#259;zut de p. 7.4. dar &#537;i ca urmare a altor fapte ale Locatarului
+(de ex. nerestituirea cheii, documentelor, etc.) conform chiriei convenite
+&icirc;n p. V. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>7.7. Repara&#539;ia
+autovehiculului va fi efectuat&#259; doar la sta&#539;iile tehnice calificate
+aprobate de Locator &#537;i doar cu piese originale noi. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>7.8. Locatorul nu r&#259;spunde
+de pierderea, deteriorarea bunurilor l&#259;sate &icirc;n autovehicul. <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>VIII. Accident, avarie, furt<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>8.1. &Icirc;n caz de accident
+Locatarul este obligat: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>a) s&#259; nu
+p&#259;r&#259;seasc&#259; autovehiculul f&#259;r&#259; a lua m&#259;surile de
+precau&#539;ie adecvate pentru siguran&#539;&#259; &#537;i securitate; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>b) s&#259; ob&#539;in&#259;
+numele &#537;i adresa persoanelor implicate, a martorilor;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>c) s&#259; anun&#539;e Locatorul
+prin intermediul telefonului imediat, chiar &#537;i &icirc;n cazul unei
+defec&#539;iuni minore;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>d) s&#259; anun&#539;e imediat
+organele de poli&#539;ie &#537;i s&#259; solicite &icirc;ntocmirea actelor
+privind cauzele &#537;i &icirc;mprejur&#259;rile accidentului. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>8.2. &Icirc;n caz de accident,
+furt sau avariere, Locatarul este obligat s&#259; prezinte urm&#259;toarele
+acte: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>a) cererea privind evenimentul
+produs &icirc;nregistrat&#259; la asigurator; <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>b) copia procesului-verbal
+&icirc;ntocmit pe marginea accidentului produs;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>c) copia schemei locului
+accidentului;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>d) hot&#259;r&acirc;rea organului
+poli&#539;iei rutiere privind stabilirea persoanei vinovate;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>e) Actul de revizie a mijloacelor
+de transport auto deteriorate;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>f) Devizul repara&#539;iei de
+restabilire;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>g) fotografiile autovehiculului
+deteriorat;<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>h) copia certificatului medical. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>8.3. &Icirc;n caz de accident,
+avarie sau furt, toat&#259; responsabilitatea o poart&#259; Locatarul. <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>IX. Locul de executare a contractului<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>9.1. Locul de executare a
+prezentului contract este mun. Chi&#537;in&#259;u, sectorul Botanica. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>X. Clauze finale<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>10.1. Modificarea prezentului
+contract se poate face numai prin acord adi&#539;ional. <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>10.2. Prezentul contract,
+&icirc;mpreun&#259; cu anexele sale, reprezint&#259; voin&#539;a
+p&#259;r&#539;ilor &#537;i &icirc;nl&#259;tur&#259; orice alt&#259;
+&icirc;n&#539;elegere verbal&#259; dintre acestea, anterioar&#259; sau
+ulterioar&#259; &icirc;ncheierii lui. <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>XI. Rechizitele &#537;i semn&#259;turile <o:p></o:p></span></b></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>Locator<span
+style='mso-spacerun:yes'>                                                                                                             
+</span>Locatar <o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                                                                                                                   
+</span><o:p></o:p></span></b></p>
+
+<a class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>SRL Success&amp;DivesGroup<span
+style='mso-spacerun:yes'>                                                    
+</span>N.P.<span style='mso-spacerun:yes'>  </span></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'><%= @client.sname + " " + @client.name %></span></b></a>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>MD – 2015 mu.
+Chi&#537;in&#259;u str.N.Titulescu 8, ap.22<span
+style='mso-spacerun:yes'>               </span>ADRESA.</span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:RO'><%= @client.address%>
+</span></b><b style='mso-bidi-font-weight:normal'><span lang=RO
+style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p></o:p></span></b></p>
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>c/f<span
+style='mso-spacerun:yes'>  </span>1014600011035,<span
+style='mso-spacerun:yes'>                                  </span><span
+style='mso-spacerun:yes'>                               </span>SERIA.</span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:RO'><%= @client.pseria %>
+</span></b><b style='mso-bidi-font-weight:normal'><span lang=RO
+style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p></o:p></span></b>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'> <b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>BC<span
+style='mso-spacerun:yes'>  </span>Moldindconbank SA, fil.nr.2<span
+style='mso-spacerun:yes'>               </span><span
+style='mso-spacerun:yes'>               </span><span
+style='mso-spacerun:yes'>               </span><span
+style='mso-spacerun:yes'>               </span>COD.IDNO.</span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:RO'><%= @client.idno %>
+</span></b><b style='mso-bidi-font-weight:normal'><span lang=RO
+style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>c/b 225190 /
+c/d MOLDMD2X301<span style='mso-spacerun:yes'>          </span><span
+style='mso-spacerun:yes'>                               </span>D.N.</span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'><%= @client.bdate %></span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:red;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RU'><o:p></o:p></span></b>
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:normal'>
+<b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>       
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span><span style='mso-spacerun:yes'>  </span>
+<a>   D.E. </a></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'><%= @client.de %></span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:red;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RU'><o:p></o:p></span></b></p>
+
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:normal'>
+<b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>       
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span><span style='mso-spacerun:yes'>  </span>
+<a>   EMAIL  </a></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'><%= @client.pemail %></span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:red;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RU'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:normal'>
+<b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>       
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span>       <span style='mso-spacerun:yes'>                  </span>
+<span style='mso-spacerun:yes'>                  </span><span style='mso-spacerun:yes'>  </span>
+<a>   TEL. </a></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:black;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'><%= @client.tel %></span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;color:red;mso-ansi-language:RO'></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RU'><o:p></o:p></span></b></p>
+
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                              </span><span
+style='mso-spacerun:yes'>                                                                                                      </span><o:p></o:p></span></b></p>
+
+<a class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>SRL Success&amp;DivesGroup<span
+style='mso-spacerun:yes'>                                                    
+</span></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'>Nume Prenume___________________________________</span></b></a>
+<br><br><br>
+<a class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>Semn&#259;tura ________________________
+<span style='mso-spacerun:yes'>                  </span><span style='mso-spacerun:yes'>                </span>
+<span style='mso-spacerun:yes'>                  </span></b><b style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'>Semn&#259;tura ______________________</span></b></a>
+
+
+</span><![endif]>
+<br><br><br><br>
+
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>L.&#536;. <o:p></o:p></span></b></p>
+
+<br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>ACT DE PREDARE-PRIMIRE A AUTOVEHICULULUI<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>Mun. Chi&#537;in&#259;u <span style='mso-tab-count:9'>                                                                                                                                  </span><span
+style='mso-spacerun:yes'>           </span>Data </span></b><span lang=RO
+style='font-size:9.0pt;font-family:"Times New Roman",serif;color:black;
+mso-ansi-language:RO'><%= @contract.diff %></span><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>Success&amp;DivesGroup </span></b><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'>numit&#259; &icirc;n
+continuare <b style='mso-bidi-font-weight:normal'><u>Locator, </u></b>pe de o
+parte &#537;i <span style='color:black'></span></span><span style='font-size:
+9.0pt;font-family:"Times New Roman",serif;color:black;mso-ansi-language:RU'><%= @client.sname + " " + @client.name %>
+</span><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;color:red;mso-ansi-language:RO'></span><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>, numit &icirc;n continuare</span><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'> </span><b
+style='mso-bidi-font-weight:normal'><u><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'>Locatar,</span></u></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'> </span></b><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>pe de alt&#259; parte, &icirc;n baza contractului de loca&#539;iune nr. <span
+style='color:black'><%= @contract.cnum %></span> din <span style='color:black'><%= @contract.order_date.strftime("%d.%m.%Y") %></span>-
+au &icirc;ncheiat prezentul act despre urm&#259;toarele: <o:p></o:p></span></p>
+
+<p class=MsoNormal align=center style='margin-bottom:0cm;margin-bottom:.0001pt;
+text-align:center;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>Partea I. Transmiterea autovehiculului c&#259;tre Locatar <o:p></o:p></span></b></p>
+
+<p class=1 style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:auto;
+text-align:justify;text-indent:-18.0pt;line-height:normal;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-list:Ignore'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Locatorul a transmis iar
+Locatarul a primit &icirc;n folosin&#539;&#259; temporar&#259; urm&#259;torul
+autovehicul: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span
+style='mso-spacerun:yes'>                                                                                       
+</span>Identificarea autovehiculului<o:p></o:p></span></b></p>
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                                                                                                                    
+</span> <a>    </a><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Modelul, marca<span
+style='mso-spacerun:yes'>
+<span style='mso-spacerun:yes'>               </span>                                                                                                                    
+</span><span style='color:black'><%= @car.marca %></span><o:p></o:p></span></p>
+
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Num&#259;rul de
+&icirc;nmatriculare<span
+style='mso-spacerun:yes'>                                                                                                                    
+</span><span style='color:black'><%= @car.gnum %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Num&#259;rul caroseriei<span
+style='mso-spacerun:yes'>                                                                                                                
+</span><span style='mso-spacerun:yes'>              </span><span
+style='color:black'><%= @car.cuznum %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Num&#259;rul motorului <span
+style='mso-spacerun:yes'>                                                                                                                              </span><span
+style='color:black'><%= @car.motnum %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Anul producerii<span
+style='mso-spacerun:yes'>                                                 
+</span><span
+style='mso-spacerun:yes'>                                                                                  </span><span
+style='color:black'><%= @car.proddate %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Culoarea<span
+style='mso-spacerun:yes'>                                                                                                                                              
+</span><span style='color:black'><%= @car.color %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Capacitatea cilindric&#259;, cm<sup>3</sup><span
+style='mso-spacerun:yes'>                                                                                                                 
+</span><span style='color:black'><%= @car.vmot %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Masa total&#259;, kg<span
+style='mso-spacerun:yes'>                                                                                                       
+</span><span style='mso-spacerun:yes'>                             </span><span
+style='color:black'><%= @car.tmasa %></span><span style='mso-spacerun:yes'>  </span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Valoare automobil <span
+style='mso-spacerun:yes'>                                                                                                                              </span><span
+style='color:black'><%= @car.tsumm %></span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=1 style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:auto;
+text-align:justify;text-indent:-18.0pt;line-height:normal;mso-list:l0 level1 lfo1'><![if !supportLists]><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-list:Ignore'>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span></b><![endif]><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'>&Icirc;n prezentul
+punct sunt identificate defectele exterioare ale autovehiculului.<b
+style='mso-bidi-font-weight:normal'><o:p></o:p></b></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:-9.25pt;margin-bottom:
+0cm;margin-left:0cm;margin-bottom:.0001pt;text-align:justify;line-height:normal'><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<%= image_tag "http://success.md/images/image002.gif", size:"400x200"%>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'><o:p>&nbsp;</o:p></span></p>
+
+<p class=1CxSpFirst style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:
+auto;text-align:justify;text-indent:-18.0pt;line-height:normal;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-list:Ignore'>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Autovehiculul se afl&#259;
+&icirc;n stare bun&#259; ce permite exploatarea acestuia conform
+destina&#539;iei. <o:p></o:p></span></p>
+
+<p class=1CxSpMiddle style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:
+auto;text-align:justify;text-indent:-18.0pt;line-height:normal;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-list:Ignore'>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Locatarul declar&#259; c&#259;
+func&#539;ionarea corespunz&#259;toare a autovehiculului i-a fost
+demonstrat&#259;, de asemenea c&#259; s-a convins de integritatea acestuia
+&#537;i c&#259; toate defectele (interioare &#537;i exterioare) au fost
+indicate &icirc;n prezentul act. <o:p></o:p></span></p>
+
+<p class=1CxSpMiddle style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:
+auto;text-align:justify;text-indent:-18.0pt;line-height:normal;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-list:Ignore'>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Autovehiculul va fi condus de
+Locatar<o:p></o:p></span></p>
+
+<p class=1CxSpLast style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:
+auto;text-align:justify;line-height:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'> </span><o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=EN-US style='font-size:9.0pt;font-family:"Times New Roman",serif;
+mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>                                      </span></span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'>Locator </span></b><b
+style='mso-bidi-font-weight:normal'><span lang=EN-US style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:EN-US'><span
+style='mso-spacerun:yes'>                                                                                        </span><span
+style='mso-spacerun:yes'>                    </span>Locatar<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=EN-US style='font-size:9.0pt;font-family:"Times New Roman",serif;
+mso-ansi-language:RO'><span style='mso-spacerun:yes'> </span></span></b><b
+style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:9.0pt;
+font-family:"Times New Roman",serif;mso-ansi-language:RO'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'>
+<![if !vml]><span style='mso-ignore:vglayout;
+position:absolute;z-index:251658240;left:0px;margin-left:360px;margin-top:2px;
+width:345px;height:93px'>
+
+<table cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=345 height=93 bgcolor=white style='vertical-align:top;background:
+  white'><![endif]><![if !mso]><span style='position:absolute;mso-ignore:vglayout;
+  left:0pt;z-index:251658240'>
+  <table cellpadding=0 cellspacing=0 width="100%">
+   <tr>
+    <td><![endif]>
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                              </span><span
+style='mso-spacerun:yes'>                                                                                                      </span><o:p></o:p></span></b></p>
+
+<a class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>SRL Success&amp;DivesGroup<span
+style='mso-spacerun:yes'>                                                    
+</span></span></b><b
+style='mso-bidi-font-weight:normal'><span style='font-size:9.0pt;font-family:
+"Times New Roman",serif;color:black;mso-ansi-language:RU'>Nume Prenume___________________________________</span></b></a>
+<br><br><br>
+<a class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'>Semn&#259;tura ________________________
+<span style='mso-spacerun:yes'>                  </span><span style='mso-spacerun:yes'>                </span>
+<span style='mso-spacerun:yes'>                  </span></b><b style='mso-bidi-font-weight:normal'>
+
+
+</span><![endif]>
+    <![if !mso]></td>
+   </tr>
+  </table>
+  </span><![endif]><![if !mso & !vml]>&nbsp;<![endif]><![if !vml]></td>
+ </tr>
+</table>
+
+</span><![endif]><b style='mso-bidi-font-weight:normal'><span lang=RO
+style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>Semnatura _________________</span></b><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+EN-US'> </span></b><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+EN-US'><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span
+style='mso-spacerun:yes'>                                                                              
+</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span
+style='mso-spacerun:yes'>                                                 
+</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span
+style='mso-spacerun:yes'>                                                                                   
+</span>L . S .<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=EN-US
+style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+EN-US'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                                                                      
+</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                                                   
+</span><o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:
+normal'><b style='mso-bidi-font-weight:normal'><span lang=RO style='font-size:
+9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:RO'><span
+style='mso-spacerun:yes'>                                                                                   
+</span>Partea II. Restituirea autovehiculului <o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>Mun. Chi&#537;in&#259;u <span style='mso-tab-count:9'>                                                                                                                                  </span>Data
+___________________<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=1CxSpFirst style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:
+auto;text-align:justify;text-indent:-18.0pt;line-height:normal;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-list:Ignore'>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>Locatarul a restituit iar
+Locatorul a primit autovehiculul identificat &icirc;n Partea I a prezentului
+Act de predare-primire. <o:p></o:p></span></p>
+
+<p class=1CxSpLast style='margin-bottom:0cm;margin-bottom:.0001pt;mso-add-space:
+auto;text-align:justify;text-indent:-18.0pt;line-height:normal;mso-list:l0 level1 lfo1'><![if !supportLists]><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-list:Ignore'>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span></span><![endif]><span lang=RO style='font-size:9.0pt;font-family:
+"Times New Roman",serif;mso-ansi-language:RO'>&Icirc;n afara defec&#539;iunilor
+indicate &icirc;n punctul 2 din prezentul Act de predare-primire, au mai fost
+identificate urm&#259;toarele defec&#539;iuni: <o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;margin-bottom:.0001pt;text-align:justify;line-height:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>1<span style='mso-spacerun:yes'> 
+</span>________________________________________________________________________<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;margin-bottom:.0001pt;text-align:justify;line-height:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>2. ________________________________________________________________________<o:p></o:p></span></p>
+
+<p class=MsoNormal style='margin-top:0cm;margin-right:0cm;margin-bottom:0cm;
+margin-left:18.0pt;margin-bottom:.0001pt;text-align:justify;line-height:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-spacerun:yes'> </span>Locator <o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'>Semnatura _____________________<span
+style='mso-spacerun:yes'>                                                                                 
+</span><span style='mso-spacerun:yes'> </span>L.&#536;. <o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><o:p>&nbsp;</o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-spacerun:yes'> </span>Locatar<o:p></o:p></span></b></p>
+
+<p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
+justify;line-height:normal'><b style='mso-bidi-font-weight:normal'><span
+lang=RO style='font-size:9.0pt;font-family:"Times New Roman",serif;mso-ansi-language:
+RO'><span style='mso-spacerun:yes'> </span>Semnatura_____________________<o:p></o:p></span></b></p>
+
+</div>
+
+</body>
+
+</html>

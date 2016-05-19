@@ -6,14 +6,27 @@ Rails.application.routes.draw do
   devise_for :users
   get 'welcome/index'
   get "car/smonth/:num" => 'cars#smonth'
+  get "car/autotech" => 'cars#autotech'
   get "welcome/smonth/:num" => 'welcome#smonth'
   get "reztocontract/:num" => 'cars#rez_to_contract'
   get "contract_to_arh/:num" => 'cars#contract_to_arh'
+  get "tehservices/new" => 'tehservices#new'
+  
+  
+  
   post "car/rez" => 'cars#rez'
+  post "car/autotech" => 'cars#autotech'
   post "reznew" => 'cars#reznew'
   post "rez_to_contract" => 'cars#rez_to_contract'
+  
   post "contract_to_arh" => 'cars#contract_to_arh'
   post "car/contractnew" => 'cars#contractnew'
+  post "client/new" => 'clients#new'
+  
+  post "tehservices/newto" => 'tehservices#newto'
+  
+  
+  #post "clients/:client" => 'clients#update'
   
 
   
@@ -34,6 +47,8 @@ Rails.application.routes.draw do
     resources :contracts  do
     end
     resources :wlongs  do
+    end
+    resources :tehservices  do
     end
   resources :user_notifier  do
     end  
