@@ -47,9 +47,9 @@ $(document).ready( function () {
 					<% @clients.each do |cl| %>
 					<tr>
 						<td><%= link_to cl.id,edit_client_path(cl) %></td>
-						<td><%= cl.sname %></td>
-						<td><%= cl.name %></td>
-						<th><%= cl.bdate %></th>
+						<th><%= cl.sname %></th>
+						<th><%= cl.name %></th>
+						<td><%= cl.bdate %></td>
 						<td><%= cl.pseria %></td>
 						<td><%= cl.tel %></td>
 						<td><%= cl.address %></td>

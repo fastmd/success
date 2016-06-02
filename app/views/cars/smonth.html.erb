@@ -147,7 +147,7 @@
 						<% if con.order_date.to_date == Date.today.to_date %>
 						<% if con.flag == 1%>
 						<%= form_tag '/rez_to_contract' do %>
-							<tr><td><%= con.cnum %></td>
+							<tr><td><%= con.id %></td>
 							<td><%= mobil.marca + " " + mobil.gnum%></td>
 							<td><%= Date.today.to_date.strftime("%d.%m.%Y") %></td>
 							<td><%= text_field_tag 'sttime', Time.now.strftime('%R') %></td>
@@ -225,7 +225,7 @@
 						<% if con.flag == 2%>
 						<%= form_tag '/contract_to_arh' do %>
 						<%= hidden_field_tag 'contrfid', con.id  %>
-			<tr><td><%= link_to con.cnum,  contract_path(con,:format => "doc")%></td>
+			<tr><td><%= link_to con.id,  contract_path(con,:format => "doc")%></td>
 							<td><%= mobil.marca + " " + mobil.gnum%></td>
 							<td><%= con.order_date.to_date.strftime("%d.%m.%Y") %></td>
 							<td><%= con.diff %></td>

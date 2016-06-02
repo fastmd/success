@@ -1,25 +1,72 @@
+   <title>jQuery UI Accordion - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  
+  <link rel="stylesheet" href="/resources/demos/style.css">
+ 
+ <script>
+  $(function() {
+    $("#pan").toggle()
+    $("#clname").attr('disabled', 'disabled');
+  });
+  $(function() {
+  $("#rem2").change( function() {
+    $("#pan").toggle()
+    $("#clname").toggle()
+    $("#pser").toggle()
+  });
+  });
+  function disableElements()
+{
+document.getElementById("#clname").disabled=true;
+}
+  
+
+  
+    $(function() {
+    $( "#dt3" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd.mm.yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt3" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });  
+  });
+  
+  </script>
+
 <%= button_to "Назад", car_autotech_path,:method => :get, :class=>"button tiny" %>
 <center>
-<div class="small-11 small-centered columns">
+<div class="small-6 large-4 columns">
 	<div class="panel">
   	<a> 
 	<%= form_tag '/tehservices/newto' do %>
   	<%= hidden_field_tag :manager%>
   	<%= label_tag 'Автомобиль' %>
-  	<%= 
-  	if params[:num] != nil
-  	  params[:num].to_s
-  	end%>
-    <%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
-  	<%= label_tag :"Введите текущий пробег"%>
-  	<%= text_field_tag :wlong,"100"%>
-  	<%= label_tag :"Введите тип сервиса"%>
+  	
+  	<%
+  	if params[:num] != nil %>
+  	 <% @car = Car.find(params[:num]) %>
+  	 <%= hidden_field_tag :car_num,@car.id %>
+  	 <% auto = @car.marca + " " + @car.gnum %>
+  	 <%= text_field_tag :car , auto, :readonly => true %>  
+  	 <%= label_tag :"Текущий пробег" %>
+  	 <%= text_field_tag :wlong, @car.wlongs.last.wlong %>
+  	<% else %>
+  	 <%= params[:num].to_s	%>
+  	 <%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
+  	 <%= label_tag :"Введите текущий пробег" %>
+  	 <%= text_field_tag :wlong  %>
+  	<% end %>
+  	<%= label_tag :"Введите тип сервиса" %>
   	<% @yrs = [2011,2010,2009,2008] %>
-  	<%= select_tag :stype, options_for_select([['Замена масла', 1], ['Замена фильтров', 2], ['ТО', 3]] )%>
+  	<%= select_tag :stype, options_for_select([['Замена масла', 1], ['ТО', 3]] )%>
   	<%= label_tag :"Введите стоимость сервиса"%>
   	<%= text_field_tag :sprice%>
   	<%= label_tag :"Дата проведения работ"%>
-  	<%= text_field_tag :sdate, DateTime.now.strftime('%d.%m.%Y'), :id => "modelname" %>
+  	<%= text_field_tag :sdate, DateTime.now.strftime('%d.%m.%Y'), :id => "dt3" %>
   	<%= submit_tag "Сохранить ТО" %>
   	<% end %>        
   	</a>

@@ -22,7 +22,7 @@ $(document).ready( function () {
   	<a><%= button_to "Назад", root_path,:method => :get, :class=>"button tiny" %></a>
   </div>
   <div class="medium-3 columns">
-  	<a><%= button_to "Добавить ТО",tehservices_new_path,:method => :get, :class=>"button tiny" %> </a>
+  	<a><% button_to "Добавить ТО",tehservices_new_path,:method => :get, :class=>"button tiny" %> </a>
   </div>
 </div>
 
@@ -33,8 +33,7 @@ $(document).ready( function () {
 					<th>Автомобиль</th>
 					<th>Текущий пробег</th>
 					<th>Дата последнего ТО</th>
-					<th>Необходимость замены масла</th>
-					<th>Необходимость замены фильтров</th>
+					<th>Необходимость замены масла и фильтров</th>
 					<th>Стоимость обслуживания за текущий месяц</th>
 					<th>Стоимость обслуживания за текущий год</th>
 					<th>Действие</th>
@@ -104,8 +103,10 @@ $(document).ready( function () {
 								end 
 							end
 							%>
+							<% @i = mobil.id %>
 							<tr><td><%= mobil.id %></td>
-							<td><%= mobil.marca + " " + mobil.gnum%></td>
+							<td><%= link_to mobil.marca + " " + mobil.gnum,
+							:controller => :tehservices, :action => :list ,:num => @i %></td>
 							<td><%= wl %></td>
 							<td><%= tdate %></td>
 							<% if zm == 'ДА' %>
@@ -118,19 +119,11 @@ $(document).ready( function () {
 							</td>	
 							<% end %>
 							
-							<% if zf == 'ДА' %>
-							<td bgcolor='red' >
-								<%= zf %> 
-							</td>	
-							<% else %>
-							<td>
-								<%= zf %>
-							</td>	
-							<% end %>
+							
 							<td><%= @smprice %></td>
 							<td><%= @syprice %></td>
 							<td><% @i = mobil.id %>
-		<%= link_to @i, :controller => :tehservices, :action => :new ,:num => @i %>
+		<%= button_to "ТО", :controller => :tehservices, :action => :new ,:num => @i %>
 							</td>	
 							</tr>	
 					<% end %>

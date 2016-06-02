@@ -4,17 +4,55 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  
+  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script>
+  
+    function myFunction(a,b) {
+    
+    var text = a;
+   
+    $("#cli_id").val(text);
+    $("#cli_info").val(b);
+}
+
+$(document).ready( function () {
+
+    $('#m2').dataTable( {
+    	 "order": [[ 1, "desc" ]]
+} );
+} );
+
+
+  
   $(function() {
-    $("#pan").toggle()
+    $("#pan1").toggle()
+    $("#pan2").toggle()
+   
     $("#clname").attr('disabled', 'disabled');
+    $("#clname").toggle()
+    $("#lclinf").toggle()
+    $("#cli_info").toggle()
   });
+  
+  $(function() {
+  $("#rem1").change( function() {
+    $("#pan1").toggle()
+     $("#lrem2").toggle()
+    $("#rem2").toggle()
+   // $("#clname").toggle()
+    $("#pser").toggle()
+  });
+  });
+  
   $(function() {
   $("#rem2").change( function() {
-    $("#pan").toggle()
-    $("#clname").toggle()
+    $("#pan2").toggle()
+    $("#lrem1").toggle()
+    $("#lclinf").toggle()
+     $("#cli_info").toggle()
+    $("#rem1").toggle()
+ //   $("#clname").toggle()
     $("#pser").toggle()
   });
   });
@@ -71,7 +109,7 @@ document.getElementById("#clname").disabled=true;
 
 <%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
 <div class="row">
-  <div class="large-6 columns">
+  <div class="large-4 columns">
   	<%= form_tag '/reznew' do %>
   	  <div class="panel">
     
@@ -82,29 +120,40 @@ document.getElementById("#clname").disabled=true;
   	 	conmax = 0
   	 end		
   	%>
+  		<%= label_tag 'Номер контракта' %>
     	<%= text_field_tag 'cnum', conmax + 1 , :readonly => true%>
+    	
+    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>
+    		Создать нового клиента </label></a>
+    		<a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2"  %>
+    			Поиск клиента</label></a>
+    	<%= label_tag 'ФИО и дата рождения клиента',"", :id=>"lclinf"%> 
+    	<%= text_field_tag 'cli_info', "" , :readonly => true%>	 
     	<%=label_tag 'Имя клиента',"Серия паспорта", :id => "clname" %>
-    	<%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
-    	<%= hidden_field_tag :client_id  %>
+    	<!-- <%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
+    	
+    	<%= hidden_field_tag :client_id ,:id => "cli_id" %> -->
+    	<%= hidden_field_tag :cli_id ,:id => "cli_id" %>
     	<%= hidden_field_tag :flag,2  %>
     	<%= label_tag params[:sname] %>
-    	<%= label_tag 'Залог' %>
-    	<%= text_field_tag 'zalog'%>
+    	<%= label_tag 'Сумма договора' %>
+    	<%= text_field_tag 'doc_sum',"",:id => "doc_sum"%>
     	<%= label_tag 'Гарантийная сумма' %>
     	<%= text_field_tag 'garant_summ'%>
     	
     	<p>
-  <%= check_box_tag 'active','1',false, :id => "rem2"  %>
-  <label for="rem_lab">Создать нового клиента</label>
-  		
-</p>
-	
+  		</p>
+  	
     	<%= label_tag 'Номер автомобиля' %>
     	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
     	<%= label_tag 'Дата начала договора' %>
     	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt"%>
     	<%= label_tag 'Время начала договора' %>
     	<%= text_field_tag 'sttime', Time.now.strftime('%R') %>
+    	<%= label_tag 'Кол-во дней' %>
+    	<%= text_field_tag 'dni',1  %>
+    	
+
     	<%= label_tag 'Дата окончания договора'%>
     	<%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1"%>
     	<%= label_tag 'Время окончания договора'%>
@@ -113,11 +162,44 @@ document.getElementById("#clname").disabled=true;
     	<%= text_field_tag 'user', current_user.username, :readonly => true%>
 	<center><%= submit_tag 'Сохранить',:class=>"button tiny" %>
 		</center>
-	
-  </div>
-  </div>
+	</div>
+ </div>
+  
+  
+    <div class="large-7 columns">
+  	<div id="pan2" class="panel">
+  		
+ <table id="m2">
+  <thead>
+    <tr>
+      <th>№</th>
+      <th>Имя</th>
+      <th>Фамилия</th>
+      <th>Дата рождения</th> 
+      <th>Телефон</th>
+    </tr>
+  </thead>
+  <tbody>
+  	<% @clients = Client.all %>
+  	<% @clients.each do |co| %>
+  	<tr>
+  	<td><button tiny onclick="myFunction(<%= co.id %>,'<%= co.sname%> <%= co.name%> <%= co.dn%>')">
+  		<%= co.id %></button tiny</td>
+  	<td><%= co.name%></td>
+  	<td><%= co.sname%></td>
+  	<td><%= co.dn%></td>
+  	<td><%= co.tel%></td>
+  	</tr>
+  	
+  	<% end %>
+  
+  </tbody>
+</table>
+  	</div>
+  	</div>
+  
   <div class="large-6 columns">
-  	<div id="pan" class="panel">
+  	<div id="pan1" class="panel">
   		
   		<%= label_tag 'Фамилия' %>
     	<%= text_field_tag 'surname'%>

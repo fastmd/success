@@ -10,9 +10,9 @@ Rails.application.routes.draw do
   get "welcome/smonth/:num" => 'welcome#smonth'
   get "reztocontract/:num" => 'cars#rez_to_contract'
   get "contract_to_arh/:num" => 'cars#contract_to_arh'
+  
   get "tehservices/new" => 'tehservices#new'
-  
-  
+  get "tehservices/list" => 'tehservices#list'
   
   post "car/rez" => 'cars#rez'
   post "car/autotech" => 'cars#autotech'
@@ -24,12 +24,9 @@ Rails.application.routes.draw do
   post "client/new" => 'clients#new'
   
   post "tehservices/newto" => 'tehservices#newto'
-  
+  post "tehservices/new" => 'tehservices#new'
   
   #post "clients/:client" => 'clients#update'
-  
-
-  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

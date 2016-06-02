@@ -46,7 +46,7 @@ class CarsController < ApplicationController
     @contract.sttime = params[:sttime]
     @contract.endtime = params[:endtime]
     @contract.user = current_user.username
-    @contract.client_id = params[:client_id]
+    @contract.client_id = params[:cli_id]
     @contract.save
     end
     

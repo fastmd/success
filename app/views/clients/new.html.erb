@@ -1,8 +1,78 @@
-
-<center>
+<head>
+  <meta charset="utf-8">
+  <title>jQuery UI Accordion - Default functionality</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
   
-  <div class="small-6 large-4 columns">
-  	<div class="panel">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+  $(function() {
+    $("#pan").toggle()
+    $("#clname").attr('disabled', 'disabled');
+  });
+  $(function() {
+  $("#rem2").change( function() {
+    $("#pan").toggle()
+    $("#clname").toggle()
+    $("#pser").toggle()
+  });
+  });
+  function disableElements()
+{
+document.getElementById("#clname").disabled=true;
+}
+  
+  $(function() {
+    $( "#dt" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd.mm.yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt" ).datetimepicker( "option", "dateFormat", $( this ).val() );
+    });
+  });
+    $(function() {
+    $( "#dt1" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd.mm.yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt1" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });  
+  });
+  
+  $(function() {
+    $( "#dt2" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd.mm.yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt2" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });  
+  });
+  
+    $(function() {
+    $( "#dt3" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      dateFormat: 'dd.mm.yy' }).val();
+       
+    $( "#format" ).change(function() {
+      $( "#dt3" ).datepicker( "option", "dateFormat", $( this ).val() );
+    });  
+  });
+  
+  </script>
+</head>
+<%= button_to "Назад", clients_path,:method => :get, :class=>"button tiny"%>
+
+  <div class="row">
+  <div class="large-6 columns">
+  <div class="panel">
   	<p>Новый клиент</p>
   	<% @my_arr = [1,2,3,4,5]%>
   	<%= form_for :client, url: clients_path do |f| %>
@@ -18,6 +88,11 @@
     <%= f.text_field :dn,:value => DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%>
     <%= f.label 'Персональный номер' %>
     <%= f.text_field :idnp%>
+    </div>
+    </div>
+    
+    <div class="large-6 columns">
+  <div class="panel">
     <%= f.label 'Год рождения'%>
     <%= f.text_field :bdate,:value => DateTime.now.strftime('%d.%m.%Y'),:id => "dt3" %>
     <%= f.label 'Страна проживания' %>
@@ -29,11 +104,14 @@
    	<%= f.text_field :pemail %>
    	<%= f.label 'Контактный телефон' %>
    	<%= f.text_field :tel %>
+   	<%= f.label 'Примечание' %>
+   	<%= f.text_area :comments,size: "30x4" %>
   	</div>
-  	<%= f.submit "Содать клиента" %>
+  	</div>
+  	</div>
+  	<center><%= f.submit "Содать клиента" %></center>
   	<% end %>
   	
-  	</div>
-  </div>
+  
 	
-</center>
+
