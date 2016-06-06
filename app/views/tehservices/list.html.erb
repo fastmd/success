@@ -58,7 +58,12 @@ $(document).ready( function () {
   	<% @car.tehservices.each do |co| %>
   	<tr>
   	<td><%= link_to co.id %></td>
-  	<td><%= co.stype%></td>
+  	<td><% if co.stype.to_i == 1.to_i %>
+  				<a> Замена масла и фильтров</a>
+  		<% elsif co.stype.to_i == 3.to_i %>
+  				<a> Техническое обслуживание</a>
+  		<% end %>		
+  		</td>
   	<td><%= co.sdate.strftime("%d.%m.%Y") %></td>
   	<td><%= co.sprice %></td>
   	

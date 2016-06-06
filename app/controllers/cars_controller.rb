@@ -41,6 +41,7 @@ class CarsController < ApplicationController
     @contract.order_date = date
     @contract.flag = params[:flag] 
     @contract.zalog = params[:zalog]
+    @contract.summ = params[:doc_sum]
     @contract.garant_summ = params[:garant_summ]
     @contract.diff = params[:enddate]
     @contract.sttime = params[:sttime]
