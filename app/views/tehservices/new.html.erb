@@ -67,6 +67,7 @@ document.getElementById("#clname").disabled=true;
   	<%= text_field_tag :sprice%>
   	<%= label_tag :"Дата проведения работ"%>
   	<%= text_field_tag :sdate, DateTime.now.strftime('%d.%m.%Y'), :id => "dt3" %>
+  	<%= text_area_tag :comments ,nil, :rows => 4, :cols => 25%>
   	<%= submit_tag "Сохранить ТО" %>
   	<% end %>        
   	</a>

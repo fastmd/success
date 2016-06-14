@@ -9,12 +9,16 @@ Rails.application.routes.draw do
   get "car/autotech" => 'cars#autotech'
   get "welcome/smonth/:num" => 'welcome#smonth'
   get "reztocontract/:num" => 'cars#rez_to_contract'
+  
   get "contract_to_arh/:num" => 'cars#contract_to_arh'
+  get "car/rez" => 'cars#rez'
   
   get "tehservices/new" => 'tehservices#new'
   get "tehservices/list" => 'tehservices#list'
   
   post "car/rez" => 'cars#rez'
+  post "car/rezdoc" => 'cars#rezdoc'
+  
   post "car/autotech" => 'cars#autotech'
   post "reznew" => 'cars#reznew'
   post "rez_to_contract" => 'cars#rez_to_contract'

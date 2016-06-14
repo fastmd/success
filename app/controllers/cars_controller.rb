@@ -17,8 +17,41 @@ class CarsController < ApplicationController
   end
   
   def rez
-   @car = Car.find(1.to_i)
+    num = params[:car_num]
+ # @car = Car.find(num)
+   
+  end
+  
+  def rezdoc
+    num = params[:car_num]
     
+    @car = Car.find(num)
+    @contract = @car.contracts.create
+    @client = Client.find(params[:cli_id])
+    
+         if Contract.maximum(:id) != nil
+      conmax = Contract.maximum(:id)
+     else 
+      conmax = 0
+     end
+         
+    @state = params[:active] || []
+    if @state != '1'
+      
+    @contract.cnum = conmax + 1
+    date = params[:nstdate]
+    @contract.order_date = date
+    @contract.flag = params[:flag] 
+    @contract.zalog = params[:zalog]
+    @contract.summ = params[:doc_sum]
+    @contract.garant_summ = params[:garant_summ]
+    @contract.diff = params[:enddate]
+    @contract.sttime = params[:sttime]
+    @contract.endtime = params[:endtime]
+    @contract.user = current_user.username
+    @contract.client_id = params[:cli_id]
+    @contract.save
+    end
   end
   
   def reznew

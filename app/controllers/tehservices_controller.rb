@@ -18,6 +18,7 @@ class TehservicesController < ApplicationController
     @tehservice.stype = params[:stype]
     @tehservice.sprice = params[:sprice]
     @tehservice.sdate = params[:sdate]
+    @tehservice.comments = params[:comments]
     @tehservice.save
     
     @wlong.wdate = params[:sdate]

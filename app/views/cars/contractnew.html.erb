@@ -8,6 +8,70 @@
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script>
   
+  function SetDayPrice (event){
+             
+             var ptmp = $("#temp").val();
+             var summ = $("#doc_sum").val()/ptmp;
+             
+             $("#daycost").val(summ);	
+             
+        }    
+
+
+	function SetTotalPrice (event){
+            var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
+            
+             $("#dni").val($("#temp").val());
+             var ptmp = $("#temp").val();
+             var summ = ptmp*$("#daycost").val();
+             
+             $("#doc_sum").val(summ);	
+             
+        }
+
+    
+        function GetChar (event){
+            var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
+            
+             $("#dni").val($("#temp").val());
+             var dtmp = $("#dt").val();
+             var nd = dtmp[3] + dtmp[4] + "/" + dtmp[0] + dtmp[1] + "/" + dtmp[6] + dtmp[7] + dtmp[8] + dtmp[9];
+             var d = new Date(nd)
+             var dd = Number($("#temp").val());
+ 			 d.setDate( d.getDate() + dd)	
+         	 var mm = d.getMonth()+1;
+				mm = (mm<10?"0"+mm:mm);
+			 var days = d.getDate();
+				days = (days<10?"0"+days:days);	
+             $("#dt1").val(days);
+             $("#dt1").val($("#dt1").val() +"."+(mm));
+             $("#dt1").val($("#dt1").val() +"."+ (d.getFullYear()) );
+             SetDayPrice(event);
+        }
+    
+    function GetEndDate (event){
+            var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
+            
+             $("#dni").val($("#temp").val());
+             var dtmp1 = $("#dt").val();
+             var dtmp2 = $("#dt1").val();
+             var newdate = (Date(dtmp2) - Date(dtmp1))
+             $("#temp").val(Date(newdate))
+             
+             
+         var dtmp = $("#dt").val();
+         var nd = dtmp[3] + dtmp[4] + "/" + dtmp[0] + dtmp[1] + "/" + dtmp[6] + dtmp[7] + dtmp[8] + dtmp[9];
+         var dtmp1 = $("#dt1").val();
+         var nd1 = dtmp1[3] + dtmp1[4] + "/" + dtmp1[0] + dtmp1[1] + "/" + dtmp1[6] + dtmp1[7] + dtmp1[8] + dtmp1[9];
+         var start = new Date(nd);
+		 var end = new Date(nd1);
+ 		 var diff = new Date(end - start);
+		 var days = diff/1000/60/60/24;
+		 $("#temp").val(days)
+			SetDayPrice(event);
+        }
+  
+  
     function myFunction(a,b) {
     
     var text = a;
@@ -106,7 +170,7 @@ document.getElementById("#clname").disabled=true;
   
   </script>
 </head>
-
+ 
 <%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
 <div class="row">
   <div class="large-4 columns">
@@ -137,7 +201,9 @@ document.getElementById("#clname").disabled=true;
     	<%= hidden_field_tag :flag,2  %>
     	<%= label_tag params[:sname] %>
     	<%= label_tag 'Сумма договора' %>
-    	<%= text_field_tag 'doc_sum',"",:id => "doc_sum"%>
+    	<%= text_field_tag 'doc_sum',"",:onkeyup =>"SetDayPrice (event);"%>
+    	<%= label_tag 'Цена в день' %>
+    	<input size="40" value="0" onkeyup="SetTotalPrice (event);" id="daycost" />
     	<%= label_tag 'Гарантийная сумма' %>
     	<%= text_field_tag 'garant_summ'%>
     	
@@ -147,15 +213,17 @@ document.getElementById("#clname").disabled=true;
     	<%= label_tag 'Номер автомобиля' %>
     	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
     	<%= label_tag 'Дата начала договора' %>
-    	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt"%>
+    	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);"%>
+    	
     	<%= label_tag 'Время начала договора' %>
     	<%= text_field_tag 'sttime', Time.now.strftime('%R') %>
     	<%= label_tag 'Кол-во дней' %>
-    	<%= text_field_tag 'dni',1  %>
+    	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
+    	<!-- <%= text_field_tag 'dni',1  %>  -->
     	
 
     	<%= label_tag 'Дата окончания договора'%>
-    	<%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1"%>
+    	<%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);"%>
     	<%= label_tag 'Время окончания договора'%>
     	<%= text_field_tag 'endtime', Time.now.strftime('%R') %>
     	<%= label_tag 'Менеджер' %>

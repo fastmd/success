@@ -11,6 +11,8 @@ class ContractsController < ApplicationController
     redirect_to contract_path(@contract.id)
   end
   
+  
+  
   def show
     
     @contract = Contract.find(params[:id])

@@ -133,7 +133,6 @@
 					<th>Агент</th>
 					<th>Пробег</th>
 					<th>Гарантийна сумма</th>
-					<th>Залог</th>
 					<th>Сумма договора</th>
 					<th></th>
 				</tr>
@@ -161,13 +160,13 @@
 							
  							</a>	</td>
  							
- 							<td><%= text_field_tag 'garant_summ',"",:class=>"cost_tag" %></td>
-							<td><%= con.zalog %></td>
+ 							<td><%= text_field_tag 'garant_summ',con.garant_summ,:class=>"cost_tag" %></td>
+							
     							
         						<% coid = con.id %>
         						<%= hidden_field_tag 'contrid', coid  %>
 							
-							<td><%= text_field_tag 'summ',"",:class=>"cost_tag" %></td>
+							<td><%= text_field_tag 'summ',con.summ,:class=>"cost_tag" %></td>
 							
 						    
 							<% @sttime %>
@@ -302,17 +301,17 @@
 				   <% while (ind < (@qord.count)) do %>
      <% if ((@qord[ind] == carnum+1) and ((tmpdate.to_date >= @qord[ind+3].to_date)and(tmpdate.to_date <= @qord[ind+4].to_date))) %>
         <% if @qord[ind+2].to_i == 2 %>
-			<td bgcolor="green"><%= 'К' %></td>
+			<td bgcolor="green"><%= link_to  "К" %></td>
 			<% @prn = 1 %>
 			<%break%>
 		<% end %>
 		<% if @qord[ind+2].to_i == 1 %>
-			<td bgcolor="magenta"><%= 'Б' %></td>
+			<td bgcolor="magenta"><%= link_to 'Б' %></td>
 			<% @prn = 1 %>
 			<%break%>
 		<% end %>
 		<% if @qord[ind+2].to_i == 3 %>
-			<td bgcolor="silver"><%= 'X' %></td>
+			<td bgcolor="silver"><%= link_to 'X' %></td>
 			<% @prn = 1 %>
 			<%break%>
 		<% end %>	
