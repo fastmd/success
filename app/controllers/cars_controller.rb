@@ -22,6 +22,66 @@ class CarsController < ApplicationController
    
   end
   
+   def contr
+          num = params[:car_num]
+    
+    @car = Car.find(num)
+    @contract = @car.contracts.create
+    @client = Client.find(params[:cli_id])
+    
+     if Contract.maximum(:id) != nil
+      conmax = Contract.maximum(:id)
+     else 
+      conmax = 0
+     end
+         
+    @state = params[:active] || []
+    if @state != '1'
+      
+    @contract.cnum = conmax + 1
+    date = params[:nstdate]
+    @contract.order_date = date
+    @contract.flag = params[:flag] 
+    @contract.zalog = params[:zalog]
+    @contract.summ = params[:doc_sum]
+    @contract.garant_summ = params[:garant_summ]
+    @contract.diff = params[:enddate]
+    @contract.sttime = params[:sttime]
+    @contract.endtime = params[:endtime]
+    @contract.user = current_user.username
+    @contract.client_id = params[:cli_id]
+    @contract.save
+    
+    end
+    
+    
+    if @state == '1'
+      
+    @client = Client.create(params[:contract])
+    @client.name = params[:name]
+    @client.sname = params[:surname]
+    @client.fname = params[:fname]
+    @client.pseria = params[:pseria]
+    @client.address = params[:address]
+    @client.idno = params[:idnp]
+    @client.dn = params[:dn]
+    @client.de = params[:fname]
+    @client.tel = params[:tel]
+    @client.pemail = params[:pemail]
+    @client.save
+      
+    @contract.cnum = conmax + 1
+    date = params[:nstdate]
+    @contract.order_date = date
+    @contract.flag = 1 
+
+    @contract.diff = params[:enddate]
+    @contract.user = current_user.username
+    @contract.client_id = @client.id
+    @contract.save
+   end
+   end
+  
   def rezdoc
     num = params[:car_num]
     

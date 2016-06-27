@@ -78,6 +78,7 @@ $(document).ready( function () {
   	
   	<% @car.contracts.each do |co| %>
   	<tr>
+  		<% if co.flag > 1%>
   	<td><%= link_to co.id,  contract_path(co,:format => "doc")%></td>
   	<td><%= co.order_date.strftime("%d.%m.%Y") %></td>
   	<td><%= co.sttime.strftime('%R') %></td>
@@ -86,6 +87,15 @@ $(document).ready( function () {
   	<td><%= co.user %></td>
   	<td><%=  button_to "Скачать договор (WORD)", contract_path(co.id,:format => "doc"), 
   		 :method => :get %></td>
+  		<% else %> 
+  	<td><%= co.id %></td>
+  	<td><%= co.order_date.strftime("%d.%m.%Y") %></td>
+  	<td> Бронь </td>
+  	<td><%= co.diff.to_date.strftime("%d.%m.%Y") %></td>
+  	<td>Бронь</td>
+  	<td><%= co.user %></td>
+  	<td>Бронь</td>	 
+  		<% end %>
   	
   	<% end %>
   

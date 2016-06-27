@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   
   post "contract_to_arh" => 'cars#contract_to_arh'
   post "car/contractnew" => 'cars#contractnew'
+  post "car/contr" => 'cars#contr'
   post "client/new" => 'clients#new'
   
   post "tehservices/newto" => 'tehservices#newto'
