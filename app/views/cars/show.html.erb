@@ -84,7 +84,7 @@ $(document).ready( function () {
   	<td><%= co.diff.to_date.strftime("%d.%m.%Y") %></td>
   	<td><%= co.endtime.strftime('%R') %></td>
   	<td><%= co.user %></td>
-  	<td><%=  button_to "Скачать договор (WORD)", contract_path(co.cnum,:format => "doc"), 
+  	<td><%=  button_to "Скачать договор (WORD)", contract_path(co.id,:format => "doc"), 
   		 :method => :get %></td>
   	
   	<% end %>

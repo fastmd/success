@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   
   post "car/rez" => 'cars#rez'
   post "car/rezdoc" => 'cars#rezdoc'
+  post "car/reznew" => 'cars#reznew'
   
   post "car/autotech" => 'cars#autotech'
   post "reznew" => 'cars#reznew'

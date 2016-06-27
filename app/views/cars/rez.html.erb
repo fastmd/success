@@ -91,21 +91,24 @@ $(document).ready( function () {
   
   $(function() {
     $("#pan1").toggle()
-    $("#pan2").toggle()
-   
+  //  $("#pan2").toggle()
+   $("#rem2").toggle()
     $("#clname").attr('disabled', 'disabled');
     $("#clname").toggle()
-    $("#lclinf").toggle()
-    $("#cli_info").toggle()
+  
   });
   
   $(function() {
   $("#rem1").change( function() {
-    $("#pan1").toggle()
+      $("#pan1").toggle()
+    $("#pan2").toggle()
      $("#lrem2").toggle()
     $("#rem2").toggle()
    // $("#clname").toggle()
     $("#pser").toggle()
+    $("#clname").toggle()
+    $("#lclinf").toggle()
+    $("#cli_info").toggle()
   });
   });
   
@@ -193,29 +196,29 @@ document.getElementById("#clname").disabled=true;
     			Поиск клиента</label></a>
     	<%= label_tag 'ФИО и дата рождения клиента',"", :id=>"lclinf"%> 
     	<%= text_field_tag 'cli_info', "" , :readonly => true%>	 
-    	<%=label_tag 'Имя клиента',"Серия паспорта", :id => "clname" %>
+    	<%=label_tag 'Имя клиента',"", :id => "clname" %>
     	<!-- <%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
     	
     	<%= hidden_field_tag :client_id ,:id => "cli_id" %> -->
     	<%= hidden_field_tag :cli_id ,:id => "cli_id" %>
     	<%= hidden_field_tag :flag,1  %>
     	<%= label_tag params[:sname] %>
-    	<%= label_tag 'Сумма договора' %>
+    	<%= label_tag 'Залог' %>
     	<%= text_field_tag 'doc_sum',"",:onkeyup =>"SetDayPrice (event);"%>
-    	<%= label_tag 'Цена в день' %>
-    	<input size="40" value="1" onkeyup="SetTotalPrice (event);" id="daycost" />
+    	<!-- <%= label_tag 'Цена в день' %>
+    	<input size="40" value="1" onkeyup="SetTotalPrice (event);" id="daycost" /> 
     	<%= label_tag 'Гарантийная сумма' %>
-    	<%= text_field_tag 'garant_summ'%>
+    	<%= text_field_tag 'garant_summ'%> -->
     	
     	<p>
   		</p>
   	
     	<%= label_tag 'Номер автомобиля' %>
     	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
-    	<%= label_tag 'Дата начала договора' %>
+    	<%= label_tag 'Дата начала брони' %>
     	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);"%>
-    	<%= label_tag 'Время начала договора' %>
-    	<%= text_field_tag 'sttime', Time.now.strftime('%R') %>
+    	<!-- <%= label_tag 'Время начала брони' %>
+    	<%= text_field_tag 'sttime', Time.now.strftime('%R') %> -->
     	<%= label_tag 'Кол-во дней' %>
     	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
     	<!-- <%= text_field_tag 'dni',1  %> -->
@@ -223,14 +226,14 @@ document.getElementById("#clname").disabled=true;
 
     <%= label_tag 'Дата окончания договора'%>
     <%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);"%>
-    	<%= label_tag 'Время окончания договора'%>
-    	<%= text_field_tag 'endtime', Time.now.strftime('%R') %>
+    <!-- 	<%= label_tag 'Время окончания ,'%>
+    	<%= text_field_tag 'endtime', Time.now.strftime('%R') %> -->
     	<%= label_tag 'Менеджер' %>
     	<%= text_field_tag 'user', current_user.username, :readonly => true%>
-	<center><%= submit_tag 'Сохранить' %>
+	<center><%= submit_tag 'Печать' %>
 		
 		</center>
-		<%= link_to "ok", car_rez_path(:format => "doc") %>
+		
 	</div>
  </div>
   

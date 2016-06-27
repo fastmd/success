@@ -51,6 +51,7 @@ class CarsController < ApplicationController
     @contract.user = current_user.username
     @contract.client_id = params[:cli_id]
     @contract.save
+    
     end
   end
   
@@ -82,6 +83,7 @@ class CarsController < ApplicationController
     @contract.user = current_user.username
     @contract.client_id = params[:cli_id]
     @contract.save
+    
     end
     
     
@@ -109,7 +111,10 @@ class CarsController < ApplicationController
     @contract.user = current_user.username
     @contract.client_id = @client.id
     @contract.save
+    
     end
+    
+    
     redirect_to root_path
     
   end  

@@ -51,13 +51,14 @@ $(document).ready( function () {
       <th>Тип</th>
       <th>Дата выполнения</th>
       <th>Цена, в EUR</th> 
+      <th>Примечание</th>
     </tr>
   </thead>
   <tbody>
   	
   	<% @car.tehservices.each do |co| %>
   	<tr>
-  	<td><%= link_to co.id %></td>
+  	<td><%= co.id %></td>
   	<td><% if co.stype.to_i == 1.to_i %>
   				<a> Замена масла и фильтров</a>
   		<% elsif co.stype.to_i == 3.to_i %>
@@ -66,7 +67,7 @@ $(document).ready( function () {
   		</td>
   	<td><%= co.sdate.strftime("%d.%m.%Y") %></td>
   	<td><%= co.sprice %></td>
-  	
+  	<td><%= co.comments %></td>
   	<% end %>
   
   </tbody>

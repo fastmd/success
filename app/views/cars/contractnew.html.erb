@@ -91,21 +91,23 @@ $(document).ready( function () {
   
   $(function() {
     $("#pan1").toggle()
-    $("#pan2").toggle()
-   
+   // $("#pan2").toggle()
+   $("#rem2").toggle()
     $("#clname").attr('disabled', 'disabled');
-    $("#clname").toggle()
-    $("#lclinf").toggle()
-    $("#cli_info").toggle()
+    
   });
   
   $(function() {
   $("#rem1").change( function() {
     $("#pan1").toggle()
+    $("#pan2").toggle()
      $("#lrem2").toggle()
     $("#rem2").toggle()
    // $("#clname").toggle()
     $("#pser").toggle()
+    $("#clname").toggle()
+    $("#lclinf").toggle()
+    $("#cli_info").toggle()
   });
   });
   
@@ -174,7 +176,7 @@ document.getElementById("#clname").disabled=true;
 <%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
 <div class="row">
   <div class="large-4 columns">
-  	<%= form_tag '/reznew' do %>
+  	<%= form_tag 'reznew.doc' do %>
   	  <div class="panel">
     
     <%
@@ -189,11 +191,11 @@ document.getElementById("#clname").disabled=true;
     	
     	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>
     		Создать нового клиента </label></a>
-    		<a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2"  %>
-    			Поиск клиента</label></a>
+    	<!-- 	<a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2"  %>
+    			Поиск клиента</label></a> -->
     	<%= label_tag 'ФИО и дата рождения клиента',"", :id=>"lclinf"%> 
     	<%= text_field_tag 'cli_info', "" , :readonly => true%>	 
-    	<%=label_tag 'Имя клиента',"Серия паспорта", :id => "clname" %>
+    	<%=label_tag 'Имя клиента',"", :id => "clname" %>
     	<!-- <%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
     	
     	<%= hidden_field_tag :client_id ,:id => "cli_id" %> -->
