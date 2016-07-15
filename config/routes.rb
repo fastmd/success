@@ -43,6 +43,8 @@ Rails.application.routes.draw do
    
   resources :clients  do
     end  
+  resources :cparams  do
+    end   
   resources :contracts  do
     end
    resources :cars do

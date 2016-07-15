@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160606125001) do
+ActiveRecord::Schema.define(version: 20160713122617) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -69,6 +69,13 @@ ActiveRecord::Schema.define(version: 20160606125001) do
 
   add_index "contracts", ["car_id"], name: "index_contracts_on_car_id"
   add_index "contracts", ["client_id"], name: "index_contracts_on_client_id"
+
+  create_table "cparams", force: :cascade do |t|
+    t.float    "curs"
+    t.time     "mdt"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "tehservices", force: :cascade do |t|
     t.string   "stype"

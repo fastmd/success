@@ -46,6 +46,14 @@
   			</div>	  
         </div>  
 		<div class="row">
+			
+			<div class="small-25 columns">
+				<%= form_for :cparam, url: cparams_path do |f| %>
+  					<%= f.label "Курс"  %>
+  					<%= f.text_field :curs, :value => @cpar.curs %>
+  					<%= f.submit "Сохранить" %>
+  				<% end %>	
+			</div>	
     	<center>
   <div class="small-25 columns">
   		<table  border="0" cellspacing="5" cellpadding="5">

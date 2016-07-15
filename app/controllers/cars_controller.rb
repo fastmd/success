@@ -227,6 +227,8 @@ class CarsController < ApplicationController
   end
  
   def smonth
+   
+   @cpar = Cparam.last
     
     if params[:num]
         mnum = params[:num]
