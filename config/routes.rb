@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get "car/autotech" => 'cars#autotech'
   get "welcome/smonth/:num" => 'welcome#smonth'
   get "reztocontract/:num" => 'cars#rez_to_contract'
+  get "contract/clicontr/:num" => 'contract#clicontr'
   
   get "contract_to_arh/:num" => 'cars#contract_to_arh'
   get "car/rez" => 'cars#rez'
@@ -27,7 +28,10 @@ Rails.application.routes.draw do
   post "contract_to_arh" => 'cars#contract_to_arh'
   post "car/contractnew" => 'cars#contractnew'
   post "car/contr" => 'cars#contr'
+  post "contracts/:id/contr" => 'contracts#contr'
+  post "contracts/:id/show" => 'contracts#show'
   post "client/new" => 'clients#new'
+  
   
   post "tehservices/newto" => 'tehservices#newto'
   post "tehservices/new" => 'tehservices#new'

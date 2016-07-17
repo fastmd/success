@@ -44,6 +44,7 @@ class CarsController < ApplicationController
     @contract.flag = params[:flag] 
     @contract.zalog = params[:zalog]
     @contract.summ = params[:doc_sum]
+    @contract.costlei = (params[:doc_sum].to_f * Cparam.last.curs).round(2)
     @contract.garant_summ = params[:garant_summ]
     @contract.diff = params[:enddate]
     @contract.sttime = params[:sttime]

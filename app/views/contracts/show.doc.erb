@@ -569,9 +569,10 @@ RO'>V. Chiria &#537;i modul de achitare<o:p></o:p></span></b></p>
 justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
 "Times New Roman",serif;mso-ansi-language:RO'>5.1. Chiria zilnic&#259;
 
-constituie <span style='color:black'><%= @contract.summ.to_i / tmp %></span>,
+constituie <span style='color:black'><%= @contract.summ.to_i / tmp %>USD (<%= (@contract.costlei / tmp ).round(2) %>MDL)</span>,
 respectiv pentru <span style='color:black'><%= tmp %> </span>zile.
-Locatarul urmeaz&#259; s&#259; achite <span style='color:black'><%= @contract.summ %></span>.<o:p></o:p></span></p>
+Locatarul urmeaz&#259; s&#259; achite <span style='color:black'>
+	<%= @contract.summ %>USD (<%= @contract.costlei %> MDL)</span>.<o:p></o:p></span></p>
 
 <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;text-align:
 justify;line-height:normal'><span lang=RO style='font-size:9.0pt;font-family:
