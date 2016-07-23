@@ -79,6 +79,11 @@ GEM
     foundation-datetimepicker-rails (0.2.4)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    gon (6.1.0)
+      actionpack (>= 3.0)
+      json
+      multi_json
+      request_store (>= 1.0)
     haml (4.0.7)
       tilt
     i18n (0.7.0)
@@ -176,6 +181,7 @@ GEM
     rdoc (4.2.2)
       json (~> 1.4)
     remotipart (1.2.1)
+    request_store (1.3.1)
     responders (2.2.0)
       railties (>= 4.2.0, < 5.1)
     rubyzip (1.2.0)
@@ -234,6 +240,7 @@ DEPENDENCIES
   devise
   exception_notification
   foundation-datetimepicker-rails
+  gon
   jbuilder (~> 2.0)
   jquery-datatables-rails
   jquery-rails
@@ -257,4 +264,4 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 BUNDLED WITH
-   1.11.2
+   1.12.5

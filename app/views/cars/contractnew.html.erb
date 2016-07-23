@@ -1,4 +1,5 @@
 <head>
+<%= include_gon %>	
   <meta charset="utf-8">
   <title>jQuery UI Accordion - Default functionality</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -7,16 +8,44 @@
   <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script>
+  function matrixArray(rows,columns){
+  var arr = new Array();
+  for(var i=0; i<columns; i++){
+    arr[i] = new Array();
+    for(var j=0; j<rows; j++){
+      arr[i][j] = 0;//вместо i+j+1 пишем любой наполнитель. В простейшем случае - null
+    }
+  }
+  return arr;
+}
   
   function SetDayPrice (event){
              
              var ptmp = $("#temp").val();
              var summ = $("#doc_sum").val()/ptmp;
+             var car = $("#car_num").val();
+             var price =  <%= Car.count %>;
+             var matr = matrixArray(<%= Car.count %>,12);
+             var count = <%= Car.count %>;
+             var num = Number(0);
+             <% i = 1%>
              
-             $("#daycost").val(summ);	
-             
+  			 
+  		//	for (var k=0; k <= 10;k += 2)
+  		var k = 1;
+  		$("#daycost").val(gon.carints[car][k+1]);
+  		while (k<13)
+  			{
+  				if (gon.carints[car][k] <= Number(ptmp))
+  				{
+  					
+  					$("#daycost").val(gon.carints[car][k+1]);
+  				}
+            	 k += 2;   
+            } 	
+        
+        SetTotalPrice(event);             
         }    
-
 
 	function SetTotalPrice (event){
             var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
@@ -26,6 +55,8 @@
              var summ = ptmp*$("#daycost").val();
              
              $("#doc_sum").val(summ);	
+          
+             
              
         }
 
@@ -47,6 +78,7 @@
              $("#dt1").val($("#dt1").val() +"."+(mm));
              $("#dt1").val($("#dt1").val() +"."+ (d.getFullYear()) );
              SetDayPrice(event);
+             
         }
     
     function GetEndDate (event){
@@ -203,24 +235,24 @@ document.getElementById("#clname").disabled=true;
     	<%= hidden_field_tag :flag,2  %>
     	<%= label_tag params[:sname] %>
     	<%= label_tag 'Сумма договора' %>
-    	<%= text_field_tag 'doc_sum',"",:onkeyup =>"SetDayPrice (event);"%>
+    	<%= text_field_tag 'doc_sum',"",:onkeyup =>"SetDayPrice (event);", :readonly => true%>
     	<%= label_tag 'Цена в день' %>
-    	<input size="40" value="0" onkeyup="SetTotalPrice (event);" id="daycost" />
+    	<input size="40" value="0" onkeyup="SetTotalPrice (event);" id="daycost", readonly = true/>
     	<%= label_tag 'Гарантийная сумма' %>
     	<%= text_field_tag 'garant_summ'%>
     	
     	<p>
   		</p>
-  	
+  		<%= label_tag 'Кол-во дней' %>
+    	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
     	<%= label_tag 'Номер автомобиля' %>
-    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
+    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }), :onchange =>"GetChar (event);"%>
     	<%= label_tag 'Дата начала договора' %>
     	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);"%>
     	
     	<%= label_tag 'Время начала договора' %>
     	<%= text_field_tag 'sttime', Time.now.strftime('%R') %>
-    	<%= label_tag 'Кол-во дней' %>
-    	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
+    	
     	<!-- <%= text_field_tag 'dni',1  %>  -->
     	
 

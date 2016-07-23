@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'gon'
 gem "combined_time_select"
 gem 'jquery-timepicker-rails'
 gem 'wicked_pdf'
