@@ -46,7 +46,9 @@
   			</div>	  
         </div>  
 		<div class="row">
-			
+		<%if current_user.name = "admin" %>
+		 
+		<% end %>	
 			<div class="small-25 columns">
 				<%= form_for :cparam, url: cparams_path do |f| %>
 			<center>
