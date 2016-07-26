@@ -1,5 +1,6 @@
 <head>
   <meta charset="utf-8">
+  <%= include_gon %>
   <title>jQuery UI Accordion - Default functionality</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -8,12 +9,40 @@
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script>
   
+  function matrixArray(rows,columns){
+  var arr = new Array();
+  for(var i=0; i<columns; i++){
+    arr[i] = new Array();
+    for(var j=0; j<rows; j++){
+      arr[i][j] = 0;//вместо i+j+1 пишем любой наполнитель. В простейшем случае - null
+    }
+  }
+  return arr;
+}
+  
   function SetDayPrice (event){
              
              var ptmp = $("#temp").val();
              var summ = $("#doc_sum").val()/ptmp;
+             var car = $("#car_num").val();
+             var price =  <%= Car.count %>;
+             var matr = matrixArray(<%= Car.count %>,12);
+             var count = <%= Car.count %>;
+             var num = Number(0);
+             <% i = 1%>
              
-             $("#daycost").val(summ);	
+           	 var k = 1;
+  			 $("#daycost").val(gon.carints[car][k+1]);
+  		    while (k<13)
+  			{
+  				if (gon.carints[car][k] <= Number(ptmp))
+  				{
+  					
+  					$("#daycost").val(gon.carints[car][k+1]);
+  				}
+            	 k += 2;   
+            } 		
+             SetTotalPrice(event);
              
         }    
 
@@ -205,9 +234,9 @@ document.getElementById("#clname").disabled=true;
     	<%= hidden_field_tag :flag,2  %>
     	<%= label_tag params[:sname] %>
     	<%= label_tag 'Сумма договора' %>
-    	<%= text_field_tag 'doc_sum',"",:onkeyup =>"SetDayPrice (event);"%>
+    	<%= text_field_tag 'doc_sum',Car.first.int1price,:onkeyup =>"SetDayPrice (event);", :readonly => true%>
     	<%= label_tag 'Цена в день' %>
-    	<input size="40" value="0" onkeyup="SetTotalPrice (event);" id="daycost" />
+    	<input size="40" value=<%= Car.first.int1price %> onkeyup="SetTotalPrice (event);" id="daycost", readonly = true/>
     	<%= label_tag 'Гарантийная сумма' %>
     	<%= text_field_tag 'garant_summ'%>
     	
@@ -222,7 +251,7 @@ document.getElementById("#clname").disabled=true;
     <div class="large-7 columns">
   	<div id="pan2" class="panel">
   		<%= label_tag 'Номер автомобиля' %>
-    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
+    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }), :onchange =>"GetChar (event);" %>
     	<%= label_tag 'Дата начала договора' %>
     	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);"%>
     	
