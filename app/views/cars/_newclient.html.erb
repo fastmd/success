@@ -1,0 +1,35 @@
+  <div class="large-6 columns">
+  	<div id="pan1" class="panel panel-info">
+  	  <div class="panel-heading"><strong>Новый клиент:</strong></div> 		
+	  <div class="panel-body">
+  		<%= label_tag 'Фамилия' %>
+    	<%= text_field_tag 'surname'%>
+    	<%= label_tag 'Имя' %>
+    	<%= text_field_tag 'name'%>
+    	<%= label_tag 'Отчество' %>
+    	<%= text_field_tag 'fname'%>
+    	<%= label_tag 'Серия и номер паспорта' %>
+    	<%= text_field_tag 'pseria'%>
+    	<%= label_tag 'Дата рождения'%>
+    <!--	<%= text_field_tag 'bdate', DateTime.now.strftime('%d.%m.%Y'),:id => "dt3" %> -->
+    	<%= date_field_tag :bdate, Date.today.to_formatted_s(:year_month_day) %>    	
+    	<%= label_tag 'Дата выдачи' %>
+    <!--	<%= text_field_tag 'dn',DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%> -->
+        <%= date_field_tag :dn, Date.today.to_formatted_s(:year_month_day) %> 
+    	<%= label_tag 'IDNP' %>
+    	<%= text_field_tag 'idno'%>
+    	<p>
+    	<%= label_tag 'Страна' %>
+    	<%= country_select("contract", "de", priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "MD")%>
+    	</p>
+    	<p>
+    	<%= label_tag 'Адрес' %>
+    	<%= text_field_tag 'address'%>
+    	</p>
+    	<%= label_tag 'E-mail' %>
+    	<%= email_field_tag'pemail'%>
+    	<%= label_tag 'Контактный телефон' %>
+    	<%= text_field_tag 'tel'%>
+      </div>		
+  	</div><!--panel-->   	  	
+  </div>

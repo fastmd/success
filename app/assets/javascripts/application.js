@@ -26,4 +26,6 @@
 //= require jquery-ui/autocomplete
 //= require autocomplete-rails
 
+//= require bootstrap-sprockets
+
 $(function(){ $(document).foundation(); });

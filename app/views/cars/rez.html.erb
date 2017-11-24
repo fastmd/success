@@ -1,3 +1,5 @@
+<% provide(:title, 'Бронь') %>
+
 <head>
   <meta charset="utf-8">
   <title>jQuery UI Accordion - Default functionality</title>
@@ -174,130 +176,64 @@ document.getElementById("#clname").disabled=true;
   </script>
 </head>
 
-<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
-<div class="row">
-  <div class="large-4 columns">
-  	<%= form_tag 'rezdoc.doc' do %>
-  	  <div class="panel">
-    
-    <%
-  	 if Contract.maximum(:id) != nil
-  	 	conmax = Contract.maximum(:id)
-  	 else 
-  	 	conmax = 0
-  	 end		
-  	%>
-  		<%= label_tag 'Номер №' %>
-    	<%= text_field_tag 'cnum', conmax + 1 , :readonly => true%>
-    	
-    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>
-    		Создать нового клиента </label></a>
-    		<a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2"  %>
-    			Поиск клиента</label></a>
-    	<%= label_tag 'ФИО и дата рождения клиента',"", :id=>"lclinf"%> 
-    	<%= text_field_tag 'cli_info', "" , :readonly => true%>	 
-    	<%=label_tag 'Имя клиента',"", :id => "clname" %>
-    	<!-- <%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
-    	
-    	<%= hidden_field_tag :client_id ,:id => "cli_id" %> -->
-    	<%= hidden_field_tag :cli_id ,:id => "cli_id" %>
-    	<%= hidden_field_tag :flag,1  %>
-    	<%= label_tag params[:sname] %>
-    	<%= label_tag 'Залог' %>
-    	<%= text_field_tag 'doc_sum',"",:onkeyup =>"SetDayPrice (event);"%>
-    	<!-- <%= label_tag 'Цена в день' %>
-    	<input size="40" value="1" onkeyup="SetTotalPrice (event);" id="daycost" /> 
-    	<%= label_tag 'Гарантийная сумма' %>
-    	<%= text_field_tag 'garant_summ'%> -->
-    	
-    	<p>
-  		</p>
-  	
-    	<%= label_tag 'Номер автомобиля' %>
-    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
-    	<%= label_tag 'Дата начала брони' %>
-    	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);"%>
-    	<!-- <%= label_tag 'Время начала брони' %>
-    	<%= text_field_tag 'sttime', Time.now.strftime('%R') %> -->
-    	<%= label_tag 'Кол-во дней' %>
-    	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
-    	<!-- <%= text_field_tag 'dni',1  %> -->
-    	
 
-    <%= label_tag 'Дата окончания договора'%>
-    <%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);"%>
-    <!-- 	<%= label_tag 'Время окончания ,'%>
-    	<%= text_field_tag 'endtime', Time.now.strftime('%R') %> -->
-    	<%= label_tag 'Менеджер' %>
-    	<%= text_field_tag 'user', current_user.username, :readonly => true%>
-	<center><%= submit_tag 'Печать' %>
-		
-		</center>
-		
-	</div>
+<div class="row">
+  <%= form_tag 'rezdoc.doc' do %>	
+  <div class="large-4 columns">  	
+  	  <div class="panel panel-info">
+  	  	<div class="panel-heading"><strong>Новая бронь:</strong></div>
+  	  	<div class="panel-body">
+	    
+	    	<% if Contract.maximum(:id) != nil then conmax = Contract.maximum(:id) else conmax = 0 end %>
+	  		<%= label_tag 'Номер №' %>
+	    	<%= text_field_tag 'cnum', conmax + 1 , :readonly => true%>
+	    	
+	    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a>
+	    	<a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>
+	    	<%= label_tag 'ФИО и дата рождения клиента',"", :id=>"lclinf"%> 
+	    	<%= text_field_tag 'cli_info', "" , :readonly => true%>	 
+	    	<%=label_tag 'Имя клиента',"", :id => "clname" %>
+	    	<!-- <%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
+	    	
+	    	<%= hidden_field_tag :client_id ,:id => "cli_id" %> -->
+	    	<%= hidden_field_tag :cli_id ,:id => "cli_id" %>
+	    	<%= hidden_field_tag :flag,1  %>
+	    	<%= label_tag params[:sname] %>
+	    	<p>
+	    	<%= label_tag 'Номер автомобиля' %>
+	    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
+	    	</p>
+	    	<p>
+	    	<%= label_tag 'Дата начала брони' %>
+	   	    <%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);"%> 
+	 <!--    	<%= date_field_tag :nstdate, Date.today.to_formatted_s(:year_month_day), :id => "dt",:onchange =>"GetChar (event);" %> -->
+	    	</p>
+	    	<!-- <%= label_tag 'Время начала брони' %>
+	    	<%= text_field_tag 'sttime', Time.now.strftime('%R') %> -->
+	    	<%= label_tag 'Кол-во дней' %>
+	    	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
+	    	<!-- <%= text_field_tag 'dni',1  %> -->
+		    <%= label_tag 'Дата окончания брони'%>
+		    <%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);"%>    	   	
+	    	<%= label_tag 'Залог' %>
+	    	<%= text_field_tag 'doc_sum',"",:onkeyup =>"SetDayPrice (event);"%>
+	    	<!-- <%= label_tag 'Цена в день' %>
+	    	<input size="40" value="1" onkeyup="SetTotalPrice (event);" id="daycost" /> 
+	    	<%= label_tag 'Гарантийная сумма' %>
+	    	<%= text_field_tag 'garant_summ'%> -->
+	    <!-- 	<%= label_tag 'Время окончания ,'%>
+	    	<%= text_field_tag 'endtime', Time.now.strftime('%R') %> -->
+	    <!--	<%= label_tag 'Менеджер' %>
+	    	<%= text_field_tag 'user', current_user.username, :readonly => true%> -->
+			<center><%= submit_tag('Печать', class: "btn btn-primary") %></center>
+			
+		</div> <!--panel-body--->    
+	</div> <!--panel-->
  </div>
+ <% end %>
+    
+ <%= render 'cars/clients' %>
+ <%= render 'cars/newclient' %>
   
-  
-    <div class="large-7 columns">
-  	<div id="pan2" class="panel">
-  		
- <table id="m2">
-  <thead>
-    <tr>
-      <th>№</th>
-      <th>Имя</th>
-      <th>Фамилия</th>
-      <th>Дата рождения</th> 
-      <th>Телефон</th>
-    </tr>
-  </thead>
-  <tbody>
-  	<% @clients = Client.all %>
-  	<% @clients.each do |co| %>
-  	<tr>
-  	<td><button tiny onclick="myFunction(<%= co.id %>,'<%= co.sname%> <%= co.name%> <%= co.dn%>')">
-  		OK</button tiny></td>
-  	<td><%= co.name%></td>
-  	<td><%= co.sname%></td>
-  	<td><%= co.dn%></td>
-  	<td><%= co.tel%></td>
-  	</tr>
-  	
-  	<% end %>
-  
-  </tbody>
-</table>
-  	</div>
-  	</div>
-  
-  <div class="large-6 columns">
-  	<div id="pan1" class="panel">
-  		
-  		<%= label_tag 'Фамилия' %>
-    	<%= text_field_tag 'surname'%>
-    	<%= label_tag 'Имя' %>
-    	<%= text_field_tag 'name'%>
-    	<%= label_tag 'Отчество' %>
-    	<%= text_field_tag 'fname'%>
-    	<%= label_tag 'Серия и номер паспорта' %>
-    	<%= text_field_tag 'pseria'%>
-    	<%= label_tag 'Дата выдачи' %>
-    	<%= text_field_tag 'dn',DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%>
-    	<%= label_tag 'Персональный номер' %>
-    	<%= text_field_tag 'idnp'%>
-    	<%= label_tag 'Год рождения'%>
-    	<%= text_field_tag 'bdate',DateTime.now.strftime('%d.%m.%Y'),:id => "dt3" %>
-    	<%= label_tag 'Страна проживания' %>
-    	<%= country_select("contract", "country", 
-    	priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "MD")%>
-    	<%= label_tag 'Адрес проживания' %>
-    	<%= text_field_tag 'address'%>
-    	<%= label_tag 'E-mail' %>
-    	<%= text_field_tag 'pemail'%>
-    	<%= label_tag 'Контактный телефон' %>
-    	<%= text_field_tag 'tel'%>
-  	</div>
-  	<% end %>
-  	</div>
-</div>
+</div> <!--row-->
 

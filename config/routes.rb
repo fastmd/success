@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   
-  get 'clients/index'
-
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+  get 'clients/index'
+  
   devise_for :users
   get 'welcome/index'
   get "car/smonth/:num" => 'cars#smonth'
@@ -27,14 +27,21 @@ Rails.application.routes.draw do
   
   post "contract_to_arh" => 'cars#contract_to_arh'
   post "car/contractnew" => 'cars#contractnew'
+  get "car/contractnew" => 'cars#contractnew'
   post "car/contr" => 'cars#contr'
   post "contracts/:id/contr" => 'contracts#contr'
   post "contracts/:id/show" => 'contracts#show'
-  post "client/new" => 'clients#new'
-  
+
+  get 'clients/new'
+  post 'clients/new'
   
   post "tehservices/newto" => 'tehservices#newto'
   post "tehservices/new" => 'tehservices#new'
+  
+  get 'cars/smonth'
+  post 'cars/smonth'
+  get 'cparams/show'
+  post 'cparams/show'  
   
   #post "clients/:client" => 'clients#update'
   # The priority is based upon order of creation: first created -> highest priority.

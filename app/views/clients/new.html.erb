@@ -1,3 +1,5 @@
+<% provide(:title, 'Новый клиент') %>
+
 <head>
   <meta charset="utf-8">
   <title>jQuery UI Accordion - Default functionality</title>
@@ -68,49 +70,60 @@ document.getElementById("#clname").disabled=true;
   
   </script>
 </head>
-<%= button_to "Назад", clients_path,:method => :get, :class=>"button tiny"%>
-
+ 	
   <div class="row">
-  <div class="large-6 columns">
-  <div class="panel">
-  	<p>Новый клиент</p>
-  	<% @my_arr = [1,2,3,4,5]%>
-  	<%= form_for :client, url: clients_path do |f| %>
-  	<%= f.label :"Фамилия"%>
-  	<%= f.text_field :sname%>
-  	<%= f.label :"Имя"%>
-  	<%= f.text_field :name%>
-  	<%= f.label :"Отчество"%>
-  	<%= f.text_field :fname%>
-  	<%= f.label 'Серия и номер паспорта' %>
-    <%= f.text_field :pseria %>
-    <%= f.label 'Дата выдачи' %>
-    <%= f.text_field :dn,:value => DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%>
-    <%= f.label 'Персональный номер' %>
-    <%= f.text_field :idnp%>
-    </div>
-    </div>
+  	<div id="pan1" class="panel panel-info">
+  	  <div class="panel-heading"><strong>Новый клиент:</strong></div> 		
+	  <div class="panel-body">
+	  	  <%= form_for :client, url: clients_path do |f| %>
+	  	  	
+		  <div class="large-6 columns">
+		  <div class="panel  panel-default">		  	
+		  	<div class="panel-body">
+			  	<%= f.label :"Фамилия"%>
+			  	<%= f.text_field :sname%>
+			  	<%= f.label :"Имя"%>
+			  	<%= f.text_field :name%>
+			  	<%= f.label :"Отчество"%>
+			  	<%= f.text_field :fname%>
+			  	<%= f.label 'Серия и номер паспорта' %>
+			    <%= f.text_field :pseria %>
+			    <%= f.label 'Дата рождения'%>
+			    <%= date_field_tag :bdate, Date.today.to_formatted_s(:year_month_day) %> 
+			<--    <%= f.date_select :bdate %> --> 			    
+			    <%= f.label 'Дата выдачи' %>
+			    <%= f.text_field :dn,:value => DateTime.now.strftime('%d.%m.%Y'),:id => "dt2"%>
+			</div>
+		    </div>
+		    </div>
     
-    <div class="large-6 columns">
-  <div class="panel">
-    <%= f.label 'Год рождения'%>
-    <%= f.text_field :bdate,:value => DateTime.now.strftime('%d.%m.%Y'),:id => "dt3" %>
-    <%= f.label 'Страна проживания' %>
-    <%= f.country_select(:country, 
-    priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "MD")%>
-    <%= f.label 'Адрес проживания' %>
-   	<%= f.text_field :address %>
-   	<%= f.label 'E-mail' %>
-   	<%= f.text_field :pemail %>
-   	<%= f.label 'Контактный телефон' %>
-   	<%= f.text_field :tel %>
-   	<%= f.label 'Примечание' %>
-   	<%= f.text_area :comments,size: "30x4" %>
-  	</div>
-  	</div>
-  	</div>
-  	<center><%= f.submit "Содать клиента" %></center>
-  	<% end %>
+		    <div class="large-6 columns">
+		    <div class="panel  panel-default">
+		    <div class="panel-body">
+			    <%= f.label 'IDNP' %>
+			    <%= f.text_field :idno%>		    	
+		    	<p>	
+			    <%= f.label 'Страна' %>
+			    <%= f.country_select(:de, priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"],selected: "MD")%>
+			    </p>
+			    <%= f.label 'Адрес' %>
+			   	<%= f.text_field :address %>
+			   	<%= f.label 'E-mail' %>
+			   	<%= f.text_field :pemail %>
+			   	<%= f.label 'Контактный телефон' %>
+			   	<%= f.text_field :tel %>
+			   	<%= f.label 'Примечание' %>
+			   	<%= f.text_area :comments,size: "30x2" %>
+			</div>
+		  	</div>
+		  	</div>
+		  	
+  			<center><%= f.submit "Создать клиента", class: "btn btn-primary" %></center>
+  			<% end %>
+  	  </div> <!--panel body-->	
+    </div> <!--panel-->		
+ </div><!--row-->   	  	
+ 	
   	
   
 	

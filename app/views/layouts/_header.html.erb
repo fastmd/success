@@ -1,0 +1,37 @@
+<header class="navbar navbar-fixed-top">
+  <div class="navbar-inner navbar-inverse">
+    <div class="container-fluid">
+      <div class="row">	
+      <%= link_to "AUTO10", '#', id: "logo" %>
+        <nav>
+            <ul class="nav nav-pills pull-right">           
+          	<% if current_user.nil? then %>
+	            <li><%= link_to "Сегодня: #{@day_week_ru} #{DateTime.now.strftime('%d.%m.%Y')}", '#' %></li>
+          	<% else %>
+	            <li><%= link_to "Текущий курс: #{if !Cparam.last.nil? then Cparam.last.curs else 1 end} MDL за 1 EUR", '#' %></li>
+	            <li><%= link_to "Сегодня: #{@day_week_ru} #{DateTime.now.strftime('%d.%m.%Y')}", '#' %></li>
+            <% end %>
+            </ul>
+          </nav>
+      </div>                
+      </div>
+   </div>
+  <div class="navbar-default">  
+   <div class="container-fluid">
+   	  <div class="row">	
+   	  <% if !current_user.nil? %>
+        <%= image_tag('octo.jpg', :alt => "image", :width => "20", :height => "20") %>
+        <%= "Пользователь: #{current_user.email}" %>  
+        <%= link_to "Выход", destroy_user_session_path, method: :delete, :class => "glyphicon glyphicon-hand-left" %>
+      <% end %>
+      </div>        
+  </div>
+ </div>
+ <div class="navbar-default">  
+   <div class="container-fluid">
+   	  <div class="row">
+		<%= render 'layouts/nvbar' %>
+      </div>        
+  </div>
+ </div> 
+</header>

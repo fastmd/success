@@ -1,3 +1,5 @@
+<% provide(:title, 'ТО') %>
+
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   
@@ -16,17 +18,14 @@ $(document).ready( function () {
  
 </script> 
 
-<div class="row">
-	
+<div class="row">	
   <div class="medium-3 columns">
-  	<a><%= button_to "Назад", root_path,:method => :get, :class=>"button tiny" %></a>
-  </div>
-  <div class="medium-3 columns">
-  	<a><% button_to "Добавить ТО",tehservices_new_path,:method => :get, :class=>"button tiny" %> </a>
+  	<a><% button_to "Добавить ТО",tehservices_new_path,:method => :get, :class=>"btn btn-primary" %> </a>
   </div>
 </div>
 
-		<table id=id="mcl">
+	<div class="table-responsive">	
+		<table id="mcl" class="table table-bordered table-condensed table-hover">			
 			<thead>
 				<tr>
 					<th>No</th>
@@ -36,8 +35,7 @@ $(document).ready( function () {
 					<th>Необходимость замены<br> масла и фильтров</th>
 					<th>Стоимость обслуживания<br> за текущий месяц</th>
 					<th>Стоимость обслуживания<br> за текущий год</th>
-					<th>Действие</th>
-					
+					<th>Действие</th>					
 				</tr>
 			</thead>
 			<tbody>	
@@ -105,27 +103,20 @@ $(document).ready( function () {
 							%>
 							<% @i = mobil.id %>
 							<tr><td><%= mobil.id %></td>
-							<td><%= link_to mobil.marca + " " + mobil.gnum,
-							:controller => :tehservices, :action => :list ,:num => @i %></td>
+							<td><%= link_to mobil.marca + " " + mobil.gnum,:controller => :tehservices, :action => :list ,:num => @i %></td>
 							<td><%= wl %></td>
 							<td><%= tdate %></td>
 							<% if zm == 'ДА' %>
-							<td bgcolor='red' >
-								<%= zm %> 
-							</td>	
+								<td bgcolor='red' ><%= zm %></td>	
 							<% else %>
-							<td>
-								<%= zm %>
-							</td>	
+								<td><%= zm %></td>	
 							<% end %>
-							
-							
 							<td><%= @smprice %></td>
 							<td><%= @syprice %></td>
-							<td><% @i = mobil.id %>
-		<%= button_to "ТО", :controller => :tehservices, :action => :new ,:num => @i %>
+							<td><% @i = mobil.id %><%= button_to "ТО", :controller => :tehservices, :action => :new ,:num => @i, class: "btn btn-primary" %>
 							</td>	
 							</tr>	
 					<% end %>
 			</tbody>	
-			</table>
+		</table>
+	</div>	

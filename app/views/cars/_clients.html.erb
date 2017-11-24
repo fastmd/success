@@ -1,0 +1,33 @@
+ <div class="large-7 columns">
+   <div id="pan2" class="panel panel-info">
+  	<div class="panel-heading"><strong>Клиенты:</strong></div>
+  	<div class="panel-body">  		
+	 <table id="m2" class="table table-bordered table-condensed table-hover">
+	  <thead>
+	    <tr>
+	      <th>№</th>
+	      <th>Имя</th>
+	      <th>Фамилия</th>
+	      <th>Дата рождения</th> 
+	      <th>Телефон</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	  	<% @clients = Client.all %>
+	  	<% @clients.each do |co| %>
+		  	<tr>
+		  	<td><button type="button" class="btn btn-info  btn-xs" onclick="myFunction(<%= co.id %>,'<%= co.sname%> <%= co.name%> <%= co.dn%>')">
+		  		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+                </button>
+		  	</td>
+		  	<td><%= co.name%></td>
+		  	<td><%= co.sname%></td>
+		  	<td><%= co.dn%></td>
+		  	<td><%= co.tel%></td>
+		  	</tr> 	
+	  	<% end %>  
+	  </tbody>
+	</table>
+   </div> <!--panel-body--> 
+  </div> <!--panel--> 
+</div>

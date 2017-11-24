@@ -1,8 +1,9 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
-
-gem 'therubyracer'
+gem 'libv8', '~> 3.16.14.15', submodules: true 
 gem 'gon'
+gem 'tzinfo', '~> 1.2', '>= 1.2.4'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem "combined_time_select"
 gem 'jquery-timepicker-rails'
 gem 'wicked_pdf'
@@ -16,6 +17,9 @@ gem 'rails-jquery-autocomplete'
 gem 'exception_notification'
 gem 'prawn'
 gem 'caracal'
+gem 'activesupport'
+gem 'railties'
+gem 'rubysl-tsort'
 
 gem 'devise'
 gem 'rails_admin'
@@ -32,7 +36,7 @@ gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
+gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -52,6 +56,11 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+gem 'bootstrap-sass', '~> 3.3.6'
+gem 'autoprefixer-rails'
+gem 'will_paginate-bootstrap'
+gem 'simple_form', '~> 3.4'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

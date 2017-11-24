@@ -11,15 +11,16 @@
  * file per style scope.
  *
  *= require_self
- *= require foundation_and_overrides
  *= require_tree .
-*= require jquery.dataTables
-*= require jquery.timepicker.css
-*= require jquery-ui
-*= require jquery-ui-timepicker-addon
+ *= require jquery.dataTables
+ *= require foundation_and_overrides
+ *= require jquery.timepicker.css
+ *= require jquery-ui
+ *= require jquery-ui-timepicker-addon
 */
 /*= require jquery-ui*/
 
+/*
 @media print {
   body {
     background-color: #FFF;
@@ -45,4 +46,4 @@
 	width: 40px;
 	height: 16px;
 	
-}
+}*/

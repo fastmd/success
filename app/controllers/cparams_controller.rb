@@ -1,5 +1,10 @@
 class CparamsController < ApplicationController
   
+  def show
+   #---curs------------- 
+   @cparam = Cparam.last    
+  end
+  
   def new
     @cpar = Cparams.new
   end
@@ -10,7 +15,7 @@ class CparamsController < ApplicationController
     redirect_to root_path
   end
   
-  private
+private
   def cparam_params
     params.require(:cparam).permit(:curs)
   end

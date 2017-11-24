@@ -1,3 +1,5 @@
+<% provide(:title, 'Клиенты') %>
+
 <!-- DataTables CSS -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   
@@ -16,51 +18,43 @@ $(document).ready( function () {
  
 </script> 
 
-<div class="row">
-	
-			<div class="small-2 large-4 columns">
-				<%= button_to "Назад", root_path,:method => :get, :class=>"button tiny"%>
-			</div>
-  			<div class="small-4 large-4 columns">
-  				<center><%=  button_to 'Новый клиент',client_new_path, :class=>"button tiny" %></center>
-  			</div>
-  			<div class="small-6 large-4 columns">...</div>	  
-        </div>
-
-<center>
-<table id="mcl" border="0" cellspacing="5" cellpadding="5">
+  <div class="table-responsive">	
+	<table id="mcl" class="table table-bordered table-condensed table-hover">	
 		<thead>
 			<tr>
-			   <th>Действие</th>
-			   <th>Действие</th>
+			   <th>......</th>
 			   <th>Фамилия</th>
 			   <th>Имя</th>
+			   <th>Отчество</th>
+			   <th>Паспорт</th>
 			   <th>Дата рождения</th>
-			   <th>Серия</th>
-			   <th>Телефон</th>
-			   <th>Адрес</th>
-			   <th>IDNO</th>
 			   <th>Дата выдачи</th>
+			   <th>IDNP</th>
+			   <th>Страна</th>			   
+			   <th>Адрес</th>
 			   <th>E-mail</th>
+			   <th>Телефон</th>
 			</tr>	
 		</thead>
 		<tbody>
-					<% @clients.each do |cl| %>
+			<% @clients.each do |cl| %>
 					<tr>
-		<td><%= button_to "Изменить",edit_client_path(cl),:method => :get %></td>
-		<td><%= button_to "Контракт",edit_contract_path(cl),:method => :get %></td>
-						<th><%= cl.sname %></th>
-						<th><%= cl.name %></th>
-						<td><%= cl.bdate %></td>
+						<td><%= link_to " " , edit_client_path(cl),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать клиента' %>
+							<%= link_to " " , edit_contract_path(cl),:method => :get, :class=> "glyphicon glyphicon-file", :title => 'Контракт' %></td>
+						<td><%= cl.sname %></td>
+						<td><%= cl.name %></td>
+						<td><%= cl.fname %></td>
 						<td><%= cl.pseria %></td>
-						<td><%= cl.tel %></td>
-						<td><%= cl.address %></td>
-						<td><%= cl.idno %></td>
+						<td><%= cl.bdate %></td>
 						<td><%= cl.dn %></td>
-						<td><%= cl.pemail %></td>
+						<td><%= cl.idno %></td>
+						<td><%= cl.de %></td>
+						<td><%= cl.address %></td>
+						<td><%= cl.pemail %></td>						
+						<td><%= cl.tel %></td>						
 					</tr>		
-					<% end %>
+			<% end %>
 			
 		</tbody>
-</table>
-</center>
+	</table>
+  </div>
