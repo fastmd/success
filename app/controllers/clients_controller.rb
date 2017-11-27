@@ -34,7 +34,8 @@ class ClientsController < ApplicationController
  end  
    
  def index
-    @clients = Client.all.order(:sname,:name,:fname,:bdate)
+    @clients = Client.all.order(sname: :desc, name: :desc, fname: :desc, bdate: :desc)
+    @client = Client.new
  end
  
  private
@@ -50,10 +51,10 @@ class ClientsController < ApplicationController
     client.address = client_params[:address]
     client.pseria = client_params[:pseria]
     client.idno = client_params[:idno]
-    client.dn = client_params[:dn]
+    if params[:bdate].nil? or params[:bdate].empty? then client.bdate = nil else client.bdate = (params[:bdate].to_date).to_formatted_s(:dday_month_year) end
+    if params[:dn].nil? or params[:dn].empty? then client.dn = nil else client.dn = (params[:dn].to_date).to_formatted_s(:dday_month_year) end
     client.de = client_params[:de]
     client.tel = client_params[:tel]
-    client.bdate = client_params[:bdate]
     client.pemail = client_params[:pemail]
     client.comments = client_params[:comments]
     client    
@@ -62,7 +63,7 @@ class ClientsController < ApplicationController
   def client_save
     @flag = 0
     t = Client.where("UPPER(sname) = ? and UPPER(name) = ? and UPPER(fname) = ? ", (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase).count
-    if (t != 0) then
+    if (t != 0 and @client.id.nil?) then
       flash[:warning] = "Такой объект уже существует. Проверьте правильность ввода."        
     else
       begin

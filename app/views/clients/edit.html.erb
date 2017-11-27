@@ -71,28 +71,21 @@ document.getElementById("#clname").disabled=true;
   </script>
 </head>
 
-  <div class="row">
-  	<div class="panel panel-info">
-  	  <p><div class="panel-heading"><strong>Редактирование клиента:</strong></div></p>	
-		  	
-		<%= form_for @client do |f| %>
-
+   <div class="row">
+  	<div id="pan1" class="panel panel-info">
+  	  <div class="panel-heading"><strong>Редактирование клиента:</strong></div> 		
+	  <div class="panel-body">
+	  	  <%= simple_form_for @client do |f| %>
+	  	  	
 		  <div class="large-6 columns">
 		  <div class="panel  panel-default">		  	
 		  	<div class="panel-body">
-			  	<%= f.label :"Фамилия"%>
-			  	<%= f.text_field :sname%>
-			  	<%= f.label :"Имя"%>
-			  	<%= f.text_field :name%>
-			  	<%= f.label :"Отчество"%>
-			  	<%= f.text_field :fname%>
-			  	<%= f.label 'Серия и номер паспорта' %>
-			    <%= f.text_field :pseria %>
-			    <%= f.label 'Дата рождения'%>
-			<!--    <%= f.text_field :bdate,:value => if @client.bdate.nil? then Date.today.to_formatted_s(:dday_month_year) else @client.bdate.to_date.to_formatted_s(:dday_month_year) end,:id => "dt3" %> -->
-			    <%= f.date_select :bdate, @client.bdate.to_date %> 			    
-			    <%= f.label 'Дата выдачи' %>
-			    <%= f.text_field :dn,:value => if @client.dn.nil? then Date.today.to_formatted_s(:dday_month_year) else @client.dn.to_date.to_formatted_s(:dday_month_year) end, :id => "dt2"%>
+					<%= f.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
+					<%= f.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
+					<%= f.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25} %>
+					<%= f.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25} %>
+                    <label for='comment' class="control-label">Дата рождения</label><%= date_field_tag 'bdate', if @client.bdate.nil? then nil else nil end, class: "form-control" %>
+                    <label for='comment' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'dn',if @client.dn.nil? then nil else @client.dn.to_date end, class: "form-control" %>
 			</div>
 		    </div>
 		    </div>
@@ -100,27 +93,20 @@ document.getElementById("#clname").disabled=true;
 		    <div class="large-6 columns">
 		    <div class="panel  panel-default">
 		    <div class="panel-body">
-			    <%= f.label 'IDNP' %>
-			    <%= f.text_field :idno%>		    	
-		    	<p>	
-			    <%= f.label 'Страна' %>
-			    <%= f.country_select(:de, priority_countries: ["RU", "MD", "IT","RO","GB","DE","FR","es","nl"], selected: if !@client.de.nil? then @client.de else "MD" end)%>
-			    </p>
-			    <%= f.label 'Адрес' %>
-			   	<%= f.text_field :address %>
-			   	<%= f.label 'E-mail' %>
-			   	<%= f.text_field :pemail %>
-			   	<%= f.label 'Контактный телефон' %>
-			   	<%= f.text_field :tel %>
-			   	<%= f.label 'Примечание' %>
-			   	<%= f.text_area :comments,size: "30x2" %>
+					<%= f.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25} %>
+					<%= f.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true %>
+					<%= f.input :address, label: "Адрес", as: :string, :input_html => { :size => 50} %>
+					<%= f.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25} %>
+					<%= f.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25} %>
+					<%= f.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50} %>		   	
 			</div>
 		  	</div>
 		  	</div>
-  
-        	<center><%= f.submit "Сохранить", class: "btn btn-primary" %></center> 	
-  	     <% end %>
-  
+	  			<div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %></div>	
+	  				  	
+  			<% end %>
+  	  </div> <!--panel body-->	
     </div> <!--panel-->		
-  </div><!--row-->  
+ </div><!--row-->   
+ 
    	
