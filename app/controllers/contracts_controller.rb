@@ -142,14 +142,13 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
     @car = @contract.car
     @client = @contract.client
-    mmail = "octa_c@moldelectrica.md;sergelus@yandex.ru"
-    #Usernot.send_email(mmail,@contract.id).deliver
-    @contract.id do |format|
-      format.html # show.html.erb
-      format.xml { render :xml => @item }    
-      format.pdf do
-          render :pdf => 'Coming soon...', :layout => false
-      end
+    respond_to do |format|
+        format.html
+        if @contract.flag == 1 then 
+           format.pdf { send_data BronareReport.new.to_pdf(@contract,@car,@client), :type => 'application/pdf', :filename => "bronare_#{@contract.id}_#{@contract.cnum}.pdf" }
+        else
+           format.pdf { send_data ContractReport.new.to_pdf(@contract,@car,@client), :type => 'application/pdf', :filename => "contract_#{@contract.id}_#{@contract.cnum}.pdf" }  
+        end
     end
   end
   

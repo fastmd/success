@@ -36,6 +36,8 @@ Rails.application.routes.draw do
   
   get 'contracts/new'
   post 'contracts/new'
+  get 'contracts/show'
+  post 'contracts/show'  
   get 'contracts/edit'
   post 'contracts/edit'
   get 'contracts/destroy'

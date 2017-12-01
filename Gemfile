@@ -15,7 +15,6 @@ gem 'momentjs-rails'
 gem 'country_select'
 gem 'rails-jquery-autocomplete'
 gem 'exception_notification'
-gem 'prawn'
 gem 'caracal'
 gem 'activesupport'
 gem 'railties'
@@ -56,6 +55,15 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+
+if RUBY_PLATFORM == "i386-mingw32"
+   #this gem was asked by windows
+   gem 'wdm', '>= 0.1.0'
+end
+
+#gem for pdf
+gem 'prawn', '~> 2.2', '>= 2.2.2'
+gem 'prawn-table', '~> 0.2.2'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
