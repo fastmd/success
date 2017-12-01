@@ -1,4 +1,5 @@
 class ClientsController < ApplicationController
+ before_action :redirect_cancel, only: [:create, :update]
   
  def new  
  end
@@ -31,7 +32,25 @@ class ClientsController < ApplicationController
     else
       render 'edit'
     end
- end  
+ end
+ 
+ def destroy
+    client = Client.find(params[:id])
+    ss_count = client.contracts.count
+    if ss_count!=0 then 
+      flash[:warning] = "Нельзя удалить клиента #{client.id} #{client.sname} #{client.name} #{client.fname}, для которого существуют контракты (#{ss_count} шт.)" 
+    else 
+      begin
+        if client.destroy! then 
+          flash.discard
+          flash[:notice] = "Клиент #{client.id} #{client.sname} #{client.name} #{client.fname} удален."         
+        end
+      rescue
+        flash[:warning] = "Не удалось удалить клиента #{client.id} #{client.sname} #{client.name} #{client.fname}."             
+      end
+    end
+    redirect_to clients_index_path
+ end    
    
  def index
     @clients = Client.all.order(sname: :desc, name: :desc, fname: :desc, bdate: :desc)
@@ -62,9 +81,12 @@ class ClientsController < ApplicationController
   
   def client_save
     @flag = 0
-    t = Client.where("UPPER(sname) = ? and UPPER(name) = ? and UPPER(fname) = ? ", (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase).count
-    if (t != 0 and @client.id.nil?) then
-      flash[:warning] = "Такой объект уже существует. Проверьте правильность ввода."        
+    t = Client.where("(? is null or id !=?) and UPPER(sname) = ? and UPPER(name) = ? and UPPER(fname) = ? ", 
+                      @client.id, @client.id, (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase).count
+    c = Client.where("(? is null or id !=?) and UPPER(sname) = ? and UPPER(name) = ? and UPPER(fname) = ? ", 
+                      @client.id, @client.id, (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase).last                      
+    if (t != 0) then
+      flash[:warning] = "Клиент № #{c.id} #{c.sname} #{c.name} #{c.fname} уже существует. Проверьте правильность ввода."        
     else
       begin
         if @client.save! then 
@@ -77,5 +99,12 @@ class ClientsController < ApplicationController
       end
     end      
   end
+  
+  def redirect_cancel
+    if params[:cancel] then
+      flash.discard 
+      redirect_to clients_index_path
+    end   
+  end     
 
 end

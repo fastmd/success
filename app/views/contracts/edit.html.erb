@@ -1,6 +1,8 @@
+<% provide(:title, 'Контракт') %>
+
 <head>
+<%= include_gon %>	
   <meta charset="utf-8">
-  <%= include_gon %>
   <title>jQuery UI Accordion - Default functionality</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -8,7 +10,6 @@
   <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script>
-  
   function matrixArray(rows,columns){
   var arr = new Array();
   for(var i=0; i<columns; i++){
@@ -23,17 +24,19 @@
   function SetDayPrice (event){
              
              var ptmp = $("#temp").val();
-             var summ = $("#doc_sum").val()/ptmp;
-             var car = $("#car_num").val();
+             var summ = $("#summ").val()/ptmp;
+             var car = $("#car_id").val();
              var price =  <%= Car.count %>;
              var matr = matrixArray(<%= Car.count %>,12);
              var count = <%= Car.count %>;
              var num = Number(0);
              <% i = 1%>
              
-           	 var k = 1;
-  			 $("#daycost").val(gon.carints[car][k+1]);
-  		    while (k<13)
+  			 
+  		//	for (var k=0; k <= 10;k += 2)
+  		var k = 1;
+  		$("#daycost").val(gon.carints[car][k+1]);
+  		while (k<13)
   			{
   				if (gon.carints[car][k] <= Number(ptmp))
   				{
@@ -41,11 +44,10 @@
   					$("#daycost").val(gon.carints[car][k+1]);
   				}
             	 k += 2;   
-            } 		
-             SetTotalPrice(event);
-             
+            } 	
+        
+        SetTotalPrice(event);             
         }    
-
 
 	function SetTotalPrice (event){
             var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
@@ -54,12 +56,11 @@
              var ptmp = $("#temp").val();
              var summ = ptmp*$("#daycost").val();
              
-             $("#doc_sum").val(summ);	
-             
-        }
+             $("#summ").val(summ);	            
+    }
 
     
-        function GetChar (event){
+    function GetChar (event){
             var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
             
              $("#dni").val($("#temp").val());
@@ -75,8 +76,8 @@
              $("#dt1").val(days);
              $("#dt1").val($("#dt1").val() +"."+(mm));
              $("#dt1").val($("#dt1").val() +"."+ (d.getFullYear()) );
-             SetDayPrice(event);
-        }
+             SetDayPrice(event);     
+    }
     
     function GetEndDate (event){
             var chCode = ('charCode' in event) ? event.charCode : event.keyCode;
@@ -98,45 +99,38 @@
 		 var days = diff/1000/60/60/24;
 		 $("#temp").val(days)
 			SetDayPrice(event);
-        }
+    }
   
   
-    function myFunction(a,b) {
-    
-    var text = a;
-   
-    $("#cli_id").val(text);
-    $("#cli_info").val(b);
-}
+    function myFunction(a,b) 
+    {  
+	    var text = a;   
+	    $("#client_id").val(a);
+	    $("#client_info").val(b);
+    }
 
-$(document).ready( function () {
-
-    $('#m2').dataTable( {
-    	 "order": [[ 1, "desc" ]]
-} );
-} );
-
-
-  
+	 $(document).ready( function () {
+	    $('#m2').dataTable( {
+	    	 "order": [[ 1, "asc" ],[ 2, "asc" ],[ 3, "asc" ]]
+	 } );
+	} );
+ 
   $(function() {
     $("#pan1").toggle()
-   // $("#pan2").toggle()
-   $("#rem2").toggle()
-    $("#clname").attr('disabled', 'disabled');
-    
+    $("#rem2").toggle()
+    $("#clname").attr('disabled', 'disabled');    
   });
   
   $(function() {
   $("#rem1").change( function() {
     $("#pan1").toggle()
     $("#pan2").toggle()
-     $("#lrem2").toggle()
+    $("#lrem2").toggle()
     $("#rem2").toggle()
-   // $("#clname").toggle()
     $("#pser").toggle()
     $("#clname").toggle()
     $("#lclinf").toggle()
-    $("#cli_info").toggle()
+    $("#client_info").toggle()
   });
   });
   
@@ -145,16 +139,16 @@ $(document).ready( function () {
     $("#pan2").toggle()
     $("#lrem1").toggle()
     $("#lclinf").toggle()
-     $("#cli_info").toggle()
+    $("#client_info").toggle()
     $("#rem1").toggle()
- //   $("#clname").toggle()
     $("#pser").toggle()
   });
   });
+  
   function disableElements()
-{
-document.getElementById("#clname").disabled=true;
-}
+  {
+   document.getElementById("#clname").disabled=true;
+  }
   
   $(function() {
     $( "#dt" ).datepicker({
@@ -166,6 +160,7 @@ document.getElementById("#clname").disabled=true;
       $( "#dt" ).datepicker( "option", "dateFormat", $( this ).val() );
     });
   });
+  
     $(function() {
     $( "#dt1" ).datepicker({
       changeMonth: true,
@@ -177,107 +172,81 @@ document.getElementById("#clname").disabled=true;
     });  
   });
   
-  $(function() {
-    $( "#dt2" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd.mm.yy' }).val();
-       
-    $( "#format" ).change(function() {
-      $( "#dt2" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });  
-  });
-  
-    $(function() {
-    $( "#dt3" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd.mm.yy' }).val();
-       
-    $( "#format" ).change(function() {
-      $( "#dt3" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });  
-  });
-  
   </script>
 </head>
  
-<div class="row">
-  <div class="large-4 columns">
-  	<%= form_tag '/car/contr.doc' do %>
-  	  <div class="panel">
-    
-    <%
-  	 if Contract.maximum(:id) != nil
-  	 	conmax = Contract.maximum(:id)
-  	 else 
-  	 	conmax = 0
-  	 end		
-  	%>
-  		<%= label_tag 'Менеджер' %>
-    	<%= text_field_tag 'user', current_user.username, :readonly => true%>
-  		<%= label_tag 'Номер контракта' %>
-    	<%= text_field_tag 'cnum', conmax + 1 , :readonly => true%>
+ <div class="row">
+ 	
+  <%= simple_form_for @contract do |f| %>	
+  <div class="large-4 columns"> 	
+  	  <div class="panel panel-info">
+  	  	<div class="panel-heading"><strong><%= if @contract.flag == 1 then "Редактирование брони № #{@contract.id}/#{@contract.cnum}" else "Редактирование контракта № #{@contract.id}/#{@contract.cnum}" end %></strong></div>
+  	  	<div class="panel-body">
+        
+    	<%= f.input :cnum, label: "Номер", as: :string %>
+    	<%= f.input :flag, :as => :hidden  %>    	
+    	  	    	
+    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a>
+	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	
+    	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname}" else "не указан" end , :readonly => true, class: "form-control" %>	   	
+    	<%= f.hidden_field :client_id , :id => "client_id" %>
     	
-    	<!-- ><a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>
-    		Создать нового клиента </label></a>
-    	<!-- 	<a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2"  %>
-    			Поиск клиента</label></a> -->
-    	<%= label_tag 'ФИО и дата рождения клиента',"ФИО клиента", :id=>"lclinf"%> 
-    	<%= text_field_tag 'cli_info', @cli.name + " " + @cli.sname, :readonly => true%>	 
-    	<%=label_tag 'Имя клиента',"", :id => "clname" %>
-    	<!-- <%= autocomplete_field_tag 'cur_name', params[:pseria], autocomplete_client_pseria_cars_path, :id_element => "#client_id",:id =>"pser", :size => 35 %>
+    	<%= hidden_field_tag 'vc', controller.controller_name %>
+    	<%= hidden_field_tag 'va', controller.action_name %>
+    	<%= hidden_field_tag 'flag', @contract.flag %>
+
+    	<%= f.input :order_date, :as => :hidden %>
+    	<%= f.input :user_id, :value => if @contract.user_id.nil? then current_user.id else @contract.user_id end ,:as => :hidden %>
+    	<%= f.association :user, label: "Агент", :label_method => lambda { |user| "#{user.username}"}, value_method: :id, include_blank: false, selected: if @contract.user.nil? then current_user.id else @contract.user.id end, :readonly => true %>
+
+    	<!--<%= f.association :car, label: "Авто",:label_method => lambda { |car| "#{car.marca}  #{car.gnum}"}, value_method: :id, include_blank: false, :onchange =>"GetChar (event);" %>-->
+    	<div class="form-group">
+          	<label for="car_id" class="control-label">Автомобиль</label>		
+    	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @contract.car_id), :onchange =>"GetChar (event);", include_blank: false, class: "form-control" %>
+    	</div>
+    	<div class="form-group">
+	    	<label for="stdate" class="control-label">Дата начала договора</label>
+	    	<%= text_field_tag 'stdate', @contract.stdate.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);", class: "form-control" %>
+    	</div> 
+         
+        <% if @contract.flag == 2 then %> 
+    	<%= f.input :sttime, as: :time ,label: "Время начала договора" , default: Time.parse(@contract.sttime.strftime('%R')) %>
+    	<% end %>
     	
-    	<%= hidden_field_tag :client_id ,:id => "cli_id" %> -->
-    	<%= hidden_field_tag :cli_id ,@cli.id,:id => "cli_id" %>
-    	<%= hidden_field_tag :flag,2  %>
-    	<%= label_tag params[:sname] %>
-    	<%= label_tag 'Сумма договора' %>
-    	<%= text_field_tag 'doc_sum',Car.first.int1price,:onkeyup =>"SetDayPrice (event);", :readonly => true%>
-    	<%= label_tag 'Цена в день' %>
-    	<input size="40" value=<%= Car.first.int1price %> onkeyup="SetTotalPrice (event);" id="daycost", readonly = true/>
-    	<%= label_tag 'Гарантийная сумма' %>
-    	<%= text_field_tag 'garant_summ'%>
-    	
-    	<p>
-  		</p>
-  	
-    	
-	</div>
- </div>
-  
-  
-    <div class="large-7 columns">
-  	<div id="pan2" class="panel">
-  		<%= label_tag 'Номер автомобиля' %>
-    	<%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }), :onchange =>"GetChar (event);" %>
-    	<%= label_tag 'Дата начала договора' %>
-    	<%= text_field_tag 'nstdate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);"%>
-    	
-    	<%= label_tag 'Время начала договора' %>
-    	<%= text_field_tag 'sttime', Time.now.strftime('%R') %>
-    	<%= label_tag 'Кол-во дней' %>
+  		<%= label_tag 'Кол-во дней' %>
     	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
-    	<!-- <%= text_field_tag 'dni',1  %>  -->
     	
+    	<div class="form-group">
+    		<label for="stdate" class="control-label">Дата окончания договора</label>
+    		<%= text_field_tag 'enddate', @contract.enddate.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);", class: "form-control" %>
+    	</div>
+    	
+    	<% if @contract.flag == 2 then %> 
+    	<%= f.input :endtime, as: :time ,label: "Время окончания договора" , default: Time.parse(@contract.endtime.strftime('%R')) %>    	
+    	<% end %>
+    	
+    	<%= f.input :garant_summ, label: "Гарантийная сумма", as: :integer %>
+    	 
+    	<%= label_tag 'Цена в день' %>
+    	<input size="40"  onkeyup="SetTotalPrice (event);" id="daycost", readonly = true/>
+    	
+        <% if @contract.flag == 2 then %> 
+    	<%= label_tag 'Сумма договора' %>
+    	<%= text_field_tag 'summ', @contract.summ ,:onkeyup =>"SetDayPrice (event);", :readonly => true %>
+    	<% end %> 
+   	
+	    <center><%= submit_tag('Сохранить', class: "btn btn-primary") %>  <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
+	    
+	  </div> <!--panel-body--->    
+	</div> <!--panel--> 	
+ </div>
 
-    	<%= label_tag 'Дата окончания договора'%>
-    	<%= text_field_tag 'enddate',DateTime.now.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);"%>
-    	<%= label_tag 'Время окончания договора'%>
-    	<%= text_field_tag 'endtime', Time.now.strftime('%R') %>
-    	
-	<center><%= submit_tag 'Печать',:method => :get,:class=>"button tiny" %>
-		</center>
- 
-  	</div>
-  	</div>
+ <%= render 'newclient' %>
+
+ <% end %>
+    
+ <%= render 'clients' %>
+
   
-  <div class="large-6 columns">
-  	<div id="pan1" class="panel">
-  		
-  	</div>
-  	<% end %>
-  	</div>
-</div>
-
+</div> <!--row--> 	
 

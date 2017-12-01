@@ -12,7 +12,7 @@
 <script>
 $(document).ready( function () {
     $('#mcl').dataTable( {
-    	 "order": [[ 1, "desc" ]]
+    	 "order": [[ 2, "asc" ],[ 3, "asc" ],[ 4, "asc" ]]
 } );
 } );
  
@@ -21,8 +21,9 @@ $(document).ready( function () {
   <div class="table-responsive">	
 	<table id="mcl" class="table table-bordered table-condensed table-hover">	
 		<thead>
-			<tr>
-			   <th>......</th>
+			<tr class="info">
+			   <th>ID</th>	
+			   <th>...............</th>
 			   <th>Фамилия</th>
 			   <th>Имя</th>
 			   <th>Отчество</th>
@@ -39,8 +40,11 @@ $(document).ready( function () {
 		<tbody>
 			<% @clients.each do |cl| %>
 					<tr>
+						<td><%= "#{cl.id}" %></td>
 						<td><%= link_to " " , edit_client_path(cl),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать клиента' %>
-							<%= link_to " " , edit_contract_path(cl),:method => :get, :class=> "glyphicon glyphicon-file", :title => 'Контракт' %></td>
+							<%= link_to " " , clients_destroy_path(:id => cl.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить клиента', data: { confirm: "Удалить клиента #{cl.id} #{cl.sname} #{cl.name} #{cl.fname}?" } %>
+							<%= link_to " " , new_contract_path(:client_id => cl.id),:method => :get, :class=> "glyphicon glyphicon-file", :title => 'Создать контракт' %>
+							<%= link_to " " , contracts_newbroni_path(:client_id => cl.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %></td>
 						<td><%= cl.sname %></td>
 						<td><%= cl.name %></td>
 						<td><%= cl.fname %></td>

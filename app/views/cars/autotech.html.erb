@@ -12,7 +12,7 @@
 <script>
 $(document).ready( function () {
     $('#mcl').dataTable( {
-    	 "order": [[ 1, "desc" ]]
+    	 "order": [[ 1, "asc" ]]
 } );
 } );
  
@@ -27,8 +27,8 @@ $(document).ready( function () {
 	<div class="table-responsive">	
 		<table id="mcl" class="table table-bordered table-condensed table-hover">			
 			<thead>
-				<tr>
-					<th>No</th>
+				<tr  class="info">
+					<th>ID</th>
 					<th>Автомобиль</th>
 					<th>Текущий пробег</th>
 					<th>Дата последнего ТО</th>

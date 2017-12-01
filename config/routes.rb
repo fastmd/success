@@ -26,23 +26,46 @@ Rails.application.routes.draw do
   post "rez_to_contract" => 'cars#rez_to_contract'
   
   post "contract_to_arh" => 'cars#contract_to_arh'
-  post "car/contractnew" => 'cars#contractnew'
-  get "car/contractnew" => 'cars#contractnew'
-  post "car/contr" => 'cars#contr'
   post "contracts/:id/contr" => 'contracts#contr'
   post "contracts/:id/show" => 'contracts#show'
 
   get 'clients/new'
   post 'clients/new'
+  get 'clients/destroy'
+  post 'clients/destroy'   
+  
+  get 'contracts/new'
+  post 'contracts/new'
+  get 'contracts/edit'
+  post 'contracts/edit'
+  get 'contracts/destroy'
+  post 'contracts/destroy' 
+  get 'contracts/indexbroni'
+  post 'contracts/indexbroni'
+  get 'contracts/indexarc'
+  post 'contracts/indexarc' 
+  get 'contracts/newbroni'
+  post 'contracts/newbroni'
+  get 'contracts/contract2arh'
+  post 'contracts/contract2arh'
+  get 'contracts/broni2contract'
+  post 'contracts/broni2contract'  
   
   post "tehservices/newto" => 'tehservices#newto'
   post "tehservices/new" => 'tehservices#new'
   
   get 'cars/smonth'
   post 'cars/smonth'
-  get 'cparams/show'
-  post 'cparams/show'  
+  get 'cars/index'
+  post 'cars/index'
+  get 'cars/new'
+  post 'cars/new'
+  get 'cars/destroy'
+  post 'cars/destroy'  
   
+  get 'cparams/show'
+  post 'cparams/show'
+ 
   #post "clients/:client" => 'clients#update'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

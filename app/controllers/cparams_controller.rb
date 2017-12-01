@@ -1,4 +1,5 @@
 class CparamsController < ApplicationController
+  before_action :redirect_cancel, only: [:create, :update]
   
   def show
    #---curs------------- 
@@ -19,5 +20,12 @@ private
   def cparam_params
     params.require(:cparam).permit(:curs)
   end
+  
+  def redirect_cancel
+    if params[:cancel] then
+      flash.discard 
+      redirect_to cars_smonth_path
+    end   
+  end      
   
 end

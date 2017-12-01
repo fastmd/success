@@ -1,0 +1,57 @@
+<% provide(:title, 'Редактирование авто') %>
+ 	
+  <div class="row">
+  	<div id="pan1" class="panel panel-info">
+  	  <div class="panel-heading"><strong>Редактирование авто:</strong></div> 		
+	  <div class="panel-body">
+	  	  <%= simple_form_for @car do |f| %>
+	  	  	
+		  <div class="large-6 columns">
+		  <div class="panel  panel-default">		  	
+		  	<div class="panel-body">
+					<%= f.input :marca, label: "Марка", as: :string, :input_html => { :size => 25} %>
+					<%= f.input :gnum, label: "Гос.номер", as: :string, :input_html => { :size => 25} %>
+					<%= f.input :cuznum, label: "№ кузова", as: :string, :input_html => { :size => 25} %>
+					<%= f.input :motnum, label: "№ двигателя", as: :string, :input_html => { :size => 25} %>
+                    <%= f.input :proddate, label: "Год выпуска", as: :integer %>
+                    <%= f.input :color, label: "Цвет", as: :string, :input_html => { :size => 25} %>
+                    <%= f.input :vmot, label: "Объем двигателя", as: :decimal, :input_html => { :size => 25} %>
+                    <%= f.input :tmasa, label: "Масса", as: :decimal, :input_html => { :size => 25} %>
+                    <%= f.input :tsumm, label: "Стоимость", as: :decimal, :input_html => { :size => 25} %>
+                    <%= f.input :aprod, as: :string, :input_html => { :size => 25} %>
+                    <%= f.input :capcil, as: :string, :input_html => { :size => 25} %>
+			</div>
+		    </div>
+		    </div>
+    
+		    <div class="large-6 columns">
+		    <div class="panel  panel-default">
+		    <div class="panel-body">
+					<%= f.input :int1, label: "Дни 1", as: :integer %>
+					<%= f.input :int1price, label: "Цена 1", as: :decimal %>
+					<%= f.input :int2, label: "Дни 2", as: :integer %>
+					<%= f.input :int2price, label: "Цена 2", as: :decimal %>
+					<%= f.input :int3, label: "Дни 3", as: :integer %>
+					<%= f.input :int3price, label: "Цена 3", as: :decimal %>
+					<%= f.input :int4, label: "Дни 4", as: :integer %>
+					<%= f.input :int4price, label: "Цена 4", as: :decimal %>
+					<%= f.input :int5, label: "Дни 5", as: :integer %>
+					<%= f.input :int5price, label: "Цена 5", as: :decimal %>
+					<%= f.input :int6, label: "Дни 6", as: :integer %>
+					<%= f.input :int6price, label: "Цена 6", as: :decimal %>
+					<%= f.input :int7, label: "Дни 7", as: :integer %>
+					<%= f.input :int7price, label: "Цена 7", as: :decimal %> 	
+			</div>
+		  	</div>
+		  	</div>
+	  		<div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %>  <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>	
+	  				  	
+  			<% end %>
+  	  </div> <!--panel body-->	
+    </div> <!--panel-->		
+ </div><!--row-->   	  	
+ 	
+  	
+  
+	
+

@@ -18,10 +18,18 @@ $redaccent4: #d50000;
 $redlighten3: #ef9a9a;
 $redlighten4: #ffcdd2;
 $superbiriuza: #C0F2F7;
+$snow: #fffafa;
+$gainsboro: #dcdcdc;
+$whitesmoke: #f5f5f5;
+$MistyRose: #ffe4e1;
 
 
 .table-hover thead tr:hover th, .table-hover tbody tr:hover td {
 background-color: $superbiriuza;
+}
+
+#vacant {
+color: $whitesmoke;
 }
 
 #broni {

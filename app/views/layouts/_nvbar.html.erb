@@ -1,16 +1,38 @@
   <% unless current_user.nil? then %>
 	 <ul class="nav nav-pills pull-left">
-	 	<% if (controller.controller_name == 'clients' and (controller.action_name == 'new' or controller.action_name == 'edit')) or (controller.controller_name == 'contracts' and controller.action_name == 'edit') then %>
-	 		<li><%= link_to "Назад", clients_path, :class => "glyphicon glyphicon-level-up" %></li>
+	 	<% cc = controller.controller_name %>
+	 	<% ca = controller.action_name %>
+	 	<% if (cc == 'clients' and (ca == 'new' or ca == 'edit'))  then %>
+	 		<li class="active"><%= link_to "Назад", clients_path, :class => "glyphicon glyphicon-level-up" %></li>
 	 	<% end %>
-	 	<% if controller.controller_name == 'clients' and (controller.action_name == 'index') then %>
-	 		<li><%= link_to "Новый клиент", clients_new_path, :class => "glyphicon glyphicon-user" %></li>
+	 	<% if cc == 'clients' and (ca == 'index') then %>
+	 		<li class="active"><%= link_to "Новый клиент", clients_new_path, :class => "glyphicon glyphicon-user" %></li>
 	 	<% end %>
-	 	<li><%= link_to "Домой", cars_smonth_path, :class => "glyphicon glyphicon-home" %></li>
-	    <li><%= link_to 'Клиенты', clients_path, :class => "glyphicon glyphicon-user" %></li>
-	    <li><%= link_to 'ТО авто', car_autotech_path, :class => "glyphicon glyphicon-wrench" %></li>
-	    <li><%= link_to 'Бронь', car_rez_path, :class => "glyphicon glyphicon-flag" %></li> 
-	    <li><%= link_to 'Новый контракт',car_contractnew_path, :class => "glyphicon glyphicon-file" %></li>
-	    <li><%= link_to 'Курс',cparams_show_path, :class => "glyphicon glyphicon-euro" %></li>    
+	 	<% if (cc == 'contracts' and (ca == 'new')) then %>
+	 		<li class="active"><%= link_to "Назад", contracts_path, :class => "glyphicon glyphicon-level-up" %></li>
+	 	<% end %>
+	 	<% if (cc == 'contracts' and (ca == 'newbroni')) then %>
+	 		<li class="active"><%= link_to "Назад", contracts_indexbroni_path, :class => "glyphicon glyphicon-level-up" %></li>
+	 	<% end %>	 	
+	    <% if cc == 'contracts' and (ca == 'index') then %>
+	 		<li class="active"><%= link_to "Новый контракт", contracts_new_path, :class => "glyphicon glyphicon-file" %></li>
+	 	<% end %>
+	    <% if cc == 'contracts' and (ca == 'indexbroni') then %>
+	 		<li class="active"><%= link_to "Новая бронь", contracts_newbroni_path, :class => "glyphicon glyphicon-flag" %></li>
+	 	<% end %>
+	    <% if cc == 'cars' and (ca == 'index') then %>
+	 		<li class="active"><%= link_to "Новoe авто", cars_new_path, :class => "glyphicon glyphicon-bed" %></li>
+	 	<% end %>
+	    <% if cc == 'cars' and (ca == 'edit' or ca == 'new') then %>
+	 		<li class="active"><%= link_to "Назад", cars_path, :class => "glyphicon glyphicon-level-up" %></li>
+	 	<% end %>
+	 	<li class=<%= if cc=='cars' and ca=='smonth' then 'active' else '' end %>><%= link_to "Домой", cars_smonth_path, :class => "glyphicon glyphicon-home" %></li>	    
+	    <li class=<%= if cc=='contracts' and (ca=='indexbroni' or ca=='newbroni') then 'active' else '' end %>><%= link_to 'Брони', contracts_indexbroni_path, :class => "glyphicon glyphicon-flag" %></li> 
+	    <li class=<%= if cc=='contracts' and (ca=='index' or ca=='new') then 'active' else '' end %>><%= link_to 'Контракты',contracts_path, :class => "glyphicon glyphicon-file" %></li>
+	    <li class=<%= if cc=='contracts' and (ca=='indexarc') then 'active' else '' end %>><%= link_to 'Архив',contracts_indexarc_path, :class => "glyphicon glyphicon-duplicate" %></li>
+	    <li class=<%= if cc=='clients' then 'active' else '' end %>><%= link_to 'Клиенты', clients_path, :class => "glyphicon glyphicon-user" %></li>
+	    <li class=<%= if cc=='cars' and (ca=='index' or ca=='new' or ca=='edit') then 'active' else '' end %>><%= link_to 'Авто', cars_index_path, :class => "glyphicon glyphicon-bed" %></li>
+	    <li class=<%= if cc=='cars' and ca=='autotech' then 'active' else '' end %>><%= link_to 'ТО', car_autotech_path, :class => "glyphicon glyphicon-wrench" %></li>	    
+	    <li class=<%= if cc=='cparams' then 'active' else '' end %>><%= link_to 'Курс',cparams_show_path, :class => "glyphicon glyphicon-euro" %></li>    
 	  </ul>  
  <% end %>	

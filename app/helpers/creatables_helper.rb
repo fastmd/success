@@ -1,0 +1,2 @@
+module CreatablesHelper
+end

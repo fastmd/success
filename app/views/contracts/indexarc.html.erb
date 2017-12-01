@@ -1,0 +1,60 @@
+<% provide(:title, 'Архив') %>
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  
+<!-- jQuery -->
+<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+  
+<!-- DataTables -->
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
+
+<script>
+$(document).ready( function () {
+    $('#mcl').dataTable( {
+    	 "order": [[ 1, "desc" ],[ 0, "desc" ]]
+} );
+} );
+ 
+</script> 
+
+  <div class="table-responsive">	
+	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
+		<thead>
+			<tr  class="info">
+			   <th>№</th>
+			   <th>От</th>
+			   <th>Aгент</th>
+			   <th>Авто</th>
+			   <th>С</th>
+			   <th></th>
+			   <th>По</th>
+			   <th></th>
+			   <th></th>
+			   <th>Залог</th>
+			   <th>Сумма, EUR</th>
+			   <th>Сумма, лей</th>
+			   <th>Клиент</th>			   
+			</tr>	
+		</thead>
+		<tbody>
+			<% @contracts.each do |c| %>
+					<tr>
+						<td><%= "#{c.id} / #{c.cnum}" %></td>
+						<td><%= c.order_date.strftime('%Y.%m.%d') %></td>
+						<td><%= unless c.user.nil? then c.user.username end %></td>
+						<td><%= unless c.car.nil? then "#{c.car.marca} #{c.car.gnum}" end %></td>
+						<td><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y')}" else "" end %></td>
+						<td><%= unless c.sttime.nil? then " #{c.sttime.strftime('%R')}" else "" end %></td>
+						<td><%= unless c.enddate.nil? then "#{c.enddate.strftime('%d.%m.%Y')}" else "" end %></td>
+						<td><%= unless c.endtime.nil? then " #{c.endtime.strftime('%R')}" else "" end %></td>
+						<td><%= unless c.fendtime.nil? then " #{c.fendtime.strftime('%R')}" else "" end %></td>
+						<td><%= c.garant_summ %></td>
+						<td><%= c.summ %></td>
+						<td><%= c.costlei %></td>
+						<td><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname}" end %></td>					
+					</tr>		
+			<% end %>			
+		</tbody>
+	</table>
+  </div>

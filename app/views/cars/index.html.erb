@@ -1,5 +1,7 @@
+<% provide(:title, 'Авто') %>
+
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   
 <!-- jQuery -->
 <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -7,63 +9,83 @@
 <!-- DataTables -->
 <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
 
-         
-	<table align="center" border="0" cellspacing="5" cellpadding="5">
+<script>
+$(document).ready( function () {
+    $('#mcl').dataTable( {
+    	 "order": [[ 2, "asc" ],[ 3, "asc"]]
+} );
+} );
+ 
+</script> 
+
+  <div class="table-responsive">	
+	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
 		<thead>
-			<tr><th><%= link_to "Июль",:action => :smonth,:num => 7 %></th><th><%= link_to "Август" ,:action => :smonth,:num => 8%></th><th><%= link_to "Сентябрь",:action => :smonth,:num => 9 %></th>
-				<th><%=link_to "Октябрь",:action => :smonth,:num => 10 %></th><th><%=link_to "Ноябрь",:action => :smonth,:num => 11 %></th><th><%=link_to "Декабрь",:action => :smonth,:num => 12 %></th></tr>
-		</thead>
-	</table>
-	
-	<table align="center"  border="0" cellspacing="5" cellpadding="5">
-		<thead>	
-		<tr>
-			<th>N0</th>
-			<th>Model</th>
-			
-			<% n=1 %>
-				<% while n<32 do %>
-					<th><%= n %>
-			        </th>         
-  				<% n += 1 %>
-				<% end %>
-		</tr>
+			<tr class="info">
+			   <th>ID</th>
+			   <th>...............</th>
+			   <th>Марка</th>
+			   <th>Гос. номер</th>
+			   <th>№ кузова</th>
+			   <th>№ двигателя</th>
+			   <th>Дата выпуска</th>
+			   <th>Цвет</th>
+			   <th>Объем двигателя</th>
+			   <th>Масса</th>
+			   <th>Стоимость, EUR</th>
+			   <th></th>
+			   <th></th>
+			   <th>Дни 1</th>
+			   <th>Цена 1</th>
+			   <th>Дни 2</th>
+			   <th>Цена 2</th>
+			   <th>Дни 3</th>
+			   <th>Цена 3</th>
+			   <th>Дни 4</th>
+			   <th>Цена 4</th>
+			   <th>Дни 5</th>
+			   <th>Цена 5</th>
+			   <th>Дни 6</th>
+			   <th>Цена 6</th>
+			   <th>Дни 7</th>
+			   <th>Цена 7</th>			   
+			</tr>	
 		</thead>
 		<tbody>
-		<% i=0 %>
-			<% n1=0 %>
-		<% @cars.each do |fc| %>	
-		<tr>
-			<td><%= i%></td>
-			<td><%= link_to fc.marca.to_s + " " +fc.gnum.to_s, car_path(fc) %></td>
-			
-				<% n=1 %>
-				
-				<% while n<32 do %>
-				<% str = n.to_s %>
-					<% if n <10 %>
-						<% str = '0'.to_s + str.to_s  %>
-					<%  end %>	
-					<% if (@buz[n1].to_s.include? str)%>
-					<td bgcolor="gold"><%= @dd[n1].to_s[5..6] %> 
-					<% if 1 == 0 %>
-						<br><p bgcolor="red">M</p>
-					<% end %>	
-			        </td>
-					         
-			        <% else %>
-			        <td bgcolor="white">
-			        </td>
-			        <% end %>    
-			    
-  				<% n += 1 %>
-				<% end %>
-				<% @car = fc%>
-				<td><%= link_to "Бронь", new_car_path %></td>
-		</tr>	
-		<% i=i+1 %>
-		<% n1 = n1 + 1 %>
-		<% end %>
+			<% @cars.each do |c| %>
+					<tr>
+						<td><%= "#{c.id}" %></td>
+						<td><%= link_to " " , edit_car_path(c),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать авто' %>
+							<%= link_to " " , cars_destroy_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить авто', data: { confirm: "Удалить авто #{c.id} #{c.marca} #{c.gnum}?" } %>
+							<%= link_to " " , new_contract_path(:car_id => c.id),:method => :get, :class=> "glyphicon glyphicon-file", :title => 'Создать контракт' %>
+							<%= link_to " " , contracts_newbroni_path(:car_id => c.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %></td>
+						<td><%= "#{c.marca}" %></td>
+						<td><%= "#{c.gnum}" %></td>
+					    <td><%= "#{c.cuznum}" %></td>
+					    <td><%= "#{c.motnum}" %></td>
+					    <td><%= "#{c.proddate}" %></td>
+					    <td><%= "#{c.color}" %></td>
+					    <td><%= "#{c.vmot}" %></td>
+					    <td><%= "#{c.tmasa}" %></td>
+					    <td><%= "#{c.tsumm}" %></td>
+					    <td><%= "#{c.aprod}" %></td>
+					    <td><%= "#{c.capcil}" %></td>
+					    <td><%= "#{c.int1}" %></td>
+					    <td><%= "#{c.int1price}" %></td>
+					    <td><%= "#{c.int2}" %></td>
+					    <td><%= "#{c.int2price}" %></td>
+					    <td><%= "#{c.int3}" %></td>
+					    <td><%= "#{c.int3price}" %></td>
+					    <td><%= "#{c.int4}" %></td>
+					    <td><%= "#{c.int4price}" %></td>
+					    <td><%= "#{c.int5}" %></td>
+					    <td><%= "#{c.int5price}" %></td>
+					    <td><%= "#{c.int6}" %></td>
+					    <td><%= "#{c.int6price}" %></td>
+					    <td><%= "#{c.int7}" %></td>
+					    <td><%= "#{c.int7price}" %></td>								
+					</tr>		
+			<% end %>			
 		</tbody>
 	</table>
-
+  </div>

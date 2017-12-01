@@ -1,4 +1,4 @@
-<% provide(:title, 'Новый контракт') %>
+<% provide(:title, 'Новая бронь') %>
 
 <head>
 <%= include_gon %>	
@@ -99,8 +99,7 @@
 		 var days = diff/1000/60/60/24;
 		 $("#temp").val(days)
 			SetDayPrice(event);
-    }
-  
+    }  
   
     function myFunction(a,b) 
     {  
@@ -114,7 +113,7 @@
 	    	 "order": [[ 1, "asc" ],[ 2, "asc" ],[ 3, "asc" ]]
 	 } );
 	} );
- 
+
   $(function() {
     $("#pan1").toggle()
     $("#rem2").toggle()
@@ -146,9 +145,9 @@
   });
   
   function disableElements()
-  {
-   document.getElementById("#clname").disabled=true;
-  }
+{
+  document.getElementById("#clname").disabled=true;
+}
   
   $(function() {
     $( "#dt" ).datepicker({
@@ -160,7 +159,6 @@
       $( "#dt" ).datepicker( "option", "dateFormat", $( this ).val() );
     });
   });
-  
     $(function() {
     $( "#dt1" ).datepicker({
       changeMonth: true,
@@ -172,23 +170,24 @@
     });  
   });
   
+  
   </script>
 </head>
- 
- <div class="row">
- 	
+
+
+<div class="row">
   <%= simple_form_for @contract do |f| %>	
-  <div class="large-4 columns"> 	
+  <div class="large-4 columns">  	
   	  <div class="panel panel-info">
-  	  	<div class="panel-heading"><strong>Новый контракт:</strong></div>
+  	  	<div class="panel-heading"><strong>Новая бронь:</strong></div>
   	  	<div class="panel-body">
-        
-    	<%= f.input :cnum, label: "Номер контракта", as: :string, :input_html => { :size => 25} %>
-    	<%= f.input :flag, :as => :hidden, :input_html => { :value => 2}  %>    	
+	    
+    	<%= f.input :cnum, label: "Номер брони", as: :string, :input_html => { :size => 25} %>
+    	<%= f.input :flag, :as => :hidden, :input_html => { :value => 1 }  %>    	
     	  	    	
     	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a>
 	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	
-    	<%= text_field_tag 'client_info', "#{@contract.client_id}" , :readonly => true, class: "form-control" %>	   	
+    	<%= text_field_tag 'client_info', "#{@contract.client_id}"  , :readonly => true, class: "form-control" %>	   	
     	<%= f.hidden_field :client_id, :value => @contract.client_id, :id => "client_id" %>
     	
     	<%= hidden_field_tag 'vc' , controller.controller_name %>
@@ -204,41 +203,33 @@
     	</div>
     	<div class="form-group">
 	    	<label for="stdate" class="control-label">Дата начала договора</label>
-	    	<%= text_field_tag 'stdate', DateTime.now.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);", class: "form-control" %>
+	    	<%= text_field_tag 'stdate', if @contract.stdate.nil? then Date.today.strftime('%d.%m.%Y') else @contract.stdate.strftime('%d.%m.%Y') end, :id => "dt",:onchange =>"GetChar (event);", class: "form-control" %>
     	</div> 
-
-    	<%= f.input :sttime, as: :time ,label: "Время начала договора" , default: Time.parse(Time.now.strftime('%R')) %>
     	
   		<%= label_tag 'Кол-во дней' %>
     	<input size="40" value="1" onkeyup="GetChar (event);" id="temp" />
     	
     	<div class="form-group">
     		<label for="stdate" class="control-label">Дата окончания договора</label>
-    		<%= text_field_tag 'enddate', DateTime.now.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);", class: "form-control" %>
-    	</div>
-    	
-    	<%= f.input :endtime, as: :time ,label: "Время окончания договора" , default: Time.parse(Time.now.strftime('%R')) %>    	
+    		<%= text_field_tag 'enddate', if @contract.stdate.nil? then Date.tomorrow.strftime('%d.%m.%Y') else (@contract.stdate.to_date + 1.day).strftime('%d.%m.%Y') end, :id => "dt1",:onchange =>"GetEndDate (event);", class: "form-control" %>
+    	</div>   	
     	
     	<%= f.input :garant_summ, label: "Гарантийная сумма", as: :string, :input_html => { :size => 25} %>
     	
     	<%= label_tag 'Цена в день' %>
     	<input size="40" value=<%= Car.first.int1price %> onkeyup="SetTotalPrice (event);" id="daycost", readonly = true/>
-
-    	<%= label_tag 'Сумма договора' %>
-    	<%= text_field_tag 'summ',Car.first.int1price ,:onkeyup =>"SetDayPrice (event);", :readonly => true %>
    	
-	    <center><%= submit_tag('Сохранить', class: "btn btn-primary") %>  <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
-	    
-	  </div> <!--panel-body--->    
-	</div> <!--panel--> 	
+	    <center><%= submit_tag('Сохранить', class: "btn btn-primary") %>   <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
+			
+		</div> <!--panel-body--->    
+	</div> <!--panel-->
  </div>
-
+ 
  <%= render 'newclient' %>
 
  <% end %>
     
  <%= render 'clients' %>
-
-  
-</div> <!--row--> 	
+ 
+</div> <!--row-->
 

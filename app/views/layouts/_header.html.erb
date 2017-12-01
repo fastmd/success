@@ -1,8 +1,8 @@
 <header class="navbar navbar-fixed-top">
   <div class="navbar-inner navbar-inverse">
     <div class="container-fluid">
-      <div class="row">	
-      <%= link_to "AUTO10", '#', id: "logo" %>
+      <div class="row">		
+      <%= link_to "AUTO10 #{image_tag('holub-ifon.png', :alt => 'image', :width => "40", :height => "35")}".html_safe, '#', id: "logo" %>
         <nav>
             <ul class="nav nav-pills pull-right">           
           	<% if current_user.nil? then %>

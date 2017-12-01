@@ -84,8 +84,8 @@ document.getElementById("#clname").disabled=true;
 					<%= f.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25} %>
-                    <label for='comment' class="control-label">Дата рождения</label><%= date_field_tag 'bdate', if @client.bdate.nil? then nil else nil end, class: "form-control" %>
-                    <label for='comment' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'dn',if @client.dn.nil? then nil else @client.dn.to_date end, class: "form-control" %>
+                    <label for='bdate' class="control-label">Дата рождения</label><%= date_field_tag 'bdate', if @client.bdate.nil? then nil else @client.bdate.to_date end, class: "form-control" %>
+                    <label for='dn' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'dn',if @client.dn.nil? then nil else @client.dn.to_date end, class: "form-control" %>
 			</div>
 		    </div>
 		    </div>
@@ -102,7 +102,7 @@ document.getElementById("#clname").disabled=true;
 			</div>
 		  	</div>
 		  	</div>
-	  			<div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %></div>	
+	  			<div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %>  <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>	
 	  				  	
   			<% end %>
   	  </div> <!--panel body-->	

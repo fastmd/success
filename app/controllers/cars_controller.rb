@@ -1,71 +1,58 @@
 class CarsController < ApplicationController
   autocomplete :client, :pseria , :extra_data => [:sname],:extra_data => [:fname],:full => true
+  before_action :redirect_cancel, only: [:create, :update]
   
-  def index
-   @cars = Car.all
-   i = j = 0
-   @buz = @dd = []   
-   @cars.each do |ca|
-      ca.contracts.each do |co|
-        @dd[i] = co.order_date.to_s.to_s + ","
-        @buz[i] = @buz[i].to_s + co.order_date.to_s[8..9].to_s + ","   
+ def index
+   @cars = Car.all.order(:marca,:gnum)
+ end
+  
+ def new
+ end
+  
+ def create
+  @car = Car.new(car_params)
+  @car = car_init(@car)
+  car_save
+  if @flag == 1 then
+    redirect_to cars_index_path
+  else
+    render 'new'     
+  end 
+  #render inline: "<%= @car.inspect %><br><br>"     
+ end
+ 
+ def edit
+  @car = Car.find(params[:id])
+ end 
+  
+ def update  
+    @car = Car.find(params[:id])
+    @car = car_init(@car)
+    car_save
+    if @flag == 1 then
+      redirect_to cars_index_path
+    else
+      render 'edit'
+    end
+ end
+ 
+ def destroy
+    car = Car.find(params[:id])
+    ss_count = car.contracts.count
+    if ss_count!=0 then 
+      flash[:warning] = "Нельзя удалить авто #{car.id} #{car.marca} #{car.gnum}, для которого существуют контракты (#{ss_count} шт.)" 
+    else 
+      begin
+        if car.destroy! then 
+          flash.discard
+          flash[:notice] = "Авто #{car.marca} #{car.gnum} удалено."         
+        end
+      rescue
+        flash[:warning] = "Не удалось удалить авто #{car.marca} #{car.gnum}."             
       end
-      i += 1
-      @buz[i] = ""
-   end
-  end
-  
-  def rez
-    num = params[:car_num]
-    # @car = Car.find(num)  
-  end
-  
-  def contr
-    num = params[:car_num]
-    @car = Car.find(num)
-    @contract = @car.contracts.create
-    @client = Client.find(params[:cli_id])   
-    if Contract.maximum(:id) != nil then conmax = Contract.maximum(:id) else conmax = 0 end         
-    @state = params[:active] || []
-    if @state != '1' then     
-      @contract.cnum = conmax + 1
-      date = params[:nstdate]
-      @contract.order_date = date
-      @contract.flag = params[:flag] 
-      @contract.zalog = params[:zalog]
-      @contract.summ = params[:doc_sum]
-      @contract.costlei = (params[:doc_sum].to_f * Cparam.last.curs).round(2)
-      @contract.garant_summ = params[:garant_summ]
-      @contract.diff = params[:enddate]
-      @contract.sttime = params[:sttime]
-      @contract.endtime = params[:endtime]
-      @contract.user = current_user.username
-      @contract.client_id = params[:cli_id]
-      @contract.save    
-    end   
-    if @state == '1' then     
-      @client = Client.create(params[:contract])
-      @client.name = params[:name]
-      @client.sname = params[:surname]
-      @client.fname = params[:fname]
-      @client.pseria = params[:pseria]
-      @client.address = params[:address]
-      @client.idno = params[:idnp]
-      @client.dn = params[:dn]
-      @client.de = params[:fname]
-      @client.tel = params[:tel]
-      @client.pemail = params[:pemail]
-      @client.save    
-      @contract.cnum = conmax + 1
-      date = params[:nstdate]
-      @contract.order_date = date
-      @contract.flag = 1 
-      @contract.diff = params[:enddate]
-      @contract.user = current_user.username
-      @contract.client_id = @client.id
-      @contract.save
-   end
-  end
+    end
+    redirect_to cars_index_path
+  end  
   
   def rezdoc
     num = params[:car_num]
@@ -157,40 +144,22 @@ class CarsController < ApplicationController
   end
   
   def contract_to_arh
-    @contract = Contract.find(params[:contrfid])
+    @contract = Contract.find(params[:contract_id])
     @contract.flag = 3
-    @contract.endtime = params[:fendtime]
-    @wl_end = params[:wlong_end]
-    @car_end = @contract.car
-    @wls_end = @car_end.wlongs.create()
-    @wls_end.wlong = params[:wlongend]
-    @wls_end.wdate = params[:fendtime]
-    @wls_end.save
+    @contract.fendtime = "#{params[:contract]['fendtime(4i)']}:#{params[:contract]['fendtime(5i)']}"
     @contract.save
-    redirect_to root_path
+    @car = @contract.car
+    @wls_end = @car.wlongs.create()
+    @wls_end.wlong = params[:contract][:wlongend]
+    @wls_end.wdate = "#{params[:contract]['fendtime(4i)']}:#{params[:contract]['fendtime(5i)']}"
+    @wls_end.save
+    #render inline: "<%= params.inspect %><br><br>"
+    redirect_to root_path   
   end
   
   def contractnew
    # @car = Car.find(params[:num])
-   @carints =  [Array.new(12), Array.new(12),Array.new(12), Array.new(12),Array.new(12), Array.new(12)] 
-   i=1
-   for i in 1..Car.count
-      @carints[i][1] = Car.find(i).int1
-      @carints[i][2] = Car.find(i).int1price
-      @carints[i][3] = Car.find(i).int2
-      @carints[i][4] = Car.find(i).int2price
-      @carints[i][5] = Car.find(i).int3
-      @carints[i][6] = Car.find(i).int3price
-      @carints[i][7] = Car.find(i).int4
-      @carints[i][8] = Car.find(i).int4price
-      @carints[i][9] = Car.find(i).int5
-      @carints[i][10] = Car.find(i).int5price
-      @carints[i][11] = Car.find(i).int6
-      @carints[i][12] = Car.find(i).int6price
-      @carints[i][13] = Car.find(i).int7
-      @carints[i][14] = Car.find(i).int7price
-   end
-   gon.carints = @carints
+
   end
   
   def show    
@@ -242,7 +211,7 @@ class CarsController < ApplicationController
      end 
      @title = report_rind[0..(@daycount+2)]  
      #------------
-     #@cars = Contract.select(:car_id).distinct.where("((order_date between ? AND ?) OR (diff between ? AND ?))", @ddateb, @ddatee, @ddateb, @ddatee).order(:car_id)
+     #@cars = Contract.select(:car_id).distinct.where("((stdate between ? AND ?) OR (enddate between ? AND ?))", @ddateb, @ddatee, @ddateb, @ddatee).order(:car_id)
      if (@data_for_search.nil? or @data_for_search.empty?) then
        if (@qmarca.nil? or @qmarca.empty?) then
          @filter = 0
@@ -261,7 +230,7 @@ class CarsController < ApplicationController
      i = 1
      if @cars.count != 0 then
         @cars.each do |caritem|
-           @contracts = Contract.where("(car_id = ? AND (order_date between ? AND ?) OR (diff between ? AND ?))", caritem.id, @ddateb, @ddatee, @ddateb, @ddatee).order(:order_date)
+           @contracts = Contract.where("(car_id = ? AND ((stdate between ? AND ?) OR (enddate between ? AND ?)))", caritem.id, @ddateb, @ddatee, @ddateb, @ddatee).order(:order_date)
            report_rind = Array.new((@daycount+3), nil)
            report_rind[0] = i
            report_rind[1] = "#{caritem.marca} #{caritem.gnum}"
@@ -270,7 +239,17 @@ class CarsController < ApplicationController
              @contracts.each do |contritem|
                 (1..@daycount).each do |ditem|
                   testdate = @ddateb.change(day: ditem)
-                  if (testdate >= contritem.order_date.to_date and testdate <= contritem.diff.to_date) then report_rind[ditem + 1] = contritem.flag end
+                  #if (testdate >= contritem.order_date.to_date and testdate <= contritem.diff.to_date) then report_rind[ditem + 1] = contritem.flag end
+                  if (testdate >= contritem.stdate.to_date and testdate <= contritem.enddate.to_date) then 
+                    report_rind[ditem + 1] = {:flag => contritem.flag, 
+                                              :client => " #{contritem.client.sname} #{contritem.client.name} #{contritem.client.fname}",
+                                              :contract_id => contritem.id, 
+                                              :contract => " № #{contritem.id}/#{contritem.cnum} от #{contritem.order_date.to_date.to_formatted_s(:dday_month_year)}" +
+                                              unless contritem.stdate.nil? then " с #{contritem.stdate.to_formatted_s(:dday_month_year)}" else "" end +  
+                                              unless contritem.sttime.nil? then " #{contritem.sttime.strftime('%R')}" else "" end + 
+                                              unless contritem.enddate.nil? then " по #{contritem.enddate.to_date.to_formatted_s(:dday_month_year)}" else "" end + 
+                                              unless contritem.endtime.nil? then " #{contritem.endtime.strftime('%R')}" else "" end} 
+                  end  
                 end    
              end
            end  
@@ -287,22 +266,82 @@ class CarsController < ApplicationController
    #-----------      
    @cars = Car.all.order(:marca,:id)
    #---broni-today---------        
-   @contracts = Contract.where("(car_id is not null AND (order_date between ? AND ?) AND flag = 1)", Date.today.beginning_of_day(), Date.today.end_of_day()).order(:car_id)
-   if !@contracts.nil? and @contracts.count > 0 then @fl = 1 else @fl = 0 end     
+   @broni_today = Contract.where("(car_id is not null AND (stdate between ? AND ?) AND flag = 1)", Date.today, Date.today).order(:car_id)
+   if !@broni_today.nil? and @broni_today.count > 0 then @fl = 1 else @fl = 0 end     
    #---broni-tomorrow---------
-   @contracts = Contract.where("(car_id is not null AND (order_date between ? AND ?) AND flag = 1)", Date.tomorrow.beginning_of_day(), Date.tomorrow.end_of_day()).order(:car_id)
-   if !@contracts.nil? and @contracts.count > 0 then @fl2 = 1 else @fl2 = 0 end 
+   @broni_tomorrow = Contract.where("(car_id is not null AND (stdate between ? AND ?) AND flag = 1)", Date.tomorrow, Date.tomorrow).order(:car_id)
+   if !@broni_tomorrow.nil? and @broni_tomorrow.count > 0 then @fl2 = 1 else @fl2 = 0 end 
    #----contract-today---------
-   @contracts = Contract.select(:diff).where("(car_id is not null AND (diff = ?) AND flag = 2)", Date.today.to_formatted_s(:dday_month_year)).order(:car_id)
-   if !@contracts.nil? and @contracts.count > 0 then @fl1 = 2 else @fl1 = 0 end 
-   #---------------------------       
-   #render inline: "<%= @contracts.inspect %><br><br>" 
+   @contracts_close_today = Contract.where("(car_id is not null AND (enddate <= ?) AND flag = 2)", Date.today).order(:car_id)
+   if !@contracts_close_today.nil? and @contracts_close_today.count > 0 then @fl1 = 2 else @fl1 = 0 end 
+   #---------------------------      
+   #render inline: "<%= @report1.inspect %><br><br>" 
   end
   
 private
  
   def user_params
       params.require(:user).permit(:first_name, :last_name, :other_stuff)
-  end 
+  end
+   
+  def car_params
+    params.require(:car).permit(:marca,:gnum,:cuznum,:motnum,:proddate,:color,:vmot,:tmasa,:tsumm,:aprod,:capcil,:int1,:int1price,:int2,:int2price,:int3,:int3price,
+                                :int4,:int4price,:int5,:int5price,:int6,:int6price,:int7,:int7price)
+  end
   
+  def car_init(car)
+    car.marca = unless car_params[:marca].nil? then (car_params[:marca]).lstrip.rstrip else nil end
+    car.gnum = unless car_params[:gnum].nil? then (car_params[:gnum]).lstrip.rstrip.upcase else nil end
+    car.cuznum = unless car_params[:cuznum].nil? then (car_params[:cuznum]).lstrip.rstrip.upcase else nil end     
+    car.motnum = unless car_params[:motnum].nil? then (car_params[:motnum]).lstrip.rstrip.upcase else nil end
+    car.proddate = unless car_params[:proddate].nil? then car_params[:proddate] else nil end  
+    car.color = unless car_params[:color].nil? then car_params[:color] else nil end
+    car.vmot = car_params[:vmot]
+    car.tmasa = car_params[:tmasa]
+    car.tsumm = car_params[:tsumm]
+    car.aprod = car_params[:aprod]
+    car.capcil = car_params[:capcil]
+    car.int1 = car_params[:int1]
+    car.int1price = car_params[:int1price]
+    car.int2 = car_params[:int2]
+    car.int2price = car_params[:int2price]
+    car.int3 = car_params[:int3]
+    car.int3price = car_params[:int3price]
+    car.int4 = car_params[:int4]
+    car.int4price = car_params[:int4price]
+    car.int5 = car_params[:int5]
+    car.int5price = car_params[:int5price]
+    car.int6 = car_params[:int6]
+    car.int6price = car_params[:int6price]
+    car.int7 = car_params[:int7]
+    car.int7price = car_params[:int7price]
+    car    
+  end
+  
+  def car_save
+    @flag = 0
+    t = Car.where("(? is null or id !=?) and UPPER(gnum) = ?", @car.id, @car.id, (@car.gnum).upcase).count
+    c = Car.where("(? is null or id !=?) and UPPER(gnum) = ?", @car.id, @car.id, (@car.gnum).upcase).last                      
+    if (t != 0) then
+      flash[:warning] = "Авто № #{c.id} #{c.marca} #{c.gnum} уже существует. Проверьте правильность ввода."        
+    else
+      begin
+        if @car.save! then 
+          flash.discard
+          flash[:notice] = "Авто #{@car.marca} #{@car.gnum} сохранено."
+          @flag = 1         
+        end
+      rescue
+        flash[:warning] = "Данные не сохранены. Проверьте правильность ввода."             
+      end
+    end      
+  end
+  
+  def redirect_cancel
+    if params[:cancel] then
+      flash.discard 
+      redirect_to cars_index_path
+    end   
+  end    
+    
 end
