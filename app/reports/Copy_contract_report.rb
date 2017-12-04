@@ -29,9 +29,37 @@ class ContractReport < Prawn::Document
          "  și  cet. <b>#{client.sname} #{client.name} #{client.fname}</b> în calitate de locatar, pe de altă parte, au convenit să încheie prezentul contract de Locațiune, cu respectarea următoarelor clauze: ",:inline_format => true,:align => :justify
     text "II. Obiectul contractului", :align => :center, :style => :bold
     text "Locatorul se obligă să transmită Locatarului în folosință temporară, cu titlu oneros, următorul automobil:" 
+    # Defining the grid 
+    # See http://prawn.majesticseacreature.com/manual.pdf
+   # define_grid(:columns => 3, :rows => 7, :gutter => 10)
+    #grid.show_all 
+   # grid([1,0], [1,0]).bounding_box do
+   #   move_down 5 
+    #  text "Modelul, marca", :align => :left
+   #   text "Numărul de înmatriculare", :align => :left
+   #   text "Numărul caroseriei", :align => :left     
+    #  text "Numărul motorului", :align => :left 
+    #  text "Anul producerii", :align => :left 
+   #   text "Culoarea", :align => :left 
+   #   text "Capacitatea cilindrică, cm3", :align => :left
+   #   text "Masa totală, kg", :align => :left 
+   #   text "Valoare automobil", :align => :left  
+  #  end
+   # grid([1,2], [1,2]).bounding_box do 
+    #  move_down 5
+   #   text "#{car.marca}", :align => :left, :style => :bold
+   #   text "#{car.gnum}", :align => :left, :style => :bold
+   #   text "#{car.cuznum}", :align => :left, :style => :bold
+   #   text "#{car.motnum}", :align => :left, :style => :bold
+   #   text "#{car.proddate}", :align => :left, :style => :bold
+  #    text "#{car.color}", :align => :left, :style => :bold
+  #    text "#{car.vmot}", :align => :left, :style => :bold
+   #   text "#{car.tmasa}", :align => :left, :style => :bold
+   #   text "#{car.tsumm}", :align => :left, :style => :bold
+   # end
     move_down 1
     y_position = cursor
-    bounding_box([0, y_position], :width => 260) do
+    bounding_box([0, y_position], :width => 260, :height => 100) do
       text "Modelul, marca", :align => :left
       text "Numărul de înmatriculare", :align => :left
       text "Numărul caroseriei", :align => :left     
@@ -41,8 +69,8 @@ class ContractReport < Prawn::Document
       text "Capacitatea cilindrică, cm3", :align => :left
       text "Masa totală, kg", :align => :left 
       text "Valoare automobil", :align => :left
-    end  #bounding box
-    bounding_box([260, y_position], :width => 260) do
+    end
+    bounding_box([260, y_position], :width => 260, :height => 100) do
       text "#{car.marca}", :align => :left, :style => :bold
       text "#{car.gnum}", :align => :left, :style => :bold
       text "#{car.cuznum}", :align => :left, :style => :bold
@@ -52,10 +80,24 @@ class ContractReport < Prawn::Document
       text "#{car.vmot}", :align => :left, :style => :bold
       text "#{car.tmasa}", :align => :left, :style => :bold
       text "#{car.tsumm} EURO", :align => :left, :style => :bold
-    end    #bounding box
+    end    
+ #   items = [["Modelul, marca","#{car.marca}"]]
+ #   items += [["Numărul de înmatriculare", "#{car.gnum}"]]
+ #   items += [["Numărul caroseriei", "#{car.cuznum}"]]
+ #   items += [["Numărul motorului", "#{car.motnum}"]]
+ #   items += [["Anul producerii", "#{car.proddate}"]]
+ #   items += [["Culoarea", "#{car.color}"]]
+ #   items += [["Capacitatea cilindrică, cm3","#{car.vmot}"]]
+ #   items += [["Masa totală, kg", "#{car.tmasa}"]]
+ #   items += [["Valoare automobil", "#{car.tsumm}"]]
+ #   table items, :header => false, :column_widths => { 0 => 250, 1 => 250} do
+ #     style(columns(1)) {|x| x.align = :left }
+ #     row(0..50).borders = []
+ #     column(1).style = :bold
+ #   end
     daysinperiod = (contract.enddate - contract.stdate).to_i   #number of days between report dates
-    if daysinperiod < 1 then daysinperiod = 1 end
-    pretperday = ( contract.summ.to_i / daysinperiod).round(2)   #number of days between report dates  
+    if daysinperiod < 1 then daysinperiod = 1
+    pretperday = (contract.summ / daysinperiod).round(2)   #number of days between report dates  
     text "III. Termenul locațiunii", :align => :center, :style => :bold
     text "3.1.Termenul locațiunii este de <b>#{daysinperiod}</b> zile, începând cu data de <b>#{contract.stdate.strftime("%d.%m.%Y")}</b>, ora <b>#{contract.sttime.strftime('%R')}</b>," + 
           "până pe data de <b>#{contract.enddate.strftime("%d.%m.%Y")}</b>, ora <b>#{contract.endtime.strftime('%R')}</b>.",:inline_format => true,:align => :justify
@@ -128,7 +170,7 @@ class ContractReport < Prawn::Document
     text "XI. Rechizitele și semnăturile", :align => :center, :style => :bold
     move_down 5
     y_position = cursor
-    bounding_box([0, y_position], :width => 260) do
+    bounding_box([0, y_position], :width => 260, :height => 100) do
        text "Locator", :align => :center, :style => :bold
        move_down 3
        text "SRL Success&DivesGroup", :align => :left, :style => :bold
@@ -136,53 +178,45 @@ class ContractReport < Prawn::Document
        text "c/f  1014600011035", :align => :left, :style => :bold
        text "BC Moldindconbank SA, fil.nr.2", :align => :left, :style => :bold
        text "c/b 225190 / c/d MOLDMD2X301", :align => :left, :style => :bold
-    end  #bounding box
-    bounding_box([260, y_position], :width => 260) do
+    end
+    bounding_box([260, y_position], :width => 260, :height => 100) do
        text "Locatar", :align => :center, :style => :bold
        move_down 3
        text "N.P. <font size='10'>#{client.sname} #{client.name} #{client.fname}</font>", :align => :left, :style => :bold,:inline_format => true
        text "ADRESA.  <font size='10'>#{client.address} </font>", :align => :left, :style => :bold,:inline_format => true
-       text "SERIA.  <font size='10'>#{client.pseria} </font>", :align => :left, :style => :bold,:inline_format => true
+       text "SERIA.  <font size='10'>#{client.seria} </font>", :align => :left, :style => :bold,:inline_format => true
        text "COD.IDNO.  <font size='10'>#{client.idno} </font>", :align => :left, :style => :bold,:inline_format => true
        text "D.N.  <font size='10'>#{client.bdate}</font>", :align => :left, :style => :bold,:inline_format => true
-       text "D.E.  <font size='10'>#{client.dn}</font>", :align => :left, :style => :bold,:inline_format => true
-       text "EMAIL.  <font size='10'>#{client.pemail}</font>", :align => :left, :style => :bold,:inline_format => true
+       text "D.E.  <font size='10'>#{client.edate}</font>", :align => :left, :style => :bold,:inline_format => true
+       text "EMAIL.  <font size='10'>#{client.email}</font>", :align => :left, :style => :bold,:inline_format => true
        text "TEL.  <font size='10'>#{client.tel}</font>", :align => :left, :style => :bold,:inline_format => true
-    end  #bounding box
+    end
     y_position = cursor
-    bounding_box([0, y_position], :width => 260, :height => 40) do
-       move_down 10
+    bounding_box([0, y_position], :width => 260, :height => 100) do
        text "SRL Success&DivesGroup", :align => :left, :style => :bold
-    end  #bounding box
-    bounding_box([260, y_position], :width => 260, :height => 40) do
-    end  #bounding box
-    y_position = cursor
-    bounding_box([0, y_position], :width => 260, :height => 40) do
+       move_down 3
        text "Semnătura ______________________", :align => :left, :style => :bold
-    end  #bounding box
-    bounding_box([260, y_position], :width => 260, :height => 40) do
+    end
+    bounding_box([260, y_position], :width => 260, :height => 100) do
+       move_down 4
        text "Semnătura ______________________", :align => :left, :style => :bold
-    end  #bounding box 
-    y_position = cursor
-    bounding_box([0, y_position], :width => 260, :height => 40) do
-    end  #bounding box
-    bounding_box([260, y_position], :width => 260, :height => 40) do
-       text "Nume Prenume__________________________________________________", :align => :left, :style => :bold, :leading => 5
-    end  #bounding box   
+       move_down 4
+       text "Nume Prenume__________________________________________________", :align => :left, :style => :bold
+    end
     text "L.Ș.", :align => :left, :style => :bold
 
     start_new_page
     text "ACT DE PREDARE-PRIMIRE A AUTOVEHICULULUI", :align => :center, :style => :bold
     y_position = cursor
-    bounding_box([0, y_position], :width => 260, :height => 16) do
+    bounding_box([0, y_position], :width => 260, :height => 100) do
        text "Mun. Chișinău", :align => :left, :style => :bold
-    end  #bounding box
-    bounding_box([260, y_position], :width => 260, :height => 16) do
+    end
+    bounding_box([260, y_position], :width => 260, :height => 100) do
        text "Data <font size='10'>#{contract.stdate.strftime("%d.%m.%Y")}</font>", :align => :right, :style => :bold, :inline_format => true
-    end  #bounding box
+    end
     move_down 2
-    text "<b>Success&DivesGroup</b> numită în continuare <b><u>Locator</u></b>, pe de o parte și <b>#{client.sname} #{client.name} #{client.fname}</b>," + 
-         " numit în continuare <b><u>Locatar</u></b>, pe de altă parte, în baza contractului de locațiune nr. <b>#{contract.id}/#{contract.cnum}</b>" + 
+    text "<b>Success&DivesGroup</b> numită în continuare <b>Locator</>, pe de o parte și <b>#{client.sname} #{client.name} #{client.fname}</b>," + 
+         " numit în continuare <b>Locatar</b>, pe de altă parte, în baza contractului de locațiune nr. <b>#{contract.id}/#{contract.cnum}</b>" + 
          " din <b>#{contract.order_date.strftime("%d.%m.%Y")}</b> - au încheiat prezentul act despre următoarele:",:align => :justify, :inline_format => true
     text "Partea I. Transmiterea autovehiculului către Locatar", :align => :center, :style => :bold
     indent(5) do
@@ -191,7 +225,7 @@ class ContractReport < Prawn::Document
     text "Identificarea autovehiculului", :align => :center, :style => :bold
     move_down 1
     y_position = cursor
-    bounding_box([0, y_position], :width => 260) do
+    bounding_box([0, y_position], :width => 260, :height => 100) do
       text "Modelul, marca", :align => :left
       text "Numărul de înmatriculare", :align => :left
       text "Numărul caroseriei", :align => :left     
@@ -201,8 +235,8 @@ class ContractReport < Prawn::Document
       text "Capacitatea cilindrică, cm3", :align => :left
       text "Masa totală, kg", :align => :left 
       text "Valoare automobil", :align => :left
-    end  #bounding box
-    bounding_box([260, y_position], :width => 260) do
+    end
+    bounding_box([260, y_position], :width => 260, :height => 100) do
       text "#{car.marca}", :align => :left, :style => :bold
       text "#{car.gnum}", :align => :left, :style => :bold
       text "#{car.cuznum}", :align => :left, :style => :bold
@@ -212,19 +246,19 @@ class ContractReport < Prawn::Document
       text "#{car.vmot}", :align => :left, :style => :bold
       text "#{car.tmasa}", :align => :left, :style => :bold
       text "#{car.tsumm} EURO", :align => :left, :style => :bold
-    end  #bounding box  
+    end   
     indent(5) do
       text "2.  În prezentul punct sunt identificate defectele exterioare ale autovehiculului.", :align => :left
     end
+    move_down 1
     # BEGIN OF PICTURE
     #size = bounds.width 
-    #bounding_box([0, cursor], :width => size, :height => 300) do
-    #  image "#{Rails.root}/app/assets/images/aveo.jpg", :fit => [size, 300]
+    #bounding_box([0, cursor], :width => size, :height => 200) do
+    #  image "#{Prawn::DATADIR}/images/pigs.jpg", :fit => [size, 200]
     #  stroke_bounds
     #end
-    image "#{Rails.root}/app/assets/images/aveo.jpg", :width => bounds.width 
+  #  image "#{Prawn::DATADIR}/images/aveo.jpg", :width => bounds.width, :height => 100
     # END OF PICTURE
-    move_down 1
     indent(5) do
       text "3.  Autovehiculul se află în stare bună ce permite exploatarea acestuia conform destinației. ", :align => :left
       text "4.  Locatarul declară că funcționarea corespunzătoare a autovehiculului i-a fost demonstrată, de asemenea că s-a convins de integritatea acestuia și că toate defectele (interioare și exterioare) au fost indicate în prezentul act.  ", :align => :left
@@ -232,53 +266,51 @@ class ContractReport < Prawn::Document
     end
     move_down 2
     y_position = cursor
-    bounding_box([0, y_position], :width => 260, :height => 70) do
+    bounding_box([0, y_position], :width => 260, :height => 100) do
        text "Locator", :align => :center, :style => :bold
-       move_down 15      
+       move_down 4      
        text "Semnătura ______________________", :align => :left, :style => :bold
-       move_down 10
-       indent(180) do
-        text "L.Ș.", :align => :left, :style => :bold
-       end
-    end #bounding box
-    bounding_box([260, y_position], :width => 260, :height => 70) do
+       move_down 3
+       text "L.Ș.", :align => :left, :style => :bold
+    end
+    bounding_box([260, y_position], :width => 260, :height => 100) do
        text "Locatar", :align => :center, :style => :bold      
-       move_down 15
+       move_down 4
        text "Semnătura ______________________", :align => :left, :style => :bold
-       move_down 10
+       move_down 3
        text "Nume", :align => :left, :style => :bold
        text "Prenume__________________________________________________", :align => :left, :style => :bold
-    end #bounding box
-    move_down 10
+    end
     text "Partea II. Restituirea autovehiculului ", :align => :center, :style => :bold
     y_position = cursor
-    bounding_box([0, y_position], :width => 260, :height => 16) do
+    bounding_box([0, y_position], :width => 260, :height => 100) do
        text "Mun. Chișinău", :align => :left, :style => :bold
-    end  #bounding box
-    bounding_box([360, y_position], :width => 160, :height => 16) do
+    end
+    bounding_box([360, y_position], :width => 160, :height => 100) do
        text "Data ________________________", :align => :left, :style => :bold, :inline_format => true
-    end  #bounding box
+    end
     move_down 2 
     indent(5) do
       text "6.  Locatarul a restituit iar Locatorul a primit autovehiculul identificat în Partea I a prezentului Act de predare-primire. ", :align => :left
-      text "7.  În afara defecțiunilor indicate în punctul 2 din prezentul Act de predare-primire, au mai fost identificate următoarele defecțiuni:", :align => :left, :leading => 7
-      text "1.  _______________________________________________________________________________________________", :align => :left, :leading => 7
-      text "2.  _______________________________________________________________________________________________", :align => :left        
+      text "7.  În afara defecțiunilor indicate în punctul 2 din prezentul Act de predare-primire, au mai fost identificate următoarele defecțiuni:", :align => :left
+      text "1.  ________________________________________________________________________", :align => :left 
+      text "2.  ________________________________________________________________________", :align => :left           
     end 
-    move_down 20
+    move_down 2
     y_position = cursor
-    bounding_box([0, y_position], :width => 260) do
-       text "Locator", :align => :left, :style => :bold   
+    bounding_box([0, y_position], :width => 260, :height => 100) do
+       text "Locator", :align => :left, :style => :bold    
        text "Semnătura ______________________", :align => :left, :style => :bold
-       move_down 20
+       move_down 2
        text "Locatar", :align => :left, :style => :bold    
        text "Semnătura ______________________", :align => :left, :style => :bold
-    end #bounding box
-    bounding_box([360, y_position], :width => 160) do     
-       move_down 10
+    end 
+    bounding_box([360, y_position], :width => 160, :height => 100) do     
+       move_down 3
        text "L.Ș.", :align => :left, :style => :bold
-    end   #bounding box              
+    end                 
     render
   end
   
+end
 end

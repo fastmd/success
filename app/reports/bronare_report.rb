@@ -1,15 +1,47 @@
 # encoding: utf-8
 class BronareReport < Prawn::Document
-  # ширина колонок
-  Widths = [25, 60, 60, 60, 60, 60, 60, 140]
-  # заглавия колонок
-  Headers = ["№", "Дата актирования","№ счетчика", "A+", "A-", "R+", "R-", "Комментарий"]
   
-  def row(d1, d2, d3, d4, d5, d6, d7, d8)
-    row = [d1, d2, d3, d4, d5, d6, d7, d8]
-    make_table([row]) do |t|
-      t.column_widths = Widths
-      t.cells.style :borders => [:left, :right], :padding => 2, :font_style => :normal, :font_size => 8
+  
+  def makebox(x,y,contract,car,client,al,stmp)
+    boxwidth = 270
+    boxheight = 360
+    bounding_box([boxwidth*x+x*3, boxheight*(y+1)+y*3], :width => boxwidth-3, :height => boxheight-3) do
+     transparent(0.5) { stroke_bounds }
+     indent(2) do 
+       text "<u><link href='http://www.success.md'>success.md</link></u>", :size => 10, :style => :normal, :align => :left,:inline_format => true
+       text Time.now.strftime("Документ сгенерирован %e %b %Y в %H:%M"), :align => :right, :style => :italic, :size => 8
+       move_down 5
+       text "Act de rezervare cu Success&DivesGroup SRL", :size => 11, :style => :bold, :align => :center
+       text "№ #{contract.id}/#{contract.cnum} din #{contract.order_date.strftime("%d.%m.%Y")}", :align => :center
+       move_down 10
+       text "Autovehicul <b>#{car.marca} #{car.gnum}</b>", :align => :left, :inline_format => true
+       move_down 10
+       text "Locator", :align => :center, :style => :bold
+       text "Nume       SERGIU               tel.  078777058", :align => :left   
+       text "Nume       VLADISLAV         tel.  069777037", :align => :left
+       move_down 5
+       text "Locatar", :align => :center, :style => :bold
+       text " Familia  <b>#{client.sname}</b>", :align => :left, :inline_format => true
+       text " Nume <b>#{client.name}</b>", :align => :left,:inline_format => true
+       text " tel. #{client.tel}", :align => :left
+       move_down 5
+       text " Data de la #{contract.stdate.strftime("%d.%m.%Y")} pina la #{contract.enddate.strftime("%d.%m.%Y")}", :align => :left
+       text " Suma #{contract.garant_summ}", :align => :left
+       move_down 10
+       text "Locator", :align => :left, :style => :bold
+       move_down 10
+       text "Semnatura __________________", :align => :left
+     end
+     move_down 10
+     indent(2+al) do         
+         text "Locatar", :align => :left, :style => :bold
+         move_down 10
+         text "Semnatura __________________", :align => :left
+         move_down 10 
+     end
+     indent(2+stmp) do    
+         text "L.Ș.", :align => :left
+     end     
     end
   end
     
@@ -21,49 +53,21 @@ class BronareReport < Prawn::Document
                         :bold => "./app/assets/fonts/OpenSans-Bold.ttf",
                         :italic => "./app/assets/fonts/OpenSans-Italic.ttf",
                         :normal  => "./app/assets/fonts/OpenSans-Light.ttf" })
-      font "OpenSans", :size => 8
+      font "OpenSans", :size => 12
     else
       font_families.update( 
         "OpenSans" => {
-                        :bold => "./app/assets/fonts/OpenSans-Bold.ttf",
-                        :italic => "./app/assets/fonts/OpenSans-Italic.ttf",
-                        :normal  => "./app/assets/fonts/OpenSans-Light.ttf" })
-      font "OpenSans", :size => 8  
+                        :bold => "/home/sergelus/auto/app/assets/fonts/OpenSans-Bold.ttf",
+                        :italic => "/home/sergelus/auto/app/assets/fonts/OpenSans-Italic.ttf",
+                        :normal  => "/home/sergelus/auto/app/assets/fonts/OpenSans-Light.ttf" })
+      font "OpenSans", :size => 12  
     end
-    move_down(1)
-    text "success.md", :size => 12, :style => :bold, :align => :left
-    text "Act de rezervare cu Success&DivesGroup SRL", :size => 15, :style => :bold, :align => :center
-    move_down(1)
- #   text "Поставщик:  #{mpoints.furnizor.name}", :size => 12, :style => :bold, :align => :left     
- #   text "Потребитель: #{mpoints.company.name}", :size => 12, :style => :bold, :align => :left
- #   text "Филиал: #{mpoints.mesubstation.filial.name}", :size => 12, :style => :bold, :align => :left
- #   text "Регион: #{mpoints.mesubstation.region.cvalue}", :size => 12, :style => :bold, :align => :left
- #   text "Подстанция (подключен потребитель): #{mpoints.mesubstation.name}", :size => 12, :style => :bold, :align => :left 
-  #  text "Присоединение (запитан потребитель): #{mpoints.meconname}", :size => 12, :style => :bold, :align => :left 
- #   text "Объект установки учета: #{mpoints.clsstation}", :size => 12, :style => :bold, :align => :left 
-#    text "Присоединение установки учета: #{mpoints.clconname}", :size => 12, :style => :bold, :align => :left
-    move_down(28)  
-    # выборка записей
-    i=0      
-    data = []
- #   if !mvalues.nil? then
- #   items = mvalues.each do |item|
- #     data << row(i+=1, item.actdate.to_formatted_s(:day_month_year),item.meternum,item.actp180, item.actp280, item.actp380, item.actp480, item.comment)
- #   end
- #   end
-    
- #   head = make_table([Headers], :column_widths => Widths)
- #   table([[head], *(data.map{|d| [d]})], :header => true, :row_colors => %w[cccccc ffffff]) do
- #     cells.style(:borders => [:left, :right], :font => [:style => :normal, :size => 8])
- #     row(0).borders = [:top, :bottom, :left, :right]
- #    # row(1..50).borders = [:left, :right]
- #     row(-1).borders = [:bottom, :left, :right]
- #   end
-     # добавим время создания вверху страницы
-    creation_date = Time.now.strftime("Документ сгенерирован %e %b %Y в %H:%M")
-    go_to_page(page_count)
-    move_down(0)
-    text creation_date, :align => :right, :style => :italic, :size => 8   
+   
+   # makebox(0,0,contract,car,client,0,230)  
+   # makebox(1,0,contract,car,client,100,10)
+    makebox(0,1,contract,car,client,0,230)
+    makebox(1,1,contract,car,client,100,10)
+         
     render
   end
   
