@@ -88,7 +88,7 @@ class ContractsController < ApplicationController
    @contract.client_id = params[:client_id]
    @contract.car_id = params[:car_id]
    @contract.order_date =  Date.today
-   @contract.stdate =  Date.today
+   @contract.stdate = params[:stdate] ?  params[:stdate] : Date.today
    d = @contract.stdate + 1.day
    @contract.enddate = d   
    @contract.dperiod = 1
