@@ -11,30 +11,27 @@
 					<th>Автомобиль</th>
 					<th>Клиент</th>
 					<th>Агент</th>
-					<th width="12%">Начало</th>
-					<th width="12%">Конец</th>
+					<th>Период</th>
 					<th>Пробег</th>
-					<th>Гарантийная сумма</th>
-					<th>Сумма договора</th>
+					<th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+					<th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>			
 				<% @broni_today.each do |contract| %>
 					<%= simple_form_for :contract,:url => {controller: "contracts", action: "broni2contract"} do |f| %>
-					    <%= hidden_field_tag 'contract_id', contract.id  %>
+					    <%= hidden_field_tag 'id', contract.id  %>
 						<tr>
 							<td><%= "#{contract.id}/#{contract.cnum}" %></td>
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
 							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
 							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><%= contract.stdate.to_date.strftime("%d.%m.%Y") %>
-							    <%= f.input :sttime, as: :time , default: Time.parse(Time.now.strftime('%R')), label: false %></td>
-							<td><%= text_field_tag 'enddate', contract.enddate.to_date.strftime("%d.%m.%Y")  %>
-							    <%= f.input :endtime, as: :time , default: Time.parse(Time.now.strftime('%R')), label: false %></td>
+							<td><%= contract.stdate.to_date.strftime("%d.%m.%Y") %>-<%= contract.enddate.to_date.strftime("%d.%m.%Y") %>
+						        <%= if contract.dperiod then "#{contract.dperiod} дн." end %></td>
 							<td><%= text_field_tag 'wlong', if contract.car.wlongs.last then contract.car.wlongs.last.wlong end %></td>
-	 						<td><%= text_field_tag 'garant_summ',contract.garant_summ,:class=>"cost_tag" %></td>
-							<td><%= text_field_tag 'summ',contract.summ,:class=>"cost_tag" %></td>
+							<td><%= contract.garant_summ %></td>
+	 						<td><%= contract.price %></td>
 							<td><%= submit_tag("Открыть", class: "btn btn-primary") %></td>
 						</tr>
 					<% end %>							
@@ -55,30 +52,27 @@
 					<th>Автомобиль</th>
 					<th>Клиент</th>
 					<th>Агент</th>
-					<th width="12%">Начало</th>
-					<th width="12%">Конец</th>
+					<th>Период</th>
 					<th>Пробег</th>
-					<th>Гарантийная сумма</th>
-					<th>Сумма договора</th>
+					<th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+					<th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody>			
 				<% @broni_tomorrow.each do |contract| %>
 					<%= simple_form_for :contract,:url => {controller: "contracts", action: "broni2contract"} do |f| %>
-					    <%= hidden_field_tag 'contract_id', contract.id  %>
+					    <%= hidden_field_tag 'id', contract.id  %>
 						<tr>
 							<td><%= "#{contract.id}/#{contract.cnum}" %></td>
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
 							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
 							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><%= contract.stdate.to_date.strftime("%d.%m.%Y") %>
-							    <%= f.input :sttime, as: :time , default: Time.parse(Time.now.strftime('%R')), label: false %></td>
-							<td><%= text_field_tag 'enddate', contract.enddate.to_date.strftime("%d.%m.%Y")  %>
-							    <%= f.input :endtime, as: :time , default: Time.parse(Time.now.strftime('%R')), label: false %></td>
+							<td><%= contract.stdate.to_date.strftime("%d.%m.%Y") %>-<%= contract.enddate.to_date.strftime("%d.%m.%Y") %>
+						        <%= if contract.dperiod then "#{contract.dperiod} дн." end %></td>
 							<td><%= text_field_tag 'wlong', if contract.car.wlongs.last then contract.car.wlongs.last.wlong end %></td>
-	 						<td><%= text_field_tag 'garant_summ',contract.garant_summ,:class=>"cost_tag" %></td>
-							<td><%= text_field_tag 'summ',contract.summ,:class=>"cost_tag" %></td>
+							<td><%= contract.garant_summ %></td>
+	 						<td><%= contract.price %></td>
 							<td><%= submit_tag("Открыть", class: "btn btn-primary") %></td>
 						</tr>
 					<% end %>							
@@ -108,7 +102,7 @@
 			<tbody>
 				<% @contracts_close_today.each do |contract| %>
 					<%= simple_form_for :contract,:url => {controller: "contracts", action: "contract2arh"} do |f|%>
-					    <%= hidden_field_tag 'contract_id', contract.id  %>
+					    <%= hidden_field_tag 'id', contract.id  %>
 					    <tr>
 							<td><%= link_to "#{contract.id}/#{contract.cnum}",  contract_path(contract) %></td>
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
@@ -130,7 +124,7 @@
 	<% end %>	
 			
 	<h4 align="center">Текущие брони и контракты по машинам <% if @filter==1 then %><span class="glyphicon glyphicon-filter" aria-hidden="true"></span><% end %></h4>
-	
+<!--	
 	<nav class="navbar">
 	  <ul class="nav nav-pills pull-left">
 		<li><%= form_tag("/cars/smonth", method: "get", class: 'form-inline') do %>
@@ -142,14 +136,14 @@
 		</li>
 		<li><%= form_tag("/cars/smonth", method: "get", class: 'form-inline') do %>
 	    	<div class="form-group">
-			  <%= search_field_tag(:q, @data_for_search, placeholder: 'Enter your search query here', class: "form-control", title: "машина", size: "20x1") %>
+			  <%= text_field_tag(:q, @data_for_search, placeholder: 'Enter your search query here', class: "form-control", title: "машина") %>
 			  <%= submit_tag("Поиск", class: "btn btn-primary", name: "search", title: "поиск") %>
 			</div>
 			<% end %>
 		</li>				    
 	  </ul>  
 	</nav>
-		
+-->		
 	<div align="center">
 	  <!-- Nav tabs -->
 	  <ul class="nav nav-tabs" role="tablist" id="myTab">
@@ -196,11 +190,14 @@
 									               else "" end %>>
 								<center>
 								<% if !r[d+2].nil? then %>	
-									<% case (r[d+2][:flag]) when 1 then %><b><%= link_to "Б" , contracts_edit_path(:id => r[d+2][:contract_id]), id: "bbroni" %></b>
-									<%               when 2 then %><b><%= link_to "К", contracts_edit_path(:id => r[d+2][:contract_id]), id: "ccontract" %></b>
+									<% case (r[d+2][:flag]) when 1 then %><b><%= link_to "Б" , contracts_show_path(:id => r[d+2][:contract_id]), id: "bbroni" %></b>
+									<%               when 2 then %><b><%= link_to "К", contracts_show_path(:id => r[d+2][:contract_id]), id: "ccontract" %></b>
 									<%               when 3 then %><b><%= link_to "X", '#', id: "rezerv" %></b>
 									<% end %>
-								<% else %><b><%= link_to ".", contracts_newbroni_path(:car_id => r[daycount+2], :stdate => (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)), id: "vacant" %></b>
+								<% else %><b><%= link_to ".", contracts_newbroni_path(:car_id => r[daycount+2], :stdate => (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)), id: "vacant", 
+								              title: "#{(@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)} Бронь новая" %></b>
+								          <b><%= link_to ".", contracts_new_path(:car_id => r[daycount+2], :stdate => (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)), id: "vacantc", 
+								              title: "#{(@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)} Контракт новый" %>
 								<% end %>
 								</center>
 							    </td>

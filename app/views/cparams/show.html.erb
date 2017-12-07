@@ -4,7 +4,7 @@
   	  	<div class="panel-heading"><strong>Новый курс:</strong></div>
   	  	<div class="panel-body">
 		<%= simple_form_for(:cparam, url: cparams_path, html: { class: 'form-inline' }) do |f| %>
-		  <%= f.input :curs, label: 'Курс EUR ', placeholder: @cparam, as: :decimal %>
+		  <%= f.input :curs, label: "Курс #{$valuta}", placeholder: @cparam, as: :decimal %>
 		  <div  align="center"><%= button_tag "Сохранить", type: 'submit', class: "btn btn-primary glyphicon glyphicon-ok pull-center" %>
 		  	                   <%= button_tag "Отмена", type: 'submit', class: "btn btn-warning glyphicon glyphicon-remove pull-center", name: "cancel" %>  
           </div>  

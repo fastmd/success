@@ -22,24 +22,20 @@ $(document).ready( function () {
 	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
 		<thead>
 			<tr  class="info">
-			   <th>........</th>	
+			   <th>..........</th>	
 			   <th>№</th>
 			   <th>От</th>
 			   <th>Aгент</th>
-			   <th>Авто</th>
-			   <th>С</th>
-			   <th></th>
-			   <th>По</th>
-			   <th></th>
-			   <th>Залог</th>
-			   <th>Сумма, EUR</th>
-			   <th>Сумма, лей</th>
+			   <th>Автомобиль</th>
+			   <th>Период</th>
+			   <th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 			   <th>Клиент</th>			   
 			</tr>	
 		</thead>
 		<tbody>
 			<% @contracts.each do |c| %>
-					<tr>
+					<% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
 						<td><%= link_to " " , contracts_edit_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать бронь' %>
 							<%= link_to " " , contracts_show_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-eye-open", :title => 'Посмотреть бронь' %>
 							<%= link_to image_tag('Apps-Pdf-B-icon.png', :alt => "PDF", :width => "20", :height => "20"), contracts_show_path(:id => c.id, format: "pdf") %>
@@ -49,13 +45,11 @@ $(document).ready( function () {
 						<td><%= c.order_date.strftime('%Y.%m.%d') %></td>
 						<td><%= unless c.user.nil? then c.user.username end %></td>
 						<td><%= unless c.car.nil? then "#{c.car.marca} #{c.car.gnum}" end %></td>
-						<td><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y')}" else "" end %></td>
-						<td><%= unless c.sttime.nil? then " #{c.sttime.strftime('%R')}" else "" end %></td>
-						<td><%= unless c.enddate.nil? then "#{c.enddate.strftime('%d.%m.%Y')}" else "" end %></td>
-						<td><%= unless c.endtime.nil? then " #{c.endtime.strftime('%R')}" else "" end %></td>
+						<td><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y')}" end %><%= unless c.sttime.nil? then " #{c.sttime.strftime('%R')}" end %>
+						    <%= unless c.enddate.nil? then "#{c.enddate.strftime('%d.%m.%Y')}" end %><%= unless c.endtime.nil? then " #{c.endtime.strftime('%R')}" end %>
+						    <%= if c.dperiod then "#{c.dperiod}дн." end %></td>
 						<td><%= c.garant_summ %></td>
-						<td><%= c.summ %></td>
-						<td><%= c.costlei %></td>
+						<td><%= c.price %></td>
 						<td><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname}" end %></td>					
 					</tr>		
 			<% end %>			

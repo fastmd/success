@@ -1,76 +1,5 @@
 <% provide(:title, 'Клиент') %>
 
-<head>
-  <meta charset="utf-8">
-  <title>jQuery UI Accordion - Default functionality</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script>
-  $(function() {
-    $("#pan").toggle()
-    $("#clname").attr('disabled', 'disabled');
-  });
-  $(function() {
-  $("#rem2").change( function() {
-    $("#pan").toggle()
-    $("#clname").toggle()
-    $("#pser").toggle()
-  });
-  });
-  function disableElements()
-{
-document.getElementById("#clname").disabled=true;
-}
-  
-  $(function() {
-    $( "#dt" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd.mm.yy' }).val();
-       
-    $( "#format" ).change(function() {
-      $( "#dt" ).datetimepicker( "option", "dateFormat", $( this ).val() );
-    });
-  });
-    $(function() {
-    $( "#dt1" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd.mm.yy' }).val();
-       
-    $( "#format" ).change(function() {
-      $( "#dt1" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });  
-  });
-  
-  $(function() {
-    $( "#dt2" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd.mm.yy' }).val();
-       
-    $( "#format" ).change(function() {
-      $( "#dt2" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });  
-  });
-  
-    $(function() {
-    $( "#dt3" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd.mm.yy' }).val();
-       
-    $( "#format" ).change(function() {
-      $( "#dt3" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });  
-  });
-  
-  </script>
-</head>
-
    <div class="row">
   	<div id="pan1" class="panel panel-info">
   	  <div class="panel-heading"><strong>Редактирование клиента:</strong></div> 		
@@ -79,7 +8,7 @@ document.getElementById("#clname").disabled=true;
 	  	  	
 		  <div class="large-6 columns">
 		  <div class="panel  panel-default">		  	
-		  	<div class="panel-body">
+		  <div class="panel-body">
 					<%= f.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25} %>

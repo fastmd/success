@@ -39,7 +39,7 @@ $(document).ready( function () {
 		</thead>
 		<tbody>
 			<% @clients.each do |cl| %>
-					<tr>
+					<% if cl.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
 						<td><%= "#{cl.id}" %></td>
 						<td><%= link_to " " , edit_client_path(cl),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать клиента' %>
 							<%= link_to " " , clients_destroy_path(:id => cl.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить клиента', data: { confirm: "Удалить клиента #{cl.id} #{cl.sname} #{cl.name} #{cl.fname}?" } %>

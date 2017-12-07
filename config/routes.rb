@@ -12,14 +12,10 @@ Rails.application.routes.draw do
   get "contract/clicontr/:num" => 'contract#clicontr'
   
   get "contract_to_arh/:num" => 'cars#contract_to_arh'
-  get "car/rez" => 'cars#rez'
   
   get "tehservices/new" => 'tehservices#new'
   get "tehservices/list" => 'tehservices#list'
-  
-  post "car/rez" => 'cars#rez'
-  post "car/rezdoc" => 'cars#rezdoc'
-  post "car/reznew" => 'cars#reznew'
+ 
   
   post "car/autotech" => 'cars#autotech'
   post "reznew" => 'cars#reznew'
@@ -37,7 +33,9 @@ Rails.application.routes.draw do
   get 'contracts/new'
   post 'contracts/new'
   get 'contracts/show'
-  post 'contracts/show'  
+  post 'contracts/show'
+  get 'contracts/update'
+  post 'contracts/update'  
   get 'contracts/edit'
   post 'contracts/edit'
   get 'contracts/destroy'
@@ -51,7 +49,7 @@ Rails.application.routes.draw do
   get 'contracts/contract2arh'
   post 'contracts/contract2arh'
   get 'contracts/broni2contract'
-  post 'contracts/broni2contract'  
+  post 'contracts/broni2contract'
   
   post "tehservices/newto" => 'tehservices#newto'
   post "tehservices/new" => 'tehservices#new'

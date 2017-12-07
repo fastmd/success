@@ -25,32 +25,37 @@ $(document).ready( function () {
 			   <th>№</th>
 			   <th>От</th>
 			   <th>Aгент</th>
-			   <th>Авто</th>
+			   <th>Автомобиль</th>
 			   <th>С</th>
-			   <th></th>
 			   <th>По</th>
-			   <th></th>
-			   <th></th>
-			   <th>Залог</th>
-			   <th>Сумма, EUR</th>
+			   <th>Дни</th>
+			   <th>Гар. сумма</th>
+			   <th>Залог, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th>Цена</th>
+			   <th>Сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th>Курс</th>
 			   <th>Сумма, лей</th>
 			   <th>Клиент</th>			   
 			</tr>	
 		</thead>
 		<tbody>
 			<% @contracts.each do |c| %>
-					<tr>
-						<td><%= "#{c.id} / #{c.cnum}" %></td>
+					<% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
+						<td><%= "#{c.id}/#{c.cnum}" %></td>
 						<td><%= c.order_date.strftime('%Y.%m.%d') %></td>
 						<td><%= unless c.user.nil? then c.user.username end %></td>
 						<td><%= unless c.car.nil? then "#{c.car.marca} #{c.car.gnum}" end %></td>
-						<td><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y')}" else "" end %></td>
-						<td><%= unless c.sttime.nil? then " #{c.sttime.strftime('%R')}" else "" end %></td>
-						<td><%= unless c.enddate.nil? then "#{c.enddate.strftime('%d.%m.%Y')}" else "" end %></td>
-						<td><%= unless c.endtime.nil? then " #{c.endtime.strftime('%R')}" else "" end %></td>
-						<td><%= unless c.fendtime.nil? then " #{c.fendtime.strftime('%R')}" else "" end %></td>
+						<td><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y')}" else "" end %>
+							<%= unless c.sttime.nil? then " #{c.sttime.strftime('%R')}" else "" end %></td>
+						<td><%= unless c.enddate.nil? then "#{c.enddate.strftime('%d.%m.%Y')}" else "" end %>
+							<%= unless c.endtime.nil? then " #{c.endtime.strftime('%R')}" else "" end %>
+							<%= unless c.fendtime.nil? then "(#{c.fendtime.strftime('%R')})" else "" end %></td>
+						<td><%= c.dperiod %></td>
 						<td><%= c.garant_summ %></td>
+						<td><%= c.zalog %></td>
+						<td><%= c.price %></td>
 						<td><%= c.summ %></td>
+						<td><%= c.curs %></td>
 						<td><%= c.costlei %></td>
 						<td><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname}" end %></td>					
 					</tr>		

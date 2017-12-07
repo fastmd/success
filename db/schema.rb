@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128143937) do
+ActiveRecord::Schema.define(version: 20171205225827) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -28,19 +28,20 @@ ActiveRecord::Schema.define(version: 20171128143937) do
     t.string   "aprod"
     t.string   "capcil"
     t.integer  "int1"
-    t.float    "int1price"
+    t.integer  "int1price"
     t.integer  "int2"
-    t.float    "int2price"
+    t.integer  "int2price"
     t.integer  "int3"
-    t.float    "int3price"
+    t.integer  "int3price"
     t.integer  "int4"
-    t.float    "int4price"
+    t.integer  "int4price"
     t.integer  "int5"
-    t.float    "int5price"
+    t.integer  "int5price"
     t.integer  "int6"
-    t.float    "int6price"
+    t.integer  "int6price"
     t.integer  "int7"
-    t.float    "int7price"
+    t.integer  "int7price"
+    t.integer  "gaj"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -81,6 +82,9 @@ ActiveRecord::Schema.define(version: 20171128143937) do
     t.float    "costlei"
     t.date     "stdate"
     t.integer  "user_id"
+    t.integer  "dperiod"
+    t.decimal  "price"
+    t.decimal  "curs"
   end
 
   add_index "contracts", ["car_id"], name: "index_contracts_on_car_id"

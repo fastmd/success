@@ -91,7 +91,7 @@ class ContractReport < Prawn::Document
     text "5.3. Chemarea angajaților Locatorului în afara orelor de program (10.00-18.30) sau în alt punct din mun. Chișinău decât punctele de lucru ale Locatorului, se achită suplimentar cu 15 Euro (cauza chemării poate fi diferită primirea/predarea autovehiculului etc.)",:align => :justify
     text "5.4. Suplimentar, se achită: pentru deplasarea autovehiculului peste hotarele țării – 5,00 Euro/zi (pentru deplasarea peste hotare este obligatoriu acordul scris al Locatorului), scaunul pentru copil Euro/zi, navigatorul gps – 5,00 Euro/zi.",:align => :justify
     text "VI. Garanția de închiriere", :align => :center, :style => :bold
-    text "6.1. Locatarul este obligat să transmită Locatorului <b>#{contract.garant_summ}</b> cu titlu de garanție de închiriere până la începerea termenului Locațiunii.",:inline_format => true,:align => :justify
+    text "6.1. Locatarul este obligat să transmită Locatorului <b>#{contract.zalog}</b> cu titlu de garanție de închiriere până la începerea termenului Locațiunii.",:inline_format => true,:align => :justify
     text "6.2. Garanția va fi restituită când autovehiculul va fi înapoiat în condițiile în care l-a primit de la Locator. "
     text "6.3. Garanția nu se va restitui în caz de accident. Ea va fi folosită pentru recuperarea prejudiciului cauzat Locatorului prin faptul că acesta din urmă nu se va putea folosi de autovehicul. În cazul în care garanția nu va fi de ajuns pentru recuperarea prejudiciului, Locatarul va fi obligat să achite suplimentar chiria pentru zilele în care autoturismul va sta în reparație.",:align => :justify
     text "6.4. Garanția va putea fi reținută și în alte cazuri în care Locatarul va avea obligații bănești față de Locator. "

@@ -54,114 +54,6 @@ class CarsController < ApplicationController
     redirect_to cars_index_path
   end  
   
-  def rezdoc
-    num = params[:car_num]
-    @car = Car.find(num)
-    @contract = @car.contracts.create
-    @client = Client.find(params[:cli_id]) 
-    if Contract.maximum(:id) != nil then conmax = Contract.maximum(:id) else conmax = 0 end      
-    @state = params[:active] || []
-    if @state != '1'  
-      @contract.cnum = conmax + 1
-      date = params[:nstdate]
-      @contract.order_date = date
-      @contract.flag = params[:flag] 
-      @contract.zalog = params[:zalog]
-      @contract.summ = params[:doc_sum]
-      @contract.garant_summ = params[:garant_summ]
-      @contract.diff = params[:enddate]
-      @contract.sttime = params[:sttime]
-      @contract.endtime = params[:endtime]
-      @contract.user = current_user.username
-      @contract.client_id = params[:cli_id]
-      @contract.save  
-    end
-  end
-  
-  def reznew
-    num = params[:car_num]  
-    @car = Car.find(num)
-    @contract = @car.contracts.create   
-    if Contract.maximum(:id) != nil then conmax = Contract.maximum(:id) else conmax = 0 end     
-    @state = params[:active] || []
-    if @state != '1'    
-      @contract.cnum = conmax + 1
-      date = params[:nstdate]
-      @contract.order_date = date
-      @contract.flag = params[:flag] 
-      @contract.zalog = params[:zalog]
-      @contract.summ = params[:doc_sum]
-      @contract.garant_summ = params[:garant_summ]
-      @contract.diff = params[:enddate]
-      @contract.sttime = params[:sttime]
-      @contract.endtime = params[:endtime]
-      @contract.user = current_user.username
-      @contract.client_id = params[:cli_id]
-      @contract.save   
-    end 
-    if @state == '1'      
-      @client = Client.create(params[:contract])
-      @client.name = params[:name]
-      @client.sname = params[:surname]
-      @client.fname = params[:fname]
-      @client.pseria = params[:pseria]
-      @client.address = params[:address]
-      @client.idno = params[:idnp]
-      @client.dn = params[:dn]
-      @client.de = params[:fname]
-      @client.tel = params[:tel]
-      @client.pemail = params[:pemail]
-      @client.save 
-      @contract.cnum = conmax + 1
-      date = params[:nstdate]
-      @contract.order_date = date
-      @contract.flag = 1
-      @contract.diff = params[:enddate]
-      @contract.user = current_user.username
-      @contract.client_id = @client.id
-      @contract.save   
-    end   
-    redirect_to root_path
-  end  
-  
-  def rez_to_contract
-    @contract = Contract.find(params[:contrid]) 
-    @contract.flag = 2
-    @contract.diff = params[:enddate]
-    @contract.endtime = params[:endtime]
-    @contract.summ = params[:summ]
-    @contract.sttime = params[:sttime]
-    @contract.garant_summ = params[:garant_summ]
-    @car = @contract.car
-    @wl = params[:wlong]
-    @car.wlongs.create()
-    @wls = @car.wlongs.last
-    @wls.wlong = @wl
-    @wls.wdate = params[:sttime]
-    @wls.save
-    @contract.save
-    redirect_to root_path
-  end
-  
-  def contract_to_arh
-    @contract = Contract.find(params[:contract_id])
-    @contract.flag = 3
-    @contract.fendtime = "#{params[:contract]['fendtime(4i)']}:#{params[:contract]['fendtime(5i)']}"
-    @contract.save
-    @car = @contract.car
-    @wls_end = @car.wlongs.create()
-    @wls_end.wlong = params[:contract][:wlongend]
-    @wls_end.wdate = "#{params[:contract]['fendtime(4i)']}:#{params[:contract]['fendtime(5i)']}"
-    @wls_end.save
-    #render inline: "<%= params.inspect %><br><br>"
-    redirect_to root_path   
-  end
-  
-  def contractnew
-   # @car = Car.find(params[:num])
-
-  end
-  
   def show    
     @car = Car.find(params[:id])
   end
@@ -170,7 +62,9 @@ class CarsController < ApplicationController
     @cars = Car.all
   end
  
-  def smonth 
+  def smonth
+  filtertocookies
+  cookiesforreports    
    #---search------------ 
    if params[:filter] then
       @qmarca = params[:qmarca].to_s
@@ -266,7 +160,7 @@ class CarsController < ApplicationController
    #-----------      
    @cars = Car.all.order(:marca,:id)
    #---broni-today---------        
-   @broni_today = Contract.where("(car_id is not null AND (stdate between ? AND ?) AND flag = 1)", Date.today, Date.today).order(:car_id)
+   @broni_today = Contract.where("(car_id is not null AND (stdate <= ?) AND flag = 1)", Date.today).order(:car_id)
    if !@broni_today.nil? and @broni_today.count > 0 then @fl = 1 else @fl = 0 end     
    #---broni-tomorrow---------
    @broni_tomorrow = Contract.where("(car_id is not null AND (stdate between ? AND ?) AND flag = 1)", Date.tomorrow, Date.tomorrow).order(:car_id)
@@ -286,7 +180,7 @@ private
    
   def car_params
     params.require(:car).permit(:marca,:gnum,:cuznum,:motnum,:proddate,:color,:vmot,:tmasa,:tsumm,:aprod,:capcil,:int1,:int1price,:int2,:int2price,:int3,:int3price,
-                                :int4,:int4price,:int5,:int5price,:int6,:int6price,:int7,:int7price)
+                                :int4,:int4price,:int5,:int5price,:int6,:int6price,:int7,:int7price, :gaj)
   end
   
   def car_init(car)
@@ -315,6 +209,7 @@ private
     car.int6price = car_params[:int6price]
     car.int7 = car_params[:int7]
     car.int7price = car_params[:int7price]
+    car.gaj = car_params[:gaj]
     car    
   end
   
@@ -332,7 +227,7 @@ private
           @flag = 1         
         end
       rescue
-        flash[:warning] = "Данные не сохранены. Проверьте правильность ввода."             
+        flash[:warning] = "Данные не сохранены. Проверьте правильность ввода. Обязательные поля: марка, гос.номер, залог, дни1, цена1."             
       end
     end      
   end
@@ -342,6 +237,29 @@ private
       flash.discard 
       redirect_to cars_index_path
     end   
+  end 
+  
+       
+  def filtertocookies
+    if params[:filter] then
+        cookies[:qсar] = @qсar = params[:qсar].to_s
+        @data_for_search = ''
+        cookies.delete(:data_for_search) 
+    else
+        if params[:search] then
+            cookies[:data_for_search] = @data_for_search = params[:q].to_s
+            cookies.delete(:qсar)            
+        else
+            @data_for_search = cookies[:data_for_search]
+        end
+        @qсar = cookies[:qсar]
+    end     
+   end 
+   
+   def cookiesforreports
+    # filter
+    @data_for_search = cookies[:data_for_search]
+    @qсar = cookies[:qсar]
   end    
     
 end

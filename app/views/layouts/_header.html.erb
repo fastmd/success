@@ -8,7 +8,7 @@
           	<% if current_user.nil? then %>
 	            <li><%= link_to "Сегодня: #{@day_week_ru} #{DateTime.now.strftime('%d.%m.%Y')}", '#' %></li>
           	<% else %>
-	            <li><%= link_to "Текущий курс: #{if !Cparam.last.nil? then Cparam.last.curs else 1 end} MDL за 1 EUR", '#' %></li>
+	            <li><%= link_to "Текущий курс: #{if !Cparam.last.nil? then Cparam.last.curs else 1 end} MDL за 1 #{$valuta}", '#' %></li>
 	            <li><%= link_to "Сегодня: #{@day_week_ru} #{DateTime.now.strftime('%d.%m.%Y')}", '#' %></li>
             <% end %>
             </ul>

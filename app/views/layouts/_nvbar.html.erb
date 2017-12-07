@@ -33,6 +33,15 @@
 	    <li class=<%= if cc=='clients' then 'active' else '' end %>><%= link_to 'Клиенты', clients_path, :class => "glyphicon glyphicon-user" %></li>
 	    <li class=<%= if cc=='cars' and (ca=='index' or ca=='new' or ca=='edit') then 'active' else '' end %>><%= link_to 'Авто', cars_index_path, :class => "glyphicon glyphicon-bed" %></li>
 	    <li class=<%= if cc=='cars' and ca=='autotech' then 'active' else '' end %>><%= link_to 'ТО', car_autotech_path, :class => "glyphicon glyphicon-wrench" %></li>	    
-	    <li class=<%= if cc=='cparams' then 'active' else '' end %>><%= link_to 'Курс',cparams_show_path, :class => "glyphicon glyphicon-euro" %></li>    
+	    <li class=<%= if cc=='cparams' then 'active' else '' end %>><%= link_to 'Курс',cparams_show_path, :class => "glyphicon glyphicon-euro" %></li>
+		<% if cc == 'cars' and (ca == 'smonth') then %>
+		<li><%= form_tag("/cars/smonth", method: "get", class: 'form-inline') do %>
+	      <div class="form-group">
+			  <%= select_tag(:qmarca, options_for_select(@fmarcas, @qmarca), class: "form-control", prompt: "Марка...", include_blank: false, title: "Марка") %>
+			  <%= submit_tag("Фильтр", class: "btn btn-primary", name: "filter", title: "фильтр") %>
+		  </div>
+		<% end %>
+		</li>		
+		<% end %>   
 	  </ul>  
  <% end %>	

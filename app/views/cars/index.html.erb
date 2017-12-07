@@ -26,34 +26,29 @@ $(document).ready( function () {
 			   <th>...............</th>
 			   <th>Марка</th>
 			   <th>Гос. номер</th>
+			   <th>Залог, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th>Цена1, в день</th>
+			   <th>Цена2, в день</th>
+			   <th>Цена3, в день</th>
+			   <th>Цена4, в день</th>
+			   <th>Цена5, в день</th>
+			   <th>Цена6, в день</th>
+			   <th>Цена7, в день</th>	
 			   <th>№ кузова</th>
 			   <th>№ двигателя</th>
-			   <th>Дата выпуска</th>
+			   <th>Год выпуска</th>
 			   <th>Цвет</th>
 			   <th>Объем двигателя</th>
-			   <th>Масса</th>
-			   <th>Стоимость, EUR</th>
+			   <th>Масса, кг</th>
+			   <th>Стоимость, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 			   <th></th>
 			   <th></th>
-			   <th>Дни 1</th>
-			   <th>Цена 1</th>
-			   <th>Дни 2</th>
-			   <th>Цена 2</th>
-			   <th>Дни 3</th>
-			   <th>Цена 3</th>
-			   <th>Дни 4</th>
-			   <th>Цена 4</th>
-			   <th>Дни 5</th>
-			   <th>Цена 5</th>
-			   <th>Дни 6</th>
-			   <th>Цена 6</th>
-			   <th>Дни 7</th>
-			   <th>Цена 7</th>			   
+		   
 			</tr>	
 		</thead>
 		<tbody>
 			<% @cars.each do |c| %>
-					<tr>
+				   <% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>			
 						<td><%= "#{c.id}" %></td>
 						<td><%= link_to " " , edit_car_path(c),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать авто' %>
 							<%= link_to " " , cars_destroy_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить авто', data: { confirm: "Удалить авто #{c.id} #{c.marca} #{c.gnum}?" } %>
@@ -61,6 +56,14 @@ $(document).ready( function () {
 							<%= link_to " " , contracts_newbroni_path(:car_id => c.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %></td>
 						<td><%= "#{c.marca}" %></td>
 						<td><%= "#{c.gnum}" %></td>
+					    <td><%= "#{c.gaj}" %></td>	
+					    <td><% if c.int1 then %>&le;<%= "#{c.int1} дн. - #{c.int1price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
+	                    <td><% if c.int2 then %>&le;<%= "#{c.int2} дн. - #{c.int2price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
+	                    <td><% if c.int3 then %>&le;<%= "#{c.int3} дн. - #{c.int3price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
+	                    <td><% if c.int4 then %>&le;<%= "#{c.int4} дн. - #{c.int4price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
+	                    <td><% if c.int5 then %>&le;<%= "#{c.int5} дн. - #{c.int5price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
+	                    <td><% if c.int6 then %>&le;<%= "#{c.int6} дн. - #{c.int6price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
+	                    <td><% if c.int7 then %>&le;<%= "#{c.int7} дн. - #{c.int7price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
 					    <td><%= "#{c.cuznum}" %></td>
 					    <td><%= "#{c.motnum}" %></td>
 					    <td><%= "#{c.proddate}" %></td>
@@ -69,21 +72,7 @@ $(document).ready( function () {
 					    <td><%= "#{c.tmasa}" %></td>
 					    <td><%= "#{c.tsumm}" %></td>
 					    <td><%= "#{c.aprod}" %></td>
-					    <td><%= "#{c.capcil}" %></td>
-					    <td><%= "#{c.int1}" %></td>
-					    <td><%= "#{c.int1price}" %></td>
-					    <td><%= "#{c.int2}" %></td>
-					    <td><%= "#{c.int2price}" %></td>
-					    <td><%= "#{c.int3}" %></td>
-					    <td><%= "#{c.int3price}" %></td>
-					    <td><%= "#{c.int4}" %></td>
-					    <td><%= "#{c.int4price}" %></td>
-					    <td><%= "#{c.int5}" %></td>
-					    <td><%= "#{c.int5price}" %></td>
-					    <td><%= "#{c.int6}" %></td>
-					    <td><%= "#{c.int6price}" %></td>
-					    <td><%= "#{c.int7}" %></td>
-					    <td><%= "#{c.int7price}" %></td>								
+					    <td><%= "#{c.capcil}" %></td>							
 					</tr>		
 			<% end %>			
 		</tbody>

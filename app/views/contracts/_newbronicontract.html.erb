@@ -1,0 +1,328 @@
+<head>
+<%= include_gon %>	
+  <meta charset="utf-8">
+  <title>jQuery UI Accordion - Default functionality</title>
+ <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
+  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
+  <script>
+  
+    function myFunction(a,b) 
+    {  
+	    var text = a;   
+	    $("#client_id").val(a);
+	    $("#client_info").val(b);
+    }
+
+	 $(document).ready( function () {
+	    $('#m2').dataTable( {
+	    	 "order": [[ 1, "asc" ],[ 2, "asc" ],[ 3, "asc" ]]
+	 } );
+	} );
+
+  $(function() {
+    $("#pan1").toggle()
+    $("#rem2").toggle()
+    $("#clname").attr('disabled', 'disabled');    
+  });
+  
+  $(function() {
+  $("#rem1").change( function() {
+    $("#pan1").toggle()
+    $("#pan2").toggle()
+    $("#lrem2").toggle()
+    $("#rem2").toggle()
+    $("#pser").toggle()
+    $("#clname").toggle()
+    $("#lclinf").toggle()
+    $("#client_info").toggle()
+  });
+  });
+  
+  $(function() {
+  $("#rem2").change( function() {
+    $("#pan2").toggle()
+    $("#lrem1").toggle()
+    $("#lclinf").toggle()
+    $("#client_info").toggle()
+    $("#rem1").toggle()
+    $("#pser").toggle()
+  });
+  });
+  
+  function disableElements()
+{
+  document.getElementById("#clname").disabled=true;
+}
+  
+   function calcPeriod(flag){  
+             if ( ($("#stdate").val()) && ($("#enddate").val()) && ((flag == 0) || (flag == 1)) && (flag != 3) ) 
+             {
+             	var x = new Date($("#stdate").val());
+                var y = new Date($("#enddate").val());
+	            var ddt = (y - x) / (1000 * 60 * 60 * 24);
+	            if (ddt < 0) { 
+	            	ddt = 0;
+	            }	             
+	            $("#dperiod").val(ddt);
+             }    
+             else if ( ($("#stdate").val()) && ($("#dperiod").val()) && ((flag == 0) || (flag == 3)) ) 
+             {
+                var z = Number($("#dperiod").val());
+                var x = new Date($("#stdate").val());             
+                var dd = x.getDate() + z;
+                x.setDate(dd);
+                var yyyy = x.getFullYear();
+                var mm = x.getMonth() + 1;
+                dd = x.getDate();
+                mm = (mm < 10 ? "0" + mm:mm);
+			    dd = (dd < 10 ? "0" + dd:dd);	
+                if (yyyy && mm && dd) {             
+                	$("#enddate").val(String(yyyy) + '-' + String(mm) + '-'+ String(dd));
+                }               	
+             } 
+             else if ( ($("#enddate").val()) && ($("#dperiod").val()) && ((flag == 1) || (flag == 3)) )
+             {
+                var z = Number($("#dperiod").val());
+                var x = new Date($("#enddate").val());             
+                var dd = x.getDate() - z;
+                x.setDate(dd);
+                var yyyy = x.getFullYear();
+                var mm = x.getMonth() + 1;
+                dd = x.getDate();
+                mm = (mm < 10 ? "0" + mm:mm);
+			    dd = (dd < 10 ? "0" + dd:dd);	
+                if (yyyy && mm && dd) {             
+                	$("stdate").val(String(yyyy) + '-' + String(mm) + '-'+ String(dd));
+                }             	
+             }                        	            
+   };
+ 
+   function priceperday(){
+        var car = $("#car_id").val();
+        var cars = gon.cars;
+        var price = 0;
+        var flag = 0;   
+        for (var i = 0; i < cars.length; i++) {
+           if (cars[i].id == car) 
+           {
+           	  if (($("#dperiod").val()) || ($("#dperiod").val() == 0) ) {
+           	  	  var periodlength = $("#dperiod").val();
+	           	  if ((cars[i].int1price) && (cars[i].int1) && (flag == 0)) {
+	           	  	price = cars[i].int1price;
+	           	  	if (periodlength <= cars[i].int1) {
+	           	  		flag = 1;
+	           	  	} 
+	           	  }	 
+	           	  if ((cars[i].int2price) && (cars[i].int2) && (flag == 0)) {
+	           	  	price = cars[i].int2price;
+	           	  	if (periodlength <= cars[i].int2) {
+	           	  		flag = 1;
+	           	  	} 
+	           	  }	 
+	           	  if ((cars[i].int3price) && (cars[i].int3) && (flag == 0)) {
+	           	  	price = cars[i].int3price;
+	           	  	if (periodlength <= cars[i].int3) {
+	           	  		flag = 1;
+	           	  	} 
+	           	  }	 
+	           	  if ((cars[i].int4price) && (cars[i].int4) && (flag == 0)) {
+	           	  	price = cars[i].int4price;
+	           	  	if (periodlength <= cars[i].int4) {
+	           	  		flag = 1;
+	           	  	} 
+	           	  }	 
+	           	  if ((cars[i].int5price) && (cars[i].int5) && (flag == 0)) {
+	           	  	price = cars[i].int5price;
+	           	  	if (periodlength <= cars[i].int5) {
+	           	  		flag = 1;
+	           	  	} 
+	           	  }	 
+	           	  if ((cars[i].int6price) && (cars[i].int6) && (flag == 0)) {
+	           	  	price = cars[i].int6price;
+	           	  	if (periodlength <= cars[i].int6) {
+	           	  		flag = 1;
+	           	  	} 
+	           	  }
+	           	  if ((cars[i].int7price) && (cars[i].int7) && (flag == 0)) {
+	           	  	price = cars[i].int7price;
+	           	  	if (periodlength <= cars[i].int7) {
+	           	  		flag = 1;
+	           	  	} 
+	           	  }	 
+	          }
+	          break; 	  
+           }
+        }             
+        $("#price").val(price);	            
+   };
+   
+  function getzalog(){
+        var car = $("#car_id").val();
+        var cars = gon.cars;
+        var zalog = 0;  
+        for (var i = 0; i < cars.length; i++) {
+           if (cars[i].id == car) 
+           {
+	           if (cars[i].gaj) {
+	           	  	zalog = cars[i].gaj;
+	           	  }  	  	
+	          break; 	  
+           }
+        }             
+        $("#zalog").val(zalog);	            
+   };
+ 
+  function getgarantsum(){
+        var car = $("#car_id").val();
+        var cars = gon.cars;
+        var zalog = 0;  
+        for (var i = 0; i < cars.length; i++) {
+           if (cars[i].id == car) 
+           {
+	           if (cars[i].gaj) {
+	           	  	zalog = cars[i].gaj;
+	           	  }  	  	
+	          break; 	  
+           }
+        }             
+        $("#garant_summ").val(zalog);	            
+   }; 
+     
+  function calccontrsum(){
+        var summ = 0;
+        var costlei = 0;
+        if ( ($("#price").val()) && ($("#dperiod").val()) )
+        { 
+        	summ = ($("#price").val()) * ($("#dperiod").val());
+        	if  ($("#curs").val()) 
+        	{
+        		costlei = (($("#curs").val()) * summ).toFixed(2); 
+        	}
+        }
+        $("#summ").val(summ);
+        $("#costlei").val(costlei);             	            
+   }; 
+   
+   function getPriceFromSumm(){
+   	    var price = 0;
+   	    var costlei = 0;
+		if ( ($("#summ").val()) && ($("#dperiod").val()) )
+        { 
+        	price = (($("#summ").val()) / ($("#dperiod").val())).toFixed(2);
+        	if  ($("#curs").val()) 
+        	{
+        		costlei = (($("#curs").val()) * ($("#summ").val())).toFixed(2); 
+        	}
+        }
+        $("#price").val(price);
+        $("#costlei").val(costlei); 	  	
+   };
+   
+   function whenchangeCar(){
+   	 getzalog();
+   	 getgarantsum();
+   	 priceperday();
+   	 calccontrsum();
+   };    
+ 
+   function whenchangeDates(flag){
+   	 calcPeriod(flag);
+   	 priceperday();
+   	 calccontrsum();
+   }; 
+     
+  </script>
+</head>
+
+Click this link to show the current <%= link_to "time", contracts_newbroni_path, remote: true %>.<div id='time_div'></div>
+
+<div class="row">
+  <%= simple_form_for @contract do |f| %>	
+  <div class="large-4 columns">  	
+  	  <div class="panel panel-info">
+  	  	<div class="panel-heading"><strong><%= case when (@contract.flag == 1 and @contract.id.nil?) then "Новая бронь" 
+  	  		                                        when (@contract.flag == 2 and @contract.id.nil?) then "Новый контракт" 
+  	  		                                        when (@contract.flag == 1 and @contract.id) then "Редактирование брони № #{@contract.id}/#{@contract.cnum}" 
+  	  		                                        when (@contract.flag == 2 and @contract.id) then "Редактирование контракта № #{@contract.id}/#{@contract.cnum}" 
+  	  		                                        else "" end %><%= " от #{@contract.order_date.strftime('%d.%m.%Y')}" %>	                       
+  	  	</strong></div>
+  	  	<div class="panel-body">
+	    <!-- ручной номер документа -->
+    	<%= f.input :cnum, label: "Номер", as: :string, :input_html => { :size => 25} %>
+    	<!-- тип контракта 1=бронь -->
+    	<%= f.input :flag, :as => :hidden %>   	
+    	<!-- клиент -->  	    	
+    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a>
+	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	
+    	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname}" end , :readonly => true, class: "form-control" %>	   	
+    	<%= f.hidden_field :client_id, :id => "client_id" %>
+    	<!-- контроллер-экшн -->
+    	<%= hidden_field_tag 'vc' , controller.controller_name %>
+    	<%= hidden_field_tag 'va' , controller.action_name %>
+        <!-- дата контракта -->
+    	<%= f.input :order_date, :as => :hidden %>
+    	<%= f.input :user_id, :as => :hidden %>
+    	<%= hidden_field_tag 'flag', @contract.flag %>
+        <!-- автомобиль --> 
+    	<div class="form-group">
+          	<label for="car_id" class="control-label">Автомобиль</label>		
+    	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @contract.car_id), :onchange =>'whenchangeCar();', include_blank: true, class: "form-control" %>
+    	</div>
+    	<!-- дата начала -->
+    	<div class="form-group">
+	    	<label for="stdate" class="control-label">Дата начала договора</label>
+	    	<%= date_field_tag 'stdate', @contract.stdate, :onchange => "whenchangeDates(0);", class: "form-control" %>
+    	</div>
+    	<!-- время начала -->
+    	<% if @contract.flag == 2 then %> 
+    		<%= f.input :sttime, as: :time ,label: "Время начала договора" , default: @contract.sttime ? Time.parse(@contract.sttime.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>
+    	<% end %>
+    	<!-- ко-во дней -->
+  		<%= label_tag 'Кол-во дней' %>
+    	<%= text_field_tag 'dperiod', @contract.dperiod, :onchange =>'whenchangeDates(3);' %>
+    	<!-- дата конца -->
+    	<div class="form-group">
+    		<label for="enddate" class="control-label">Дата окончания договора</label>
+    		<%= date_field_tag 'enddate', @contract.enddate, :onchange => 'whenchangeDates(1);', class: "form-control" %>
+    	</div>
+    	<!-- время конца -->
+    	<% if @contract.flag == 2 then %> 
+    		<%= f.input :endtime, as: :time ,label: "Время окончания договора" , default: @contract.endtime ? Time.parse(@contract.endtime.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>    	
+    	<% end %>   	
+    	<!-- гарант сумма -->
+    	<label for="garant_summ" class="control-label"><%= "Гарантийная сумма, #{$valuta}" %></label>
+    	<%= text_field_tag 'garant_summ', @contract.garant_summ, :input_html => { :size => 25}, class: "form-control" %>
+    	<!-- залог -->
+    	<% if @contract.flag == 2 then %>
+    	    <label for="zalog" class="control-label"><%= "Залог, #{$valuta}" %></label>
+    		<%= text_field_tag 'zalog', @contract.zalog, class: "form-control" %>
+    	<% end %>	
+    	<!-- цена -->
+    	<%= label_tag "Цена в день, #{$valuta.upcase}" %>
+    	<%= text_field_tag 'price', @contract.price, :readonly => true %>
+    	<!-- сумма договора в валюте -->
+    	<% if @contract.flag == 2 then %> 
+    		<%= label_tag "Сумма договора, #{$valuta.upcase}" %>
+    		<%= text_field_tag 'summ', @contract.summ ,:onkeyup =>"getPriceFromSumm();" %>
+    		<label for="zalog" class="control-label"><%= "Курс, лей" %></label>
+    		<%= text_field_tag 'curs', @contract.curs ? @contract.curs : Cparam.last.curs, as: :decimal, :readonly => true, class: "form-control" %>
+    		<label for="zalog" class="control-label"><%= "Сумма, лей" %></label>
+    		<%= text_field_tag 'costlei', @contract.costlei, as: :decimal, :readonly => true, class: "form-control" %>
+    	<% end %>
+   	
+	    <center><%= submit_tag('Сохранить', class: "btn btn-primary") %> <%= f.button :submit, "Печать", class: "btn btn-info", name: "printfromedit" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
+			
+		</div> <!--panel-body--->    
+	</div> <!--panel-->
+ </div>
+ 
+ <%= render 'newclient' %>
+
+ <% end %>
+    
+ <%= render 'clients' %>
+ 
+</div> <!--row-->
