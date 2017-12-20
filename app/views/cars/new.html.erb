@@ -5,8 +5,9 @@
   	  <div class="panel-heading"><strong>Новое авто:</strong></div> 		
 	  <div class="panel-body">
 	  	  <%= simple_form_for :car, url: cars_path do |f| %>
-	  	  	
-		  <div class="large-6 columns">
+
+          <div class="row">	  	
+		  <div class="col-md-6">
 		  <div class="panel  panel-default">		  	
 		  	<div class="panel-body">
 					<%= f.input :marca, label: "Марка *", as: :string, :input_html => { :size => 25} %>
@@ -19,13 +20,11 @@
                     <%= f.input :vmot, label: "Объем двигателя", as: :decimal, :input_html => { :size => 25} %>
                     <%= f.input :tmasa, label: "Масса, кг", as: :decimal, :input_html => { :size => 25} %>
                     <%= f.input :tsumm, label: "Стоимость, #{$valuta}", as: :integer %>
-                    <%= f.input :aprod, as: :string, :input_html => { :size => 25} %>
-                    <%= f.input :capcil, as: :string, :input_html => { :size => 25} %>
 			</div>
 		    </div>
 		    </div>
     
-		    <div class="large-6 columns">
+		    <div class="col-md-3">
 		    <div class="panel  panel-default">
 		    <div class="panel-body">
 					<%= f.input :int1, label: "Дни1*, <= ", as: :integer  %>
@@ -35,7 +34,14 @@
 					<%= f.input :int3, label: "Дни3, <=", as: :integer %>
 					<%= f.input :int3price, label: "Цена3, #{$valuta}", as: :integer %>
 					<%= f.input :int4, label: "Дни4, <=", as: :integer %>
-					<%= f.input :int4price, label: "Цена4, #{$valuta}", as: :integer %>
+					<%= f.input :int4price, label: "Цена4, #{$valuta}", as: :integer %>	
+			</div>
+		  	</div>
+		  	</div>
+		  	
+		  	<div class="col-md-3">
+		    <div class="panel  panel-default">
+		    <div class="panel-body">
 					<%= f.input :int5, label: "Дни5, <=", as: :integer %>
 					<%= f.input :int5price, label: "Цена5, #{$valuta}", as: :integer %>
 					<%= f.input :int6, label: "Дни6, <=", as: :integer %>
@@ -45,8 +51,9 @@
 			</div>
 		  	</div>
 		  	</div>
-	  			<div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>	  				
-	  				  	
+		  		  		  				
+            </div>	<!--row-->
+            <div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>		  				  	
   			<% end %>
   	  </div> <!--panel body-->	
     </div> <!--panel-->		

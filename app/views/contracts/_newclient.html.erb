@@ -1,24 +1,37 @@
-  <div class="large-6 columns">
+
   	<div id="pan1" class="panel panel-info">
   	  <div class="panel-heading"><strong>Новый клиент:</strong></div> 		
 	  <div class="panel-body">
 	  	  <%= simple_form_for :client, url: clients_path do |f| %>
 
+          <div class="row">	  	
+		  <div class="col-md-6">
+		  <div class="panel  panel-default">		  	
+		  	<div class="panel-body">
 					<%= f.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25} %>
-                    <label for='bdate' class="control-label">Дата рождения</label><%= date_field_tag 'bdate',nil, class: "form-control" %>
-                    <label for='dn' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'dn',nil, class: "form-control" %>
-
+                    <label for='bdate' class="control-label">Дата рождения</label><%= date_field_tag 'bdate',nil, class: "form-control" %><br>
+                    <label for='dn' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'dn',nil, class: "form-control" %><br>
+			</div>
+		    </div>
+		    </div>
+    
+		    <div class="col-md-6">
+		    <div class="panel  panel-default">
+		    <div class="panel-body">
 					<%= f.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true %>
 					<%= f.input :address, label: "Адрес", as: :string, :input_html => { :size => 50} %>
 					<%= f.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25} %>
 					<%= f.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25} %>
 					<%= f.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50} %>		   	
-	  				  	
+			</div>
+		  	</div>
+		  	</div>
+		  	
+		  	</div>	<!--row-->	  				  	
   			<% end %>
       </div>		
   	</div><!--panel-->   	  	
-  </div>

@@ -1,22 +1,27 @@
 <% provide(:title, 'Клиенты') %>
 
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
-
 <script>
-$(document).ready( function () {
-    $('#mcl').dataTable( {
-    	 "order": [[ 2, "asc" ],[ 3, "asc" ],[ 4, "asc" ]]
+	$(document).ready(function() {
+    $('#mcl').DataTable( {
+        "order": [[ 2, "asc" ],[ 3, "asc" ],[ 4, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers"
+    } );
 } );
-} );
- 
-</script> 
+</script>
 
   <div class="table-responsive">	
 	<table id="mcl" class="table table-bordered table-condensed table-hover">	

@@ -4,16 +4,15 @@ gem 'libv8', '~> 3.16.14.15', submodules: true
 gem 'gon'
 gem 'tzinfo', '~> 1.2', '>= 1.2.4'
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
-gem "combined_time_select"
-gem 'jquery-timepicker-rails'
-gem 'wicked_pdf'
-gem 'wkhtmltopdf-binary'
-gem "pdfkit"
-gem 'jquery-datatables-rails'
-gem 'foundation-datetimepicker-rails'
-gem 'momentjs-rails'
+#gem "combined_time_select"
+#gem 'jquery-timepicker-rails'
+#gem 'wicked_pdf'
+#gem 'wkhtmltopdf-binary'
+#gem "pdfkit"
+#gem 'foundation-datetimepicker-rails'
+#gem 'momentjs-rails'
 gem 'country_select'
-gem 'rails-jquery-autocomplete'
+#gem 'rails-jquery-autocomplete'
 gem 'exception_notification'
 gem 'caracal'
 gem 'activesupport'
@@ -39,13 +38,12 @@ gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
-gem 'sdoc', '~> 0.4.0', group: :doc
+#gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -69,6 +67,10 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
 gem 'will_paginate-bootstrap'
 gem 'simple_form', '~> 3.4'
+
+gem 'jquery-datatables-rails', '~> 3.4.0', github: 'rweng/jquery-datatables-rails'
+
+gem 'will_paginate'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

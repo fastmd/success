@@ -1,22 +1,27 @@
 <% provide(:title, 'Брони') %>
 
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
-
 <script>
-$(document).ready( function () {
-    $('#mcl').dataTable( {
-    	 "order": [[ 2, "desc" ],[ 1, "desc" ]]
+	$(document).ready(function() {
+    $('#mcl').DataTable( {
+        "order": [[ 2, "desc" ],[ 1, "desc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers"
+    } );
 } );
-} );
- 
-</script> 
+</script>
 
   <div class="table-responsive">	
 	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
@@ -29,28 +34,28 @@ $(document).ready( function () {
 			   <th>Автомобиль</th>
 			   <th>Период</th>
 			   <th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-			   <th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th>Цена в день, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 			   <th>Клиент</th>			   
 			</tr>	
 		</thead>
 		<tbody>
 			<% @contracts.each do |c| %>
 					<% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
-						<td><%= link_to " " , contracts_edit_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать бронь' %>
-							<%= link_to " " , contracts_show_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-eye-open", :title => 'Посмотреть бронь' %>
+						<td><%= link_to " " , contracts_show_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-eye-open", :title => 'Посмотреть бронь' %>
 							<%= link_to image_tag('Apps-Pdf-B-icon.png', :alt => "PDF", :width => "20", :height => "20"), contracts_show_path(:id => c.id, format: "pdf") %>
+							<%= link_to " " , contracts_edit_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать бронь' %>
 							<%= link_to " " , contracts_destroy_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить бронь', data: { confirm: "Удалить контракт #{c.id}/#{c.cnum} от #{c.order_date.strftime('%d.%m.%Y')}?" } %>
 						</td>
 						<td><%= "#{c.id}/#{c.cnum}" %></td>
 						<td><%= c.order_date.strftime('%Y.%m.%d') %></td>
 						<td><%= unless c.user.nil? then c.user.username end %></td>
 						<td><%= unless c.car.nil? then "#{c.car.marca} #{c.car.gnum}" end %></td>
-						<td><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y')}" end %><%= unless c.sttime.nil? then " #{c.sttime.strftime('%R')}" end %>
-						    <%= unless c.enddate.nil? then "#{c.enddate.strftime('%d.%m.%Y')}" end %><%= unless c.endtime.nil? then " #{c.endtime.strftime('%R')}" end %>
-						    <%= if c.dperiod then "#{c.dperiod}дн." end %></td>
-						<td><%= c.garant_summ %></td>
-						<td><%= c.price %></td>
-						<td><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname}" end %></td>					
+						<td><%= "#{c.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{c.enddate.strftime('%d.%m.%Y_%R')}" %></br>
+						        <%= if c.dperiod then "#{c.dperiod} " +  
+						        	  (case c.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
+						<td><%= number_to_currency(c.garant_summ,:unit=>'€', precision: 0) %></td>
+						<td><%= number_to_currency(c.price,:unit=>'€', precision: 0) %></td>
+						<td><small><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname}" end %></small></td>					
 					</tr>		
 			<% end %>			
 		</tbody>

@@ -1,4 +1,4 @@
-<% provide(:title, 'Контракт') %>
+<% provide(:title, if @contract.flag == 1 then 'Бронь' else 'Контракт' end) %>
 
    <div class="row">
   	<div id="pan1" class="panel panel-info">
@@ -7,11 +7,18 @@
  	
   		<%= simple_form_for @contract do |f| %>
   			
-		<div class="large-6 columns">
-		<div class="panel  panel-default">		  	
-		<div class="panel-body">
+          <div class="row">	  	
+		  <div class="col-md-6">
+		  <div class="panel  panel-default">		  	
+		  	<div class="panel-body">
         
+	    	<div class="col-md-6">
 	    	<%= f.input :cnum, label: "Номер", as: :string, :readonly => true %>
+	    	</div>
+	    	<div class="col-md-6">
+	    	<%= f.association :user, label: "Агент", :label_method => lambda { |user| "#{user.username}"}, value_method: :id, include_blank: false, selected: if @contract.user.nil? then current_user.id else @contract.user.id end, :readonly => true %>	
+	    	</div>
+	    		
 	    	<%= f.input :flag, :as => :hidden  %>    	
 	    	  	    	   	
 	    	<label for="client_info" class="control-label"><%= "Клиент" %></label>
@@ -24,58 +31,68 @@
 	
 	    	<%= f.input :order_date, :as => :hidden %>
 	    	<%= f.input :user_id, :value => if @contract.user_id.nil? then current_user.id else @contract.user_id end ,:as => :hidden %>
-	    	<%= f.association :user, label: "Агент", :label_method => lambda { |user| "#{user.username}"}, value_method: :id, include_blank: false, selected: if @contract.user.nil? then current_user.id else @contract.user.id end, :readonly => true %>
 	
 	    	<!--<%= f.association :car, label: "Авто",:label_method => lambda { |car| "#{car.marca}  #{car.gnum}"}, value_method: :id, include_blank: false, :onchange =>"GetChar (event);" %>-->
 	    	<div class="form-group">
 	          	<label for="car_id" class="control-label">Автомобиль</label>		
-	    	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @contract.car_id), :onchange =>"GetChar (event);", include_blank: false, class: "form-control", :readonly => true %>
+	    	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @contract.car_id), include_blank: false, class: "form-control", :readonly => true %>
 	    	</div>
 	    	
-	        <%= f.input :garant_summ, label: "Гарантийная сумма, #{$valuta}", as: :integer, :readonly => true %>	    	
+	        <div class="col-md-6">
+	        <%= f.input :garant_summ, label: "Гарантийная сумма, #{$valuta}", as: :integer, :readonly => true %>
+	        </div>	    	
 
 	    	<% if @contract.flag != 1 then %>
+	    	    <div class="col-md-6">
 				<%= f.input :zalog, label: "Залог, #{$valuta}", as: :integer, :readonly => true %>
-				<%= f.input :curs, label: "Курс, лей", :readonly => true %>		
+				</div>
+		    	<!-- пробег на начало --> 
+		    	<div class="form-group">
+		    		<label for="parcurs" class="control-label">Пробег на начало</label>
+		    		<%= number_field_tag 'parcurs', @parcurs, class: "form-control", :readonly => true %>
+		    	</div> 						
 	    	<% end %>
     	
  	    </div>
 		</div>
 		</div>
     
-		<div class="large-6 columns">
+		<div class="col-md-6">
 		<div class="panel  panel-default">
 		<div class="panel-body">		       	
     	<div class="form-group">
-		    <label for="stdate" class="control-label">Дата начала договора</label>
-		    	<%= text_field_tag 'stdate', @contract.stdate.strftime('%d.%m.%Y'), :id => "dt",:onchange =>"GetChar (event);", class: "form-control", :readonly => true %>
-	    	</div> 
-	         
-	        <% if @contract.flag != 1 then %> 
-	    	<%= f.input :sttime, as: :time ,label: "Время начала договора" , default: Time.parse(@contract.sttime.strftime('%R')), :readonly => true %>
-	    	<% end %>
-	    	
-	    	<%= f.input :dperiod, label: 'Кол-во дней', :readonly => true, input_html: {value: @daysinperiod} %>	
-	    	
-	    	<div class="form-group">
-	    		<label for="enddate" class="control-label">Дата окончания договора</label>
-	    		<%= text_field_tag 'enddate', @contract.enddate.strftime('%d.%m.%Y'), :id => "dt1",:onchange =>"GetEndDate (event);", class: "form-control", :readonly => true %>
+
+		    <label for="stdate" class="control-label">Дата и время начала аренды</label>
+		    	<%= text_field_tag 'stdate', @contract.stdate.strftime('%d.%m.%Y %R'), :id => "dt", class: "form-control", :readonly => true %>
 	    	</div>
 	    	
-	    	<% if @contract.flag != 1 then %> 
-	    		<%= f.input :endtime, as: :time ,label: "Время окончания договора" , default: Time.parse(@contract.endtime.strftime('%R')), :readonly => true %>    	
-	    	<% end %>		
+	    	<div class="form-group">
+	    		<label for="enddate" class="control-label">Дата и время окончания аренды</label>
+	    		<%= text_field_tag 'enddate', @contract.enddate.strftime('%d.%m.%Y %R'), :id => "dt1",:onchange =>"GetEndDate (event);", class: "form-control", :readonly => true %>
+	    	</div>
+	    		         
+	    	<%= f.input :dperiod, label: 'Кол-во дней', :readonly => true, input_html: {value: @daysinperiod} %>		    			
 	    	     	
-	    	<%= f.input :price, label: "Цена в день, #{$valuta}", :readonly => true, input_html: {value: @pretperday} %>  
+	    	<div class="col-md-6">
+	    	<%= f.input :price, label: "Цена в день, #{$valuta}", :readonly => true, input_html: {value: @pretperday} %>
+	    	</div>  
 	    	     	
-	        <% if @contract.flag != 1 then %> 
-		    	<%= f.input :summ, label: "Сумма договора, #{$valuta}", :readonly => true %>			    	
-		    	<%= f.input :costlei, label: "Сумма, лей", as: :decimal, :readonly => true %>	    	
+	        <% if @contract.flag != 1 then %>
+	            <div class="col-md-6"> 
+		    	<%= f.input :summ, label: "Сумма договора, #{$valuta}", :readonly => true %>
+		    	</div>
+	           	<div class="col-md-6">
+				<%= f.input :curs, label: "Курс, лей", :readonly => true %>
+				</div>
+		    	<div class="col-md-6">			    	
+		    	<%= f.input :costlei, label: "Сумма, лей", as: :decimal, :readonly => true %>
+		    	</div>	    	
 	    	<% end %>
     	</div>
 		</div>
 		</div> 
    	
+   	    </div>	<!--row-->
 	    <center><%= f.button :submit, "Редактировать", class: "btn btn-primary", name: "editfromshow" %> <%= f.button :submit, "Печать", class: "btn btn-info", name: "printfromshow" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
 	    
   		<% end %>

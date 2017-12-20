@@ -1,13 +1,28 @@
-<head>
-<%= include_gon %>	
-  <meta charset="utf-8">
-  <title>jQuery UI Accordion - Default functionality</title>
- <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"> -->
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
-  <!--<link rel="stylesheet" href="/resources/demos/style.css">-->
-  <script>
+
+<%= include_gon %>
+	
+<script>
+	$(document).ready(function() {
+    $('#m2').DataTable( {
+        "order": [[ 1, "asc" ],[ 2, "asc" ],[ 3, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers"
+    } );
+} );
+
   
     function myFunction(a,b) 
     {  
@@ -15,12 +30,6 @@
 	    $("#client_id").val(a);
 	    $("#client_info").val(b);
     }
-
-	 $(document).ready( function () {
-	    $('#m2').dataTable( {
-	    	 "order": [[ 1, "asc" ],[ 2, "asc" ],[ 3, "asc" ]]
-	 } );
-	} );
 
   $(function() {
     $("#pan1").toggle()
@@ -175,6 +184,20 @@
         $("#zalog").val(zalog);	            
    };
  
+   function getparcurs(){
+        var car = $("#car_id").val();
+        var wlongs = gon.wlongs;
+        var parcurs = null;
+        for (var i = 0; i < wlongs.length; i++) {
+           if (wlongs[i].car_id == car) 
+           {
+	          parcurs = wlongs[i].parcurs;	  	
+	          break; 	  
+           }
+        }                      
+        $("#parcurs").val(parcurs);	            
+   };
+ 
   function getgarantsum(){
         var car = $("#car_id").val();
         var cars = gon.cars;
@@ -224,6 +247,7 @@
    function whenchangeCar(){
    	 getzalog();
    	 getgarantsum();
+   	 getparcurs();
    	 priceperday();
    	 calccontrsum();
    };    
@@ -235,13 +259,12 @@
    }; 
      
   </script>
-</head>
+
 
 Click this link to show the current <%= link_to "time", contracts_newbroni_path, remote: true %>.<div id='time_div'></div>
 
-<div class="row">
   <%= simple_form_for @contract do |f| %>	
-  <div class="large-4 columns">  	
+    <div class="row">	  	 	
   	  <div class="panel panel-info">
   	  	<div class="panel-heading"><strong><%= case when (@contract.flag == 1 and @contract.id.nil?) then "Новая бронь" 
   	  		                                        when (@contract.flag == 2 and @contract.id.nil?) then "Новый контракт" 
@@ -250,12 +273,17 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
   	  		                                        else "" end %><%= " от #{@contract.order_date.strftime('%d.%m.%Y')}" %>	                       
   	  	</strong></div>
   	  	<div class="panel-body">
+
+        <div class="row">	  	
+		<div class="col-md-6">
+		<div class="panel  panel-default">		  	
+		<div class="panel-body">  	  		
 	    <!-- ручной номер документа -->
     	<%= f.input :cnum, label: "Номер", as: :string, :input_html => { :size => 25} %>
     	<!-- тип контракта 1=бронь -->
     	<%= f.input :flag, :as => :hidden %>   	
     	<!-- клиент -->  	    	
-    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a>
+    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a><br>
 	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	
     	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname}" end , :readonly => true, class: "form-control" %>	   	
     	<%= f.hidden_field :client_id, :id => "client_id" %>
@@ -271,58 +299,103 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
           	<label for="car_id" class="control-label">Автомобиль</label>		
     	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @contract.car_id), :onchange =>'whenchangeCar();', include_blank: true, class: "form-control" %>
     	</div>
-    	<!-- дата начала -->
-    	<div class="form-group">
-	    	<label for="stdate" class="control-label">Дата начала договора</label>
-	    	<%= date_field_tag 'stdate', @contract.stdate, :onchange => "whenchangeDates(0);", class: "form-control" %>
-    	</div>
-    	<!-- время начала -->
-    	<% if @contract.flag == 2 then %> 
-    		<%= f.input :sttime, as: :time ,label: "Время начала договора" , default: @contract.sttime ? Time.parse(@contract.sttime.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>
-    	<% end %>
-    	<!-- ко-во дней -->
-  		<%= label_tag 'Кол-во дней' %>
-    	<%= text_field_tag 'dperiod', @contract.dperiod, :onchange =>'whenchangeDates(3);' %>
-    	<!-- дата конца -->
-    	<div class="form-group">
-    		<label for="enddate" class="control-label">Дата окончания договора</label>
-    		<%= date_field_tag 'enddate', @contract.enddate, :onchange => 'whenchangeDates(1);', class: "form-control" %>
-    	</div>
-    	<!-- время конца -->
-    	<% if @contract.flag == 2 then %> 
-    		<%= f.input :endtime, as: :time ,label: "Время окончания договора" , default: @contract.endtime ? Time.parse(@contract.endtime.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>    	
-    	<% end %>   	
     	<!-- гарант сумма -->
+    	<div class="col-md-6"> 
     	<label for="garant_summ" class="control-label"><%= "Гарантийная сумма, #{$valuta}" %></label>
     	<%= text_field_tag 'garant_summ', @contract.garant_summ, :input_html => { :size => 25}, class: "form-control" %>
+    	</div>
     	<!-- залог -->
+    	<div class="col-md-6"> 
     	<% if @contract.flag == 2 then %>
     	    <label for="zalog" class="control-label"><%= "Залог, #{$valuta}" %></label>
     		<%= text_field_tag 'zalog', @contract.zalog, class: "form-control" %>
-    	<% end %>	
-    	<!-- цена -->
-    	<%= label_tag "Цена в день, #{$valuta.upcase}" %>
-    	<%= text_field_tag 'price', @contract.price, :readonly => true %>
-    	<!-- сумма договора в валюте -->
-    	<% if @contract.flag == 2 then %> 
-    		<%= label_tag "Сумма договора, #{$valuta.upcase}" %>
-    		<%= text_field_tag 'summ', @contract.summ ,:onkeyup =>"getPriceFromSumm();" %>
-    		<label for="zalog" class="control-label"><%= "Курс, лей" %></label>
-    		<%= text_field_tag 'curs', @contract.curs ? @contract.curs : Cparam.last.curs, as: :decimal, :readonly => true, class: "form-control" %>
-    		<label for="zalog" class="control-label"><%= "Сумма, лей" %></label>
-    		<%= text_field_tag 'costlei', @contract.costlei, as: :decimal, :readonly => true, class: "form-control" %>
     	<% end %>
-   	
+    	</div>
+    	<!-- пробег на начало -->
+    	<% if @contract.flag == 2 then %> 
+    	<div class="form-group">
+    		<label for="parcurs" class="control-label">Пробег на начало</label>
+    		<%= number_field_tag 'parcurs', @parcurs, class: "form-control", :id => "parcurs", class: "form-control" %>
+    	</div>
+    	<% end %>
+    	</div>
+		</div>
+		</div>    	
+ 		<div class="col-md-6">
+		<div class="panel  panel-default">		  	
+		<div class="panel-body">
+			
+		<div class="col-md-6">	
+    	<!-- дата начала -->
+    	<div class="form-group">
+	    	<label for="stdate" class="control-label">Дата начала аренды</label>
+	    	<%= date_field_tag 'stdate', @contract.stdate.to_date, :onchange => "whenchangeDates(0);", class: "form-control" %>
+    	</div>
+    	</div>
+    	<div class="col-md-6">
+    	<!-- время начала -->
+        <%= f.input :sttime, as: :time ,label: "Время начала аренды" , default: @contract.stdate ? Time.parse(@contract.stdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>
+        </div>
+    	<div class="col-md-6">
+    	<!-- дата конца -->
+    	<div class="form-group">
+    		<label for="enddate" class="control-label">Дата окончания аренды</label>
+    		<%= date_field_tag 'enddate', @contract.enddate.to_date, :onchange => 'whenchangeDates(1);', class: "form-control" %>
+    	</div>
+    	</div>
+    	<div class="col-md-6">
+    	<!-- время конца -->
+    	<%= f.input :endtime, as: :time ,label: "Время окончания аренды" , default: @contract.enddate ? Time.parse(@contract.enddate.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %> 
+    	</div>
+    	<!-- ко-во дней -->
+    	<div class="form-group">
+	  		<%= label_tag 'Кол-во дней' %>
+	    	<%= number_field_tag 'dperiod', @contract.dperiod, :onchange =>'whenchangeDates(3);', as: :integer, class: "form-control"  %>
+    	</div>
+    	<div class="col-md-6">     	   	  	   		
+    	<!-- цена -->
+    	<div class="form-group">
+	    	<%= label_tag "Цена в день, #{$valuta.upcase}" %>
+	    	<%= text_field_tag 'price', @contract.price, :readonly => true, class: "form-control"  %>
+    	</div>
+    	</div>   	
+    	<!-- сумма договора в валюте -->
+    	<% if @contract.flag == 2 then %>
+    	<div class="col-md-6">
+    	    <div class="form-group"> 
+	    		<%= label_tag "Сумма договора, #{$valuta.upcase}" %>
+	    		<%= number_field_tag 'summ', @contract.summ ,:onkeyup =>"getPriceFromSumm();", as: :integer, class: "form-control"  %>
+    	    </div>
+    	</div>
+    	<div class="col-md-6">   
+    	    <div class="form-group">
+	    		<label for="curs" class="control-label"><%= "Курс, лей" %></label>
+	    		<%= number_field_tag 'curs', @contract.curs ? @contract.curs : Cparam.last.curs, as: :decimal, :readonly => true, class: "form-control" %>
+    		</div>
+    	</div>
+    	<div class="col-md-6">	
+    		<div class="form-group">
+	    		<label for="costlei" class="control-label"><%= "Сумма, лей" %></label>
+	    		<%= number_field_tag 'costlei', @contract.costlei, as: :decimal, :readonly => true, class: "form-control" %>
+    		</div>
+    	</div>	
+    	<% end %>
+    	</div>
+		</div>
+		</div>    	
+   	    </div>	<!--row-->
 	    <center><%= submit_tag('Сохранить', class: "btn btn-primary") %> <%= f.button :submit, "Печать", class: "btn btn-info", name: "printfromedit" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
 			
 		</div> <!--panel-body--->    
 	</div> <!--panel-->
  </div>
  
+ <div class="row">
  <%= render 'newclient' %>
-
+ </div>	<!--row-->
  <% end %>
-    
- <%= render 'clients' %>
  
-</div> <!--row-->
+ <div class="row">   
+ <%= render 'clients' %>
+ </div>	<!--row-->
+

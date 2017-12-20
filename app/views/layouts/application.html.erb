@@ -5,15 +5,24 @@
 	  <%= favicon_link_tag 'holub-ifon.png' %>
 	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag "jquery.dataTables.min", 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag "dataTables.bootstrap.min", 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag "dataTables.buttons.min", 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag "buttons.bootstrap.min", 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag "buttons.print.min", 'data-turbolinks-track' => true %>
+	  <%= stylesheet_link_tag "jquery.dataTables.min" %>
+	  <%= stylesheet_link_tag "dataTables.bootstrap.min" %>
+	  <%= stylesheet_link_tag "buttons.bootstrap.min" %>
+	  <%= stylesheet_link_tag "buttons.dataTables.min" %>
+	  <%= stylesheet_link_tag "common" %>
+	  <%= stylesheet_link_tag "mixins" %>
 	  <%= csrf_meta_tags %>
 	  <%= render 'layouts/shim' %>
 	</head>
 	<body>
-  	<%= render 'layouts/header' %>
-    <div class="container-fluid">
+    <div class="container">
     	<div class="row">
-    		  <nav class="navbar"><ul class="nav nav-pills pull-left"><li></li></ul></nav>
-    		  <nav class="navbar"><ul class="nav nav-pills pull-left"><li></li></ul></nav>		    	
+    		  <%= render 'layouts/header' %>	    	
 	      	  <%= render 'layouts/messages' %>	  
 	    	  <%= yield %> 
 	    	  <%= render 'layouts/footer' %> 

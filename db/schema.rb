@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171205225827) do
+ActiveRecord::Schema.define(version: 20171219162915) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -73,18 +73,18 @@ ActiveRecord::Schema.define(version: 20171205225827) do
     t.string   "country"
     t.string   "summ"
     t.string   "zalog"
-    t.date     "enddate"
-    t.time     "sttime"
-    t.time     "endtime"
-    t.date     "fenddate"
-    t.time     "fendtime"
+    t.datetime "enddate"
+    t.datetime "fenddate"
     t.string   "garant_summ"
     t.float    "costlei"
-    t.date     "stdate"
+    t.datetime "stdate"
     t.integer  "user_id"
     t.integer  "dperiod"
     t.decimal  "price"
     t.decimal  "curs"
+    t.time     "sttime"
+    t.time     "endtime"
+    t.time     "fendtime"
   end
 
   add_index "contracts", ["car_id"], name: "index_contracts_on_car_id"
@@ -99,17 +99,19 @@ ActiveRecord::Schema.define(version: 20171205225827) do
   end
 
   create_table "tehservices", force: :cascade do |t|
-    t.string   "stype"
-    t.string   "manager"
-    t.string   "sprice"
+    t.integer  "stype"
+    t.decimal  "sprice",     precision: 2
     t.datetime "sdate"
     t.integer  "car_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.text     "comments"
+    t.integer  "user_id"
+    t.time     "sttime"
   end
 
   add_index "tehservices", ["car_id"], name: "index_tehservices_on_car_id"
+  add_index "tehservices", ["user_id"], name: "index_tehservices_on_user_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -135,13 +137,11 @@ ActiveRecord::Schema.define(version: 20171205225827) do
   add_index "users", ["username"], name: "index_users_on_username", unique: true
 
   create_table "wlongs", force: :cascade do |t|
-    t.string   "wlong"
-    t.string   "manager"
+    t.integer  "parcurs"
     t.datetime "wdate"
     t.integer  "car_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-    t.integer  "tehservice_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_index "wlongs", ["car_id"], name: "index_wlongs_on_car_id"

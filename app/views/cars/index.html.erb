@@ -1,22 +1,27 @@
 <% provide(:title, 'Авто') %>
 
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
-
 <script>
-$(document).ready( function () {
-    $('#mcl').dataTable( {
-    	 "order": [[ 2, "asc" ],[ 3, "asc"]]
+	$(document).ready(function() {
+    $('#mcl').DataTable( {
+        "order": [[ 2, "asc" ],[ 3, "asc"]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers"
+    } );
 } );
-} );
- 
-</script> 
+</script>
 
   <div class="table-responsive">	
 	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
@@ -41,10 +46,7 @@ $(document).ready( function () {
 			   <th>Объем двигателя</th>
 			   <th>Масса, кг</th>
 			   <th>Стоимость, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-			   <th></th>
-			   <th></th>
-		   
-			</tr>	
+ 			</tr>	
 		</thead>
 		<tbody>
 			<% @cars.each do |c| %>
@@ -56,7 +58,7 @@ $(document).ready( function () {
 							<%= link_to " " , contracts_newbroni_path(:car_id => c.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %></td>
 						<td><%= "#{c.marca}" %></td>
 						<td><%= "#{c.gnum}" %></td>
-					    <td><%= "#{c.gaj}" %></td>	
+					    <td><%= number_to_currency(c.gaj,:unit=>'€', precision: 0) %></td>	
 					    <td><% if c.int1 then %>&le;<%= "#{c.int1} дн. - #{c.int1price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
 	                    <td><% if c.int2 then %>&le;<%= "#{c.int2} дн. - #{c.int2price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
 	                    <td><% if c.int3 then %>&le;<%= "#{c.int3} дн. - #{c.int3price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
@@ -70,9 +72,7 @@ $(document).ready( function () {
 					    <td><%= "#{c.color}" %></td>
 					    <td><%= "#{c.vmot}" %></td>
 					    <td><%= "#{c.tmasa}" %></td>
-					    <td><%= "#{c.tsumm}" %></td>
-					    <td><%= "#{c.aprod}" %></td>
-					    <td><%= "#{c.capcil}" %></td>							
+					    <td><%= number_to_currency(c.tsumm,:unit=>'€', precision: 0, separator: ".", delimiter: "") %></td>							
 					</tr>		
 			<% end %>			
 		</tbody>

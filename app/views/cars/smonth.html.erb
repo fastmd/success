@@ -1,10 +1,12 @@
+<%= javascript_include_tag "bootstrap.min", 'data-turbolinks-track' => true %>
+
 <% provide(:title, 'График') %>
 
 	<% if @broni_today.count != 0 then %>	
 		<h4 style="color: blue" align="center">Брони в работу на сегодня</h4>
-		<small>
 		<div class="table-responsive">	
-		<table id="b1" class="table table-bordered table-condensed table-hover">
+		<div class="table-responsive">	
+		<table id="b1" class="table table-bordered table-condensed table-hover table-striped">
 			<thead>
 				<tr class="info">
 					<th>No</th>
@@ -12,7 +14,7 @@
 					<th>Клиент</th>
 					<th>Агент</th>
 					<th>Период</th>
-					<th>Пробег</th>
+					<th width=10%>Пробег</th>
 					<th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 					<th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 					<th></th>
@@ -23,29 +25,30 @@
 					<%= simple_form_for :contract,:url => {controller: "contracts", action: "broni2contract"} do |f| %>
 					    <%= hidden_field_tag 'id', contract.id  %>
 						<tr>
-							<td><%= "#{contract.id}/#{contract.cnum}" %></td>
+							<td><%= link_to "#{contract.id}/#{contract.cnum}",  contract_path(contract) %></td>
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
 							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
 							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><%= contract.stdate.to_date.strftime("%d.%m.%Y") %>-<%= contract.enddate.to_date.strftime("%d.%m.%Y") %>
-						        <%= if contract.dperiod then "#{contract.dperiod} дн." end %></td>
-							<td><%= text_field_tag 'wlong', if contract.car.wlongs.last then contract.car.wlongs.last.wlong end %></td>
+							<td><small><%= "#{contract.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{contract.enddate.strftime('%d.%m.%Y_%R')}" %></br>
+						        <%= if contract.dperiod then 
+						        	  "#{contract.dperiod} " +  
+						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></small></td>
+							<td><small><%= f.input :parcurs, as: :integer, label: "по факту",:input_html => { :size => 7, :length => 5,:value => if contract.car.wlongs.last then "#{contract.car.wlongs.last.parcurs}" end, class: 'special-semieconom',style: 'width: 80px' } %></small></td>
 							<td><%= contract.garant_summ %></td>
 	 						<td><%= contract.price %></td>
-							<td><%= submit_tag("Открыть", class: "btn btn-primary") %></td>
+							<td><%= submit_tag("Контракт", class: "btn btn-info btn-xs") %></td>
 						</tr>
 					<% end %>							
 				<% end %>
 			</tbody>	
 		</table>
 		</div>
-		</small>
 	<% end %>
 	
     <% if @broni_tomorrow.count != 0 then %>	
 		<h4 style="color: blue" align="center">Брони в работу на завтра</h4>
 		<div class="table-responsive">	
-		<table id="b1" class="table table-bordered table-condensed table-hover">
+		<table id="b1" class="table table-bordered table-condensed table-hover table-striped">
 			<thead>
 				<tr class="info">
 					<th>No</th>
@@ -53,7 +56,7 @@
 					<th>Клиент</th>
 					<th>Агент</th>
 					<th>Период</th>
-					<th>Пробег</th>
+					<th width=10%>Пробег</th>
 					<th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 					<th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 					<th></th>
@@ -64,16 +67,18 @@
 					<%= simple_form_for :contract,:url => {controller: "contracts", action: "broni2contract"} do |f| %>
 					    <%= hidden_field_tag 'id', contract.id  %>
 						<tr>
-							<td><%= "#{contract.id}/#{contract.cnum}" %></td>
+							<td><%= link_to "#{contract.id}/#{contract.cnum}",  contract_path(contract) %></td>
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
 							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
 							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><%= contract.stdate.to_date.strftime("%d.%m.%Y") %>-<%= contract.enddate.to_date.strftime("%d.%m.%Y") %>
-						        <%= if contract.dperiod then "#{contract.dperiod} дн." end %></td>
-							<td><%= text_field_tag 'wlong', if contract.car.wlongs.last then contract.car.wlongs.last.wlong end %></td>
+							<td><small><%= "#{contract.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{contract.enddate.strftime('%d.%m.%Y_%R')}" %></br>
+						        <%= if contract.dperiod then 
+						        	  "#{contract.dperiod} " +  
+						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></small></td>
+							<td><small><%= f.input :parcurs, as: :integer, label: "по факту",:input_html => { :size => 10, :value => if contract.car.wlongs.last then "#{contract.car.wlongs.last.parcurs}" end, class: 'special-semieconom',style: 'width: 80px' } %></small></td>
 							<td><%= contract.garant_summ %></td>
 	 						<td><%= contract.price %></td>
-							<td><%= submit_tag("Открыть", class: "btn btn-primary") %></td>
+							<td><%= submit_tag("Контракт", class: "btn btn-info  btn-xs") %></td>
 						</tr>
 					<% end %>							
 				<% end %>
@@ -85,17 +90,16 @@
 	<% if @contracts_close_today.count != 0 then %>	
 		<h4 style="color: blue" align="center">Контракты к закрытию на сегодня</h4>
 		<div class="table-responsive">	
-		<table id="b1" class="table table-bordered table-condensed table-hover">
+		<table id="b1" class="table table-bordered table-condensed table-hover  table-striped">
 			<thead>
 				<tr class="info">
 					<th>No</th>
 					<th>Автомобиль</th>
 					<th>Клиент</th>
 					<th>Агент</th>
-					<th>Дата начала</th>
-					<th>Дата окончания</th>
+					<th>Период</th>
 					<th width="12%">Время окончания</th>
-					<th>Пробег</th>
+					<th width=10%>Пробег</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -108,13 +112,15 @@
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
 							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
 							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><%= contract.stdate.strftime("%d.%m.%Y") %></td>
-							<td><%= contract.enddate.strftime("%d.%m.%Y") %></td>
-							<td><%= unless contract.endtime.nil? then " #{contract.endtime.strftime('%R')}" else "" end %>
-							    <%= f.input :fendtime, as: :time , default: Time.parse(Time.now.strftime('%R')), label: "по факту" %></td>
-							<td><%= unless contract.car.wlongs.last.nil? then "#{contract.car.wlongs.last.wlong}" else "" end %>
-								<%= f.input :wlongend, as: :integer, label: "по факту",:input_html => { :size => 10, :value => if contract.car.wlongs.last then "#{contract.car.wlongs.last.wlong}" end } %></td>
-							<td><%= submit_tag("Закрыть", class: "btn btn-primary") %></td>
+							<td><small><%= "#{contract.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{contract.enddate.strftime('%d.%m.%Y_%R')}" %></br>
+						        <%= if contract.dperiod then 
+						        	  "#{contract.dperiod} " +  
+						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></small></td>
+							<td><small><%= unless contract.enddate.nil? then " #{contract.enddate.strftime('%R')}" else "" end %>
+							    <%= f.input :fendtime, as: :time , default: Time.parse(contract.enddate.strftime('%R')), label: "по факту", input_html: { class: 'special-econom' } %></small></td>
+							<td><small><%= unless contract.car.wlongs.last.nil? then "#{contract.car.wlongs.last.parcurs}" else "" end %>
+								<%= f.input :parcurs, as: :integer, label: "по факту",:input_html => { :size => 8, :maxlength => 6, :value => if contract.car.wlongs.last then "#{contract.car.wlongs.last.parcurs}" end, class: 'special-semieconom',style: 'width: 80px' } %></small></td>
+							<td><%= submit_tag("Закрыть", class: "btn btn-info  btn-xs") %></td>
 						</tr>
 					<% end %> <!-- form_tag-->
 				<% end %>  <!-- each -->
@@ -144,11 +150,12 @@
 	  </ul>  
 	</nav>
 -->		
+
 	<div align="center">
 	  <!-- Nav tabs -->
 	  <ul class="nav nav-tabs" role="tablist" id="myTab">
 		<% (1..12).each do |i| %>
-			<% if @months[i-1] == @currentdate then %><li role="presentation" class="active"><% else %><li role="presentation"><% end %>
+			<% if @months[i-1] == @currentdate then %><li role="presentation" class="active" ><% else %><li role="presentation"><% end %>
 			<a href="#<%= i %>" aria-controls="<%= i %>" role="tab" data-toggle="tab" class="label label-info">
 		   <% if @months[i-1] == @currentdate then %><span class="badge"><% end %><%= "#{@months[i-1].to_formatted_s(:month_year)}" %><% if @months[i-1] == @currentdate then %></span><% end %></a></li>	
 		<% end	%>	  	
@@ -163,7 +170,7 @@
 		    <div role="tabpanel" class="<%= if @months[i-1] == @currentdate then "tab-pane fade in active" else "tab-pane fade" end %>" id="<%= "#{i}" %>" >
 		    	<br>		
 				<div class="table-responsive">	
-				<table class="table table-bordered table-condensed table-hover">
+				<table class="table table-bordered table-condensed table-hover  table-striped">
 					<thead>	
 					<tr>
 						<th><center>№</center></th>
@@ -180,25 +187,63 @@
 							<td><center><%= r[0] %></center></td>
 							<td><%= link_to "#{r[1]}", edit_car_path(:id => r[daycount+2]) %></td>
 							<% (0..(daycount-1)).each do |d| %>
-								<td title="<%= (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year) + case when (!r[d+2].nil?) then "#{r[d+2][:client]} #{r[d+2][:contract]}" else "" end %>" 
-									               id=<%= case when (!r[d+2].nil? and r[d+2][:flag]==1) then "bbroni" when (!r[d+2].nil? and r[d+2][:flag]==2) then "ccontract" else "zzz" end %>  
+								<td title="<%= if (r[d+2].nil?) then (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year) else "#{r[d+2][:contract]}" end %>" 
+									               id=<%= case when (!r[d+2].nil? and r[d+2][:flag]==1 and r[d+2][:beflag]=='b') then "grrbbroni"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==1 and r[d+2][:beflag]=='e') then "grlbbroni"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==1 and r[d+2][:beflag]=='be') then "bbroni"	
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==1 and !r[d+2][:beflag]) then "bbroni"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==2 and r[d+2][:beflag]=='b') then "grrccontract"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==2 and r[d+2][:beflag]=='e') then "grlccontract"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==2 and r[d+2][:beflag]=='be') then "ccontract"			 
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==2 and !r[d+2][:beflag]) then "ccontract"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==3 and r[d+2][:beflag]=='b') then "grrarccontract"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==3 and r[d+2][:beflag]=='e') then "grlarccontract"
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==3 and r[d+2][:beflag]=='be') then "arccontract"	
+									               	           when (!r[d+2].nil? and r[d+2][:flag]==3 and !r[d+2][:beflag]) then "arccontract" 
+									               	           else "zzz" end %>  
 								                   class=<%= case when (!r[d+2].nil? and r[d+2][:flag]==1) then "danger" 
-									               when (!r[d+2].nil? and r[d+2][:flag]==2) then "info" 
-									               when (!r[d+2].nil? and r[d+2][:flag]==3) then "success"
-									               when (titleitem[d+2]==1) then "danger"
-									               when (titleitem[d+2]==2) then "warning" 	 	 
-									               else "" end %>>
+									                              when (!r[d+2].nil? and r[d+2][:flag]==2) then "info" 
+									                              when (!r[d+2].nil? and r[d+2][:flag]==3) then "success"
+									                              when (titleitem[d+2]==1) then "danger"
+									                              when (titleitem[d+2]==2) then "warning" 	 	 
+									                              else "" end %>>
 								<center>
-								<% if !r[d+2].nil? then %>	
-									<% case (r[d+2][:flag]) when 1 then %><b><%= link_to "Б" , contracts_show_path(:id => r[d+2][:contract_id]), id: "bbroni" %></b>
-									<%               when 2 then %><b><%= link_to "К", contracts_show_path(:id => r[d+2][:contract_id]), id: "ccontract" %></b>
-									<%               when 3 then %><b><%= link_to "X", '#', id: "rezerv" %></b>
+						        <% graphcurdate = "#{(@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)}" %>
+						        <% graphcurcar = r[daycount+2] %>
+						        <% graphstdate = (@months[i-1]).change(day: (d+1)) %>
+						        <% graphcurlink0 = nil %>
+						        <% graphcurlink1 = nil %>
+							    <% graphcurlink2 = nil %>
+								<% if !r[d+2].nil? then %>
+								    <% graphcurcontract = r[d+2][:contract_id] %>	
+									<% case when (r[d+2][:flag])==1 then 
+									                   graphcurlink0 =  link_to r[d+2][:contract_idtext] , contracts_show_path(:id => graphcurcontract) 
+									                   graphcurid =  "bbroni" 
+									                   graphcurtext = "Б" %>
+									<%      when (r[d+2][:flag])==2 then 
+									                   graphcurlink0 =  link_to r[d+2][:contract_idtext], contracts_show_path(:id => graphcurcontract)
+									                   graphcurid =  "ccontract"
+									                   graphcurtext = "К" %>
+									<%      when (r[d+2][:flag])==3 then 
+									                   graphcurlink0 = r[d+2][:contract_idtext]
+									                   graphcurid =  "rezerv" 
+									                   graphcurtext = "X" %>
 									<% end %>
-								<% else %><b><%= link_to ".", contracts_newbroni_path(:car_id => r[daycount+2], :stdate => (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)), id: "vacant", 
-								              title: "#{(@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)} Бронь новая" %></b>
-								          <b><%= link_to ".", contracts_new_path(:car_id => r[daycount+2], :stdate => (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)), id: "vacantc", 
-								              title: "#{(@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year)} Контракт новый" %>
+									<% if r[d+2][:beflag]=='b' or r[d+2][:beflag]=='e' then %>
+							            <% graphcurlink1 = link_to 'Бронь новая', contracts_newbroni_path(:car_id => graphcurcar, :stdate => graphstdate) %>
+							            <% graphcurlink2 = link_to 'Контракт новый', contracts_new_path(:car_id => graphcurcar, :stdate => graphstdate) %>
+						            <% end %>							
+							    <% end %>
+								<% if (r[d+2].nil?) then %>
+								    <% graphcurid = "vacantc" %>
+								    <% graphcurtext = "." %>
+						            <% graphcurlink0 = link_to 'Бронь новая', contracts_newbroni_path(:car_id => graphcurcar, :stdate => graphstdate) %>
+						            <% graphcurlink1 = link_to 'Контракт новый', contracts_new_path(:car_id => graphcurcar, :stdate => graphstdate) %>								                                          
 								<% end %>
+				                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="auto"  data-html="true" id=<%= graphcurid %> title=<%= graphcurdate %> 
+										data-content='<%= graphcurlink0 %><% if graphcurlink0 %></br><% end %>
+										              <%= graphcurlink1 %><% if graphcurlink1 %></br><% end %>
+										              <%= graphcurlink2 %><% if graphcurlink2 %></br><% end %>'><%= graphcurtext %></a>
 								</center>
 							    </td>
 							<% end %>						
@@ -210,9 +255,11 @@
 		    <!-- end of one month table -->
 	    <% end	%>              
 	  </div>
+	</div>
 	</div>		
-
-<% unless @mn.nil? then %>
-<script>   $(function () {$('#myTab a[href="#<%= @mn %>"]').tab('show'); }) </script>
-<% end %>
-
+	
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>

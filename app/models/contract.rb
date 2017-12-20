@@ -5,8 +5,6 @@ class Contract < ActiveRecord::Base
   #validates_associated :client
   #validates_associated :car 
   #validates_associated :user 
-   
-  attr_accessible :cnum, :order_date, :diff, :client_id, :user, :sttime,:garant_summ
   
   validates :stdate, presence: true  
   validates :enddate, presence: true

@@ -1,0 +1,56 @@
+<% provide(:title, 'ТО') %>
+
+<script>
+	$(document).ready(function() {
+    $('#tehs').DataTable( {
+        "order": [[ 0, "desc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers"
+    } );
+} );
+</script>
+  
+ <h4 style="color: blue" align="center"><%= "#{@car.marca} #{@car.gnum}" %></h4>
+ 
+ <table id="tehs" class="table table-bordered table-condensed table-hover table-striped">
+  <thead>
+    <tr class="info">
+      <th>№</th>
+      <th>Тип</th>
+      <th>Дата и время выполнения</th>
+      <th>Цена</th> 
+      <th>Примечание</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @tehservices.each do |item| %>
+    <tr>
+	  	<td><%= item.id %></td>
+	  	<td><%= case item.stype when 1 then "Замена масла и фильтров"  
+	  		                    when 3 then "Техническое обслуживание" 
+                                when 2 then "Страховка"
+                                when 4 then "Техосмотр"
+                                else  item.stype 
+	  		 end %>		
+	  		</td>
+	  	<td><%= item.sdate.strftime('%d.%m.%Y %R') %></td>
+	  	<td><%= number_to_currency(item.sprice,:unit=>'€') %></td>
+	  	<td><%= item.comments %></td>
+    </tr>
+  <% end %>    
+  </tbody>
+</table>
+

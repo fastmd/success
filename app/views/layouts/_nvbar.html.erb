@@ -26,6 +26,9 @@
 	    <% if cc == 'cars' and (ca == 'edit' or ca == 'new') then %>
 	 		<li class="active"><%= link_to "Назад", cars_path, :class => "glyphicon glyphicon-level-up" %></li>
 	 	<% end %>
+	    <% if cc == 'tehservices' and (ca == 'index' or ca == 'new') then %>
+	 		<li class="active"><%= link_to "Назад", car_autotech_path, :class => "glyphicon glyphicon-level-up" %></li>
+	 	<% end %>
 	 	<li class=<%= if cc=='cars' and ca=='smonth' then 'active' else '' end %>><%= link_to "Домой", cars_smonth_path, :class => "glyphicon glyphicon-home" %></li>	    
 	    <li class=<%= if cc=='contracts' and (ca=='indexbroni' or ca=='newbroni') then 'active' else '' end %>><%= link_to 'Брони', contracts_indexbroni_path, :class => "glyphicon glyphicon-flag" %></li> 
 	    <li class=<%= if cc=='contracts' and (ca=='index' or ca=='new') then 'active' else '' end %>><%= link_to 'Контракты',contracts_path, :class => "glyphicon glyphicon-file" %></li>

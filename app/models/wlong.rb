@@ -1,11 +1,7 @@
 class Wlong < ActiveRecord::Base
+  belongs_to :car, inverse_of: :wlongs
+  has_many :tehservices, through: :car, inverse_of: :wlongs
   
-  belongs_to :car
-  belongs_to :tehservice, :class_name => 'Car' ,foreign_key: 'car_id'
-  
-  attr_accessible :wlong, :wdate, :manager
-  
-  validates :wlong, presence: true
-  #validates :wdate, presence: true
-  #validates :manager, presence: true
+  validates :parcurs, presence: true, numericality: { only_integer: true, allow_nil: false, :greater_than_or_equal_to => 0 }
+  validates :wdate, presence: true  
 end

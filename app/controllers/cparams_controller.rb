@@ -2,6 +2,8 @@ class CparamsController < ApplicationController
   before_action :redirect_cancel, only: [:create, :update]
   
   def show
+   @rates = Cparam.where("created_at >= ?", 3.month.ago.to_date).order(:created_at) 
+   gon.rates = @rates
    #---curs------------- 
    @cparam = Cparam.last    
   end

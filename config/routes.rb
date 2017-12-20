@@ -7,15 +7,10 @@ Rails.application.routes.draw do
   get 'welcome/index'
   get "car/smonth/:num" => 'cars#smonth'
   get "car/autotech" => 'cars#autotech'
+  
   get "welcome/smonth/:num" => 'welcome#smonth'
   get "reztocontract/:num" => 'cars#rez_to_contract'
   get "contract/clicontr/:num" => 'contract#clicontr'
-  
-  get "contract_to_arh/:num" => 'cars#contract_to_arh'
-  
-  get "tehservices/new" => 'tehservices#new'
-  get "tehservices/list" => 'tehservices#list'
- 
   
   post "car/autotech" => 'cars#autotech'
   post "reznew" => 'cars#reznew'
@@ -51,8 +46,13 @@ Rails.application.routes.draw do
   get 'contracts/broni2contract'
   post 'contracts/broni2contract'
   
-  post "tehservices/newto" => 'tehservices#newto'
-  post "tehservices/new" => 'tehservices#new'
+  post "tehservices/new"
+  get  "tehservices/new"
+  post 'tehservices/index'
+  get  'tehservices/index'
+  post 'tehservices/create'
+  get  'tehservices/create'
+  patch  'tehservices/create'   
   
   get 'cars/smonth'
   post 'cars/smonth'
@@ -61,7 +61,9 @@ Rails.application.routes.draw do
   get 'cars/new'
   post 'cars/new'
   get 'cars/destroy'
-  post 'cars/destroy'  
+  post 'cars/destroy'
+  get "cars/autotech"
+  post "cars/autotech"  
   
   get 'cparams/show'
   post 'cparams/show'
@@ -82,7 +84,6 @@ Rails.application.routes.draw do
   resources :contracts  do
     end
    resources :cars do
-     get :autocomplete_client_pseria, :on => :collection
     resources :contracts  do
     end
     resources :wlongs  do

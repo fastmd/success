@@ -1,122 +1,59 @@
 <% provide(:title, 'ТО') %>
 
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  
-<!-- jQuery -->
-<script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
-  
-<!-- DataTables -->
-<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.9/js/jquery.dataTables.js"></script>
-
 <script>
-$(document).ready( function () {
-    $('#mcl').dataTable( {
-    	 "order": [[ 1, "asc" ]]
+	$(document).ready(function() {
+    $('#mcl').DataTable( {
+        "order": [[ 1, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers"
+    } );
 } );
-} );
- 
-</script> 
-
-<div class="row">	
-  <div class="medium-3 columns">
-  	<a><% button_to "Добавить ТО",tehservices_new_path,:method => :get, :class=>"btn btn-primary" %> </a>
-  </div>
-</div>
+</script>
 
 	<div class="table-responsive">	
-		<table id="mcl" class="table table-bordered table-condensed table-hover">			
+		<table id="mcl" class="table table-bordered table-condensed table-hover table-striped"">			
 			<thead>
 				<tr  class="info">
-					<th>ID</th>
+					<th>№</th>
 					<th>Автомобиль</th>
 					<th>Текущий пробег</th>
-					<th>Дата последнего ТО</th>
-					<th>Необходимость замены<br> масла и фильтров</th>
-					<th>Стоимость обслуживания<br> за текущий месяц</th>
-					<th>Стоимость обслуживания<br> за текущий год</th>
+					<th>ТO</th>
+					<th>Масло и фильтры</th>
+					<th>Страховка</th>
+					<th>Техосмотр</th>				
+					<th>Стоимость<br> за текущий месяц</th>
+					<th>Стоимость<br> за текущий год</th>
 					<th>Действие</th>					
 				</tr>
 			</thead>
 			<tbody>	
-					<% @cars.each do |mobil| %>
-							<% 
-							@smprice = 0
-							@syprice = 0
-							mobil.tehservices.each do |th|
-								if th.sdate.to_date > (Date.today).at_beginning_of_month
-									@smprice = @smprice.to_i + th.sprice.to_i
-								end	
-								if th.sdate.to_date.strftime("%Y") == Date.today.to_date.strftime("%Y")
-									@syprice = @syprice.to_i + th.sprice.to_i
-								end	
-							end	
-							if mobil.wlongs.last != nil
-								wl = mobil.wlongs.last.wlong
-							else
-								wl = 0
-							end 
-							if mobil.tehservices.where(stype: "1").last != nil
-								if mobil.tehservices.last.sdate != nil
-								  tdate = mobil.tehservices.last.sdate.strftime('%d.%m.%Y')
-								end
-								@twl = mobil.tehservices.where(stype: "1").last.id
-								@stype = mobil.tehservices.where(stype: "1").last.stype
-								#wlid = @twl.stipe
-								#@wlg1 = Wlong.find_by tehservice_id: @twl
-								@wlg1 = Wlong.find_by(tehservice_id: @twl)
-								wlg = @wlg1.wlong
-							else
-								tdate = 0
-								twl = 0
-							end
-							if (@stype.to_i == 1)
-								if (wl.to_i - wlg.to_i > 5000) 
-								   zm =  "ДА"
-						    	else
-								   zm =  "НЕТ"
-								end 
-							end
-							
-							if mobil.tehservices.where(stype: "2").last != nil
-								if mobil.tehservices.last.sdate != nil
-								  tdate = mobil.tehservices.last.sdate.strftime('%d.%m.%Y')
-								end
-								@twl = mobil.tehservices.where(stype: "2").last.id
-								@stype = mobil.tehservices.where(stype: "2").last.stype
-								#wlid = @twl.stipe
-								#@wlg1 = Wlong.find_by tehservice_id: @twl
-								@wlg1 = Wlong.find_by(tehservice_id: @twl)
-								wlg = @wlg1.wlong
-							else
-								tdate = 0
-								twl = 0
-							end
-							
-							if (@stype.to_i == 2)
-								if (wl.to_i - wlg.to_i > 10000) 
-								   zf =  "ДА"
-						    	else
-								   zf =  "НЕТ"
-								end 
-							end
-							%>
-							<% @i = mobil.id %>
-							<tr><td><%= mobil.id %></td>
-							<td><%= link_to mobil.marca + " " + mobil.gnum,:controller => :tehservices, :action => :list ,:num => @i %></td>
-							<td><%= wl %></td>
-							<td><%= tdate %></td>
-							<% if zm == 'ДА' %>
-								<td bgcolor='red' ><%= zm %></td>	
-							<% else %>
-								<td><%= zm %></td>	
-							<% end %>
-							<td><%= @smprice %></td>
-							<td><%= @syprice %></td>
-							<td><% @i = mobil.id %><%= button_to "ТО", :controller => :tehservices, :action => :new ,:num => @i, class: "btn btn-primary" %>
-							</td>	
-							</tr>	
-					<% end %>
+  	          <% @report.each do |item| %>
+				<tr>
+					<td><%= item[:i] %></td>
+					<td><%= link_to "#{item[:marca_gnum]}",:controller => :tehservices, :action => :index ,:car_id => item[:car_id] %></td>
+					<td><%= item[:parcurs][:parcurs] %><br><%= item[:parcurs][:wdate] %></td>
+					<td class=<%= if item[:to][:tored] then "danger" end %>><%= item[:to][:parcurs] %><br><%= item[:to][:maxtosdate] %></td>
+					<td class=<%= if item[:oil][:oilred] then "danger" end %>><%= item[:oil][:parcurs] %><br><%= item[:oil][:maxoilsdate] %></td>	
+					<td class=<%= if item[:asig][:asigred] then "danger" end %>><%= item[:asig][:asigdt] %><br><%= item[:asig][:maxasigsdate] %></td>
+					<td class=<%= if item[:tosm][:tosmred] then "danger" end %>><%= item[:tosm][:tosmdt] %><br><%= item[:tosm][:maxtosmsdate] %></td>					
+					<td><%= number_to_currency(item[:monthsprice],:unit=>'€') %></td>
+					<td><%= number_to_currency(item[:yearsprice],:unit=>'€') %></td>
+					<td><%= link_to "ТО", :controller => :tehservices, :action => :new ,:car_id => item[:car_id] %></td>	
+				</tr>	
+			   <% end %>
 			</tbody>	
 		</table>
 	</div>	

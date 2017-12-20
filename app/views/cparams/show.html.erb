@@ -1,14 +1,24 @@
+<%= javascript_include_tag "raphael", 'data-turbolinks-track' => true %>
+<%= javascript_include_tag "morris.min", 'data-turbolinks-track' => true %>
+<%= stylesheet_link_tag "morris" %>
+
 <% provide(:title, 'Курс') %>
-	    	    
+
+  <div class="row">	  	
+	<div class="col-md-4">	    	    
   	  <div class="panel panel-info">
   	  	<div class="panel-heading"><strong>Новый курс:</strong></div>
   	  	<div class="panel-body">
 		<%= simple_form_for(:cparam, url: cparams_path, html: { class: 'form-inline' }) do |f| %>
-		  <%= f.input :curs, label: "Курс #{$valuta}", placeholder: @cparam, as: :decimal %>
+		  <%= f.input :curs, label: "Курс #{$valuta}", placeholder: @cparam, as: :decimal %><br><br>
 		  <div  align="center"><%= button_tag "Сохранить", type: 'submit', class: "btn btn-primary glyphicon glyphicon-ok pull-center" %>
 		  	                   <%= button_tag "Отмена", type: 'submit', class: "btn btn-warning glyphicon glyphicon-remove pull-center", name: "cancel" %>  
           </div>  
 		<% end %>
 	  </div> <!--panel-body--->    
-	</div> <!--panel--> 
+	 </div> <!--panel-->
+   </div>
+ </div>	 
       	    
+  <%=  content_tag(:div, "", id: "rates_chart", data: {rates: @rates}) %></br></br>     	    
+  <div id="myfirstchart" style="height: 1px;"></div></br></br>

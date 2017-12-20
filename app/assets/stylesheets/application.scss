@@ -9,41 +9,7 @@
  * compiled file so the styles you add here take precedence over styles defined in any styles
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
- *
  *= require_self
  *= require_tree .
- *= require jquery.dataTables
- *= require foundation_and_overrides
- *= require jquery.timepicker.css
- *= require jquery-ui
- *= require jquery-ui-timepicker-addon
 */
-/*= require jquery-ui*/
 
-/*
-@media print {
-  body {
-    background-color: #FFF;
-  }
-
-  #container {
-    width: auto;
-    margin: 0;
-    padding: 0;
-    border: none;
-  }
-  
-  #line_items {
-    page-break-before: always;
-  }
-  
-  #pdf_link {
-    display: none;
-  }
-}
-#buttontiny {
-	display: inline-block;
-	width: 40px;
-	height: 16px;
-	
-}*/

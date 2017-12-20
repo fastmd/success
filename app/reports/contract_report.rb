@@ -43,22 +43,26 @@ class ContractReport < Prawn::Document
       text "Valoare automobil", :align => :left
     end  #bounding box
     bounding_box([260, y_position], :width => 260) do
-      text "#{car.marca}", :align => :left, :style => :bold
-      text "#{car.gnum}", :align => :left, :style => :bold
-      text "#{car.cuznum}", :align => :left, :style => :bold
-      text "#{car.motnum}", :align => :left, :style => :bold
-      text "#{car.proddate}", :align => :left, :style => :bold
-      text "#{car.color}", :align => :left, :style => :bold
-      text "#{car.vmot}", :align => :left, :style => :bold
-      text "#{car.tmasa}", :align => :left, :style => :bold
-      text "#{car.tsumm} EURO", :align => :left, :style => :bold
+      text "  #{car.marca}", :align => :left, :style => :bold
+      text "  #{car.gnum}", :align => :left, :style => :bold
+      text "  #{car.cuznum}", :align => :left, :style => :bold
+      text "  #{car.motnum}", :align => :left, :style => :bold
+      text "  #{car.proddate}", :align => :left, :style => :bold
+      text "  #{car.color}", :align => :left, :style => :bold
+      text "  #{car.vmot}", :align => :left, :style => :bold
+      text "  #{car.tmasa}", :align => :left, :style => :bold
+      if !car.tsumm.nil? and !car.tsumm.empty? then 
+        text  "  #{car.tsumm} EURO", :align => :left, :style => :bold  
+      else 
+        text  "  ", :align => :left, :style => :bold 
+      end
     end    #bounding box
-    daysinperiod = (contract.enddate - contract.stdate).to_i   #number of days between report dates
+    daysinperiod = contract.dperiod ? contract.dperiod : (contract.enddate.to_date - contract.stdate.to_date).to_i   #number of days between report dates
     if daysinperiod < 1 then daysinperiod = 1 end
-    pretperday = ( contract.summ.to_i / daysinperiod).round(2)   #number of days between report dates  
+    pretperday = ( contract.costlei.to_i / daysinperiod).round(2)   #number of days between report dates  
     text "III. Termenul locațiunii", :align => :center, :style => :bold
-    text "3.1.Termenul locațiunii este de <b>#{daysinperiod}</b> zile, începând cu data de <b>#{contract.stdate.strftime("%d.%m.%Y")}</b>, ora <b>#{contract.sttime.strftime('%R')}</b>," + 
-          "până pe data de <b>#{contract.enddate.strftime("%d.%m.%Y")}</b>, ora <b>#{contract.endtime.strftime('%R')}</b>.",:inline_format => true,:align => :justify
+    text "3.1.Termenul locațiunii este de <b>#{daysinperiod}</b> zile, începând cu data de <b>#{contract.stdate.strftime("%d.%m.%Y")}</b>, ora <b>#{contract.stdate.strftime('%R')}</b>," + 
+          "până pe data de <b>#{contract.enddate.strftime("%d.%m.%Y")}</b>, ora <b>#{contract.enddate.strftime('%R')}</b>.",:inline_format => true,:align => :justify
     text "3.2. Termenul Locațiunii poate fi prelungit doar cu acordul scris al ambelor părți.",:align => :justify       
     text "IV. Drepturile și obligațiunile părților", :align => :center, :style => :bold
     text "4.1. Locatorul este obligat să pună la dispoziția Locatarului autovehiculul în termenii stabiliți și într-o stare corespunzătoare folosirii sale conform destinației.",:align => :justify
@@ -86,12 +90,12 @@ class ContractReport < Prawn::Document
     text "i) să efectueze modificări în construcția autovehiculului sau în privința aspectului exterior al autovehiculului fără acordul scris și prealabil al Locatorului;",:align => :justify
     text "j) să dea în sublocațiune autovehiculul, să cesioneze prezentul contract de Locațiune unui terț, să folosească autovehiculul în scopuri taximetrice.",:align => :justify
     text "V. Chiria și modul de achitare", :align => :center, :style => :bold
-    text "5.1. Chiria zilnică constituie <b>#{pretperday} lei</b>, respectiv pentru <b>#{daysinperiod}</b> zile. Locatarul urmează să achite <b>#{contract.summ} lei</b>.",:inline_format => true,:align => :justify
+    text "5.1. Chiria zilnică constituie <b>#{pretperday} lei</b>, respectiv pentru <b>#{daysinperiod}</b> zile. Locatarul urmează să achite <b>#{contract.costlei} lei</b>.",:inline_format => true,:align => :justify
     text "5.2. Plata se va efectua integral în avans."
     text "5.3. Chemarea angajaților Locatorului în afara orelor de program (10.00-18.30) sau în alt punct din mun. Chișinău decât punctele de lucru ale Locatorului, se achită suplimentar cu 15 Euro (cauza chemării poate fi diferită primirea/predarea autovehiculului etc.)",:align => :justify
     text "5.4. Suplimentar, se achită: pentru deplasarea autovehiculului peste hotarele țării – 5,00 Euro/zi (pentru deplasarea peste hotare este obligatoriu acordul scris al Locatorului), scaunul pentru copil Euro/zi, navigatorul gps – 5,00 Euro/zi.",:align => :justify
     text "VI. Garanția de închiriere", :align => :center, :style => :bold
-    text "6.1. Locatarul este obligat să transmită Locatorului <b>#{contract.zalog}</b> cu titlu de garanție de închiriere până la începerea termenului Locațiunii.",:inline_format => true,:align => :justify
+    text "6.1. Locatarul este obligat să transmită Locatorului <b>#{contract.zalog} EURO</b> cu titlu de garanție de închiriere până la începerea termenului Locațiunii.",:inline_format => true,:align => :justify
     text "6.2. Garanția va fi restituită când autovehiculul va fi înapoiat în condițiile în care l-a primit de la Locator. "
     text "6.3. Garanția nu se va restitui în caz de accident. Ea va fi folosită pentru recuperarea prejudiciului cauzat Locatorului prin faptul că acesta din urmă nu se va putea folosi de autovehicul. În cazul în care garanția nu va fi de ajuns pentru recuperarea prejudiciului, Locatarul va fi obligat să achite suplimentar chiria pentru zilele în care autoturismul va sta în reparație.",:align => :justify
     text "6.4. Garanția va putea fi reținută și în alte cazuri în care Locatarul va avea obligații bănești față de Locator. "
@@ -138,16 +142,16 @@ class ContractReport < Prawn::Document
        text "c/b 225190 / c/d MOLDMD2X301", :align => :left, :style => :bold
     end  #bounding box
     bounding_box([260, y_position], :width => 260) do
-       text "Locatar", :align => :center, :style => :bold
+       text " Locatar", :align => :center, :style => :bold
        move_down 3
-       text "N.P. <font size='10'>#{client.sname} #{client.name} #{client.fname}</font>", :align => :left, :style => :bold,:inline_format => true
-       text "ADRESA.  <font size='10'>#{client.address} </font>", :align => :left, :style => :bold,:inline_format => true
-       text "SERIA.  <font size='10'>#{client.pseria} </font>", :align => :left, :style => :bold,:inline_format => true
-       text "COD.IDNO.  <font size='10'>#{client.idno} </font>", :align => :left, :style => :bold,:inline_format => true
-       text "D.N.  <font size='10'>#{client.bdate}</font>", :align => :left, :style => :bold,:inline_format => true
-       text "D.E.  <font size='10'>#{client.dn}</font>", :align => :left, :style => :bold,:inline_format => true
-       text "EMAIL.  <font size='10'>#{client.pemail}</font>", :align => :left, :style => :bold,:inline_format => true
-       text "TEL.  <font size='10'>#{client.tel}</font>", :align => :left, :style => :bold,:inline_format => true
+       text " N.P. <font size='10'>#{client.sname} #{client.name} #{client.fname}</font>", :align => :left, :style => :bold,:inline_format => true
+       text " ADRESA.  <font size='10'>#{client.address} </font>", :align => :left, :style => :bold,:inline_format => true
+       text " SERIA.  <font size='10'>#{client.pseria} </font>", :align => :left, :style => :bold,:inline_format => true
+       text " COD.IDNO.  <font size='10'>#{client.idno} </font>", :align => :left, :style => :bold,:inline_format => true
+       text " D.N.  <font size='10'>#{client.bdate}</font>", :align => :left, :style => :bold,:inline_format => true
+       text " D.E.  <font size='10'>#{client.dn}</font>", :align => :left, :style => :bold,:inline_format => true
+       text " EMAIL.  <font size='10'>#{client.pemail}</font>", :align => :left, :style => :bold,:inline_format => true
+       text " TEL.  <font size='10'>#{client.tel}</font>", :align => :left, :style => :bold,:inline_format => true
     end  #bounding box
     y_position = cursor
     bounding_box([0, y_position], :width => 260, :height => 40) do
@@ -203,15 +207,19 @@ class ContractReport < Prawn::Document
       text "Valoare automobil", :align => :left
     end  #bounding box
     bounding_box([260, y_position], :width => 260) do
-      text "#{car.marca}", :align => :left, :style => :bold
-      text "#{car.gnum}", :align => :left, :style => :bold
-      text "#{car.cuznum}", :align => :left, :style => :bold
-      text "#{car.motnum}", :align => :left, :style => :bold
-      text "#{car.proddate}", :align => :left, :style => :bold
-      text "#{car.color}", :align => :left, :style => :bold
-      text "#{car.vmot}", :align => :left, :style => :bold
-      text "#{car.tmasa}", :align => :left, :style => :bold
-      text "#{car.tsumm} EURO", :align => :left, :style => :bold
+      text " #{car.marca}", :align => :left, :style => :bold
+      text " #{car.gnum}", :align => :left, :style => :bold
+      text " #{car.cuznum}", :align => :left, :style => :bold
+      text " #{car.motnum}", :align => :left, :style => :bold
+      text " #{car.proddate}", :align => :left, :style => :bold
+      text " #{car.color}", :align => :left, :style => :bold
+      text " #{car.vmot}", :align => :left, :style => :bold
+      text " #{car.tmasa}", :align => :left, :style => :bold
+      if !car.tsumm.nil? and !car.tsumm.empty? then 
+        text  "  #{car.tsumm} EURO", :align => :left, :style => :bold  
+      else 
+        text  "  ", :align => :left, :style => :bold 
+      end
     end  #bounding box  
     indent(5) do
       text "2.  În prezentul punct sunt identificate defectele exterioare ale autovehiculului.", :align => :left

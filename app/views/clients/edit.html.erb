@@ -6,9 +6,10 @@
 	  <div class="panel-body">
 	  	  <%= simple_form_for @client do |f| %>
 	  	  	
-		  <div class="large-6 columns">
+          <div class="row">	  	
+		  <div class="col-md-6">
 		  <div class="panel  panel-default">		  	
-		  <div class="panel-body">
+		  	<div class="panel-body">
 					<%= f.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
 					<%= f.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25} %>
@@ -19,7 +20,7 @@
 		    </div>
 		    </div>
     
-		    <div class="large-6 columns">
+		    <div class="col-md-6">
 		    <div class="panel  panel-default">
 		    <div class="panel-body">
 					<%= f.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25} %>
@@ -31,7 +32,9 @@
 			</div>
 		  	</div>
 		  	</div>
-	  			<div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %>  <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>	
+		  	
+		  	</div>	<!--row-->
+	  		<div  align="center"><%= f.button :submit, "Сохранить", class: "btn btn-primary" %>  <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>	
 	  				  	
   			<% end %>
   	  </div> <!--panel body-->	

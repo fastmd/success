@@ -31,8 +31,19 @@ class ContractsController < ApplicationController
       @client = client_init(@client)
       client_save
       @contract.client_id = @client.id        
-    end 
+    end
+    unless params[:parcurs].nil? then
+      if Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).count != 0 then 
+        @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).last 
+      else
+        @wlong = Wlong.new
+      end
+      @wlong = wlong_init(@wlong)    
+      wlong_save 
+      #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
+    end     
     contract_save
+    #render inline: "<%= params.inspect %><br><br>" and return
     if @flag == 1 then
       if params[:printfromedit] then  redirect_to contracts_show_path(:id => @contract.id, format: "pdf") and return end
       if params[:va] == 'newbroni'  then 
@@ -43,13 +54,28 @@ class ContractsController < ApplicationController
     else
       if params[:va] == 'newbroni'  then render 'newbroni'  else  render 'new' end  
     end 
-    #render inline: "<%= params.inspect %><br><br>"
   end
      
   def update
     #render inline: "<%= params.inspect %><br><br>" and return  
     @contract = Contract.find(params[:id])
     @contract = contract_init(@contract)
+    unless params[:active].nil? then
+      @client = Client.new(client_params)
+      @client = client_init(@client)
+      client_save
+      @contract.client_id = @client.id        
+    end
+    unless params[:parcurs].nil? then
+      if Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).count != 0 then 
+        @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).last 
+      else
+        @wlong = Wlong.new
+      end
+      @wlong = wlong_init(@wlong)    
+      wlong_save 
+      #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
+    end     
     contract_save
     if @flag == 1 then
       if params[:printfromedit] then  redirect_to contracts_show_path(:id => @contract.id, format: "pdf") and return end
@@ -84,6 +110,9 @@ class ContractsController < ApplicationController
    
   def new
    gon.cars = Car.all
+   gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")
+   #render inline: "<%= @wlongs.inspect %><br><br><%= @wlongs.count.inspect %><br><br>" and return
    @contract = Contract.new
    @contract.client_id = params[:client_id]
    @contract.car_id = params[:car_id]
@@ -96,25 +125,27 @@ class ContractsController < ApplicationController
    @contract.flag = 2
    @contract.curs = Cparam.last.curs ? Cparam.last.curs : 1
    unless @contract.car_id.nil? then
-     @contract.price = @contract.car.int1price   # price     
-     @contract.zalog = @contract.car.gaj     # zalog 
-     @contract.garant_summ = @contract.car.gaj         # задаток 
+     @car = @contract.car
+     @contract.price = @car.int1price   # price     
+     @contract.zalog = @car.gaj         # zalog 
+     @contract.garant_summ = @car.gaj   # задаток
+     unless @car.wlongs.last.nil? then @parcurs = @car.wlongs.last.parcurs end       # parcurs   
    end
    @pretperday = @contract.price.to_i
    @daysinperiod = @contract.dperiod
    # suma valuta
    @contract.summ = (@contract.price.to_i * @contract.dperiod).round(2) 
    # suma lei 
-   @contract.costlei = ((@contract.price.to_i * @contract.dperiod).round(2) * @contract.curs.to_i).round(2)       
+   @contract.costlei = ((@contract.price.to_i * @contract.dperiod).round(2) * @contract.curs.to_i).round(2)     
    #render inline: "<%= @contract.inspect %><br><br>"  
   end
   
   def newbroni
-   gon.cars = Car.all 
+   gon.cars = Car.all
    @contract = Contract.new
    @contract.client_id = params[:client_id]
    @contract.car_id = params[:car_id]
-   @contract.stdate = params[:stdate] ?  params[:stdate] : Date.today
+   @contract.stdate = params[:stdate] ?  params[:stdate] : DateTime.now
    d = @contract.stdate + 1.day
    @contract.enddate = d
    @contract.dperiod = 1
@@ -130,14 +161,23 @@ class ContractsController < ApplicationController
     
   def edit
     gon.cars = Car.all
+    gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")
     @contract = Contract.find(params[:id])
+    # parcurs 
+    #unless @contract.car.wlongs.last.nil? then @parcurs = @contract.car.wlongs.last.parcurs end
+    if Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).count!=0 then 
+      @parcurs = Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).last.parcurs 
+    end    
   end
   
   def show    
     @contract = Contract.find(params[:id])
+    # parcurs 
+    unless @contract.car.wlongs.last.nil? then @parcurs = @contract.car.wlongs.last.parcurs end     
     @car = @contract.car
     @client = @contract.client
-    @daysinperiod = @contract.dperiod ? @contract.dperiod : (@contract.enddate - @contract.stdate).to_i   #number of days between report dates
+    @daysinperiod = @contract.dperiod ? @contract.dperiod : (@contract.enddate.to_date - @contract.stdate.to_date).to_i   #number of days between report dates
     if @daysinperiod < 1 then @daysinperiod = 1 end
     @pretperday = @contract.price ? @contract.price : ( @contract.summ.to_i / @daysinperiod).round(2)   #pret 
     respond_to do |format|
@@ -153,28 +193,24 @@ class ContractsController < ApplicationController
   def broni2contract
     @contract = Contract.find(params[:id])
     # пробег
-    @car = @contract.car
-    @car.wlongs.create()
-    @wls = @car.wlongs.last
-    @wls.wlong = params[:wlong]
-    @wls.wdate = @contract.stdate.strftime("%d.%m.%Y")
-    @wls.save
+    unless (params[:contract][:parcurs].nil?) then
+      @parcurs = params[:contract][:parcurs]  # parcurs  
+    end
+    #render inline: "<%= @parcurs.inspect %><br><br>"  and return  
     # contract
     @contract.flag = 2
     # агент
     if @contract.user.nil? then @contract.user_id = current_user.id end
-    # время начала и конца  
-    @contract.endtime = Time.parse(Time.now.strftime('%R'))
-    @contract.sttime = Time.parse(Time.now.strftime('%R'))
     # zalog
+    @car = @contract.car
     @contract.zalog = @car.gaj
     # days in period
-    @daysinperiod = @contract.dperiod ? @contract.dperiod : (@contract.enddate - @contract.stdate).to_i   #number of days between report dates
+    @daysinperiod = @contract.dperiod ? @contract.dperiod : (@contract.enddate.to_date - @contract.stdate.to_date).to_i   #number of days between report dates
     if @daysinperiod < 0 then @daysinperiod = 0 end
     @contract.dperiod = @daysinperiod
     # curs
     @curs = Cparam.last.curs ? Cparam.last.curs : 1
-    @contract.curs = @curs
+    @contract.curs = @curs      
     # price
     if @contract.price.nil? then
       f = nil
@@ -219,26 +255,54 @@ class ContractsController < ApplicationController
     # contract
     @contract = Contract.find(params[:id])
     @contract.flag = 3
-    @contract.fendtime = "#{params[:contract]['fendtime(4i)']}:#{params[:contract]['fendtime(5i)']}"
+    d = @contract.enddate.to_datetime
+    unless (params[:contract]['fendtime(4i)'].nil?) then d = d.change(hour: params[:contract]['fendtime(4i)'].to_i) end
+    unless (params[:contract]['fendtime(5i)'].nil?) then d = d.change(min: params[:contract]['fendtime(5i)'].to_i) end      
+    @contract.fenddate = d
     if @contract.user.nil? then @contract.user_id = current_user.id end
     contract_save
-    # пробег
-    @car = @contract.car
-    @wls_end = @car.wlongs.create()
-    @wls_end.wlong = params[:contract][:wlongend]
-    @wls_end.wdate = @contract.enddate.strftime("%d.%m.%Y")
-   # @wls_end.wdate = "#{params[:contract]['fendtime(4i)']}:#{params[:contract]['fendtime(5i)']}"
-    @wls_end.save
-  #  render inline: "<%= params.inspect %><br><br>" and return
+    # пробег 
+    unless (params[:contract][:parcurs].nil?) then
+      if Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).count != 0 then 
+        @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).last 
+      else
+        @car = @contract.car
+        @wlong = @car.wlongs.create()
+      end      
+      @wlong.parcurs = params[:contract][:parcurs] 
+      @wlong.wdate = d   
+      @wlong.save
+    end  
+    #render inline: "<%= @wlong.inspect %><br><br>" and return
     redirect_to root_path    
   end
   
  private  
-    
-  def contract_params
-    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:user,:stdate,:sttime,:enddate,:endtime,:fendtime,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs)
+  
+  def wlong_init(wlong)
+    wlong.parcurs = params[:parcurs]
+    wlong.car_id = params[:car_id]
+    d = (params[:stdate]).to_datetime 
+    unless (contract_params['sttime(4i)'].nil?) then d = d.change(hour: contract_params['sttime(4i)'].to_i) end
+    unless (contract_params['sttime(5i)'].nil?) then d = d.change(min: contract_params['sttime(5i)'].to_i) end  
+    wlong.wdate = d
+    wlong    
   end
   
+  def wlong_save
+      begin
+        if @wlong.save! then 
+          @flag = 1         
+        end
+      rescue
+        flash[:warning] = "Пробег не сохранен. Проверьте правильность ввода."             
+      end    
+  end
+    
+  def contract_params
+    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:user,:stdate,:enddate,:fenddate,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs,:sttime,:endtime,:fendtime)
+  end
+    
   def contract_init(contract)
     contract.cnum = (contract_params[:cnum]).lstrip.rstrip
     contract.order_date = contract_params[:order_date]
@@ -246,10 +310,20 @@ class ContractsController < ApplicationController
     contract.car_id = if contract_params[:car_id].nil? then params[:car_id] else contract_params[:car_id] end
     contract.client_id = contract_params[:client_id]
     contract.user_id= contract_params[:user_id]
-    contract.stdate = params[:stdate]
-    contract.sttime = if (!contract_params['sttime(4i)'].nil? and !contract_params['sttime(5i)'].nil?) then "#{contract_params['sttime(4i)']}:#{contract_params['sttime(5i)']}" end
-    contract.enddate = params[:enddate]
-    contract.endtime = if (!contract_params['endtime(4i)'].nil? and !contract_params['endtime(5i)'].nil?) then "#{contract_params['endtime(4i)']}:#{contract_params['endtime(5i)']}" end
+    # stdate
+    if params[:stdate] then
+      d = (params[:stdate]).to_datetime 
+      unless (contract_params['sttime(4i)'].nil?) then d = d.change(hour: contract_params['sttime(4i)'].to_i) end
+      unless (contract_params['sttime(5i)'].nil?) then d = d.change(min: contract_params['sttime(5i)'].to_i) end  
+      contract.stdate = d
+    end
+    # enddate
+    if params[:enddate] then
+      d = (params[:enddate]).to_datetime 
+      unless (contract_params['endtime(4i)'].nil?) then d = d.change(hour: contract_params['endtime(4i)'].to_i) end
+      unless (contract_params['endtime(5i)'].nil?) then d = d.change(min: contract_params['endtime(5i)'].to_i) end  
+      contract.enddate = d
+    end
     contract.summ = params[:summ]
     contract.garant_summ = params[:garant_summ]
     contract.dperiod = params[:dperiod]
@@ -267,7 +341,7 @@ class ContractsController < ApplicationController
     c = Contract.where("(? is null or id !=?) and flag in (1,2) and car_id = ? and ((stdate between ? and ?) or (enddate between ? and ?) or (? between stdate and enddate) or (? between stdate and enddate))", 
                        @contract.id, @contract.id, @contract.car_id, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate).last                   
     if (!t.nil? and t.count != 0) then
-      flash[:warning] = "Авто занято -  #{if c.flag==1 then 'Бронь' else 'Контракт' end} № #{c.id}/#{c.cnum} от #{c.order_date.strftime('%d.%m.%Y')} с #{c.stdate.strftime('%d.%m.%Y')} по #{c.enddate.strftime('%d.%m.%Y')}. Проверьте правильность ввода."        
+      flash[:warning] = "Авто занято -  #{if c.flag==1 then 'Бронь' else 'Контракт' end} № #{c.id}/#{c.cnum} от #{c.order_date.strftime('%d.%m.%Y')} с #{c.stdate.strftime('%d.%m.%Y %R')} по #{c.enddate.strftime('%d.%m.%Y %R')}. Проверьте правильность ввода."        
     else
       begin
         if @contract.save! then 
@@ -311,7 +385,6 @@ class ContractsController < ApplicationController
     else
       begin
         if @client.save! then 
-          flash.discard
           flash[:notice] = "Клиент #{@client.sname} #{@client.name} #{@client.fname} сохранен."
           @flag = 1         
         end

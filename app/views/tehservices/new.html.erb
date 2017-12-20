@@ -1,77 +1,55 @@
-   <title>jQuery UI Accordion - Default functionality</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-  
-  <link rel="stylesheet" href="/resources/demos/style.css">
- 
- <script>
-  $(function() {
-    $("#pan").toggle()
-    $("#clname").attr('disabled', 'disabled');
-  });
-  $(function() {
-  $("#rem2").change( function() {
-    $("#pan").toggle()
-    $("#clname").toggle()
-    $("#pser").toggle()
-  });
-  });
-  function disableElements()
-{
-document.getElementById("#clname").disabled=true;
-}
-  
+<% provide(:title, 'Новое ТО') %>
 
-  
-    $(function() {
-    $( "#dt3" ).datepicker({
-      changeMonth: true,
-      changeYear: true,
-      dateFormat: 'dd.mm.yy' }).val();
-       
-    $( "#format" ).change(function() {
-      $( "#dt3" ).datepicker( "option", "dateFormat", $( this ).val() );
-    });  
-  });
-  
-  </script>
+  <div class="row">	  	
+	<div class="col-md-6">
+  	<div  class="panel panel-info">
+  	  <div class="panel-heading"><strong>Новое ТО:</strong></div> 		
+	  <div class="panel-body">
+		<%= simple_form_for(@tehservice, url: tehservices_create_path) do |f| %>
+			  	
+		  	<%= f.input :user_id, :as => :hidden %>
+		  	
+	        <!-- автомобиль --> 
+	    	<div class="form-group">
+	          	<label for="car_id" class="control-label">Автомобиль</label>		
+	    	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @tehservice.car_id), include_blank: false, class: "form-control", :readonly => true  %>
+		  	</div>   
+	    	<div class="form-group">
+	    		<label for="parcurs" class="control-label">Пробег</label>
+	    		<%= number_field_tag 'parcurs', @parcurs, class: "form-control" %>
+	    	</div>
 
-<%= button_to "Назад", car_autotech_path,:method => :get, :class=>"button tiny" %>
-<center>
-<div class="small-6 large-4 columns">
-	<div class="panel">
-  	<a> 
-	<%= form_tag '/tehservices/newto' do %>
-  	<%= hidden_field_tag :manager%>
-  	<%= label_tag 'Автомобиль' %>
-  	
-  	<%
-  	if params[:num] != nil %>
-  	 <% @car = Car.find(params[:num]) %>
-  	 <%= hidden_field_tag :car_num,@car.id %>
-  	 <% auto = @car.marca + " " + @car.gnum %>
-  	 <%= text_field_tag :car , auto, :readonly => true %>  
-  	 <%= label_tag :"Текущий пробег" %>
-  	 <%= text_field_tag :wlong, @car.wlongs.last.wlong %>
-  	<% else %>
-  	 <%= params[:num].to_s	%>
-  	 <%= select_tag "car_num", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }) %>
-  	 <%= label_tag :"Введите текущий пробег" %>
-  	 <%= text_field_tag :wlong  %>
-  	<% end %>
-  	<%= label_tag :"Введите тип сервиса" %>
-  	<% @yrs = [2011,2010,2009,2008] %>
-  	<%= select_tag :stype, options_for_select([['Замена масла', 1], ['ТО', 3]] )%>
-  	<%= label_tag :"Введите стоимость сервиса"%>
-  	<%= text_field_tag :sprice%>
-  	<%= label_tag :"Дата проведения работ"%>
-  	<%= text_field_tag :sdate, DateTime.now.strftime('%d.%m.%Y'), :id => "dt3" %>
-  	<%= text_area_tag :comments ,nil, :rows => 4, :cols => 25%>
-  	<%= submit_tag "Сохранить ТО" %>
-  	<% end %>        
-  	</a>
-  	</div>
-  </div>
+            <div class="col-md-6">
+            <div class="form-group"> 
+			  	<%= label_tag :"Введите тип сервиса" %>
+			  	<%= select_tag :stype, options_for_select([['Замена масла', 1], ['Техобслуживание', 3], ['Страховка', 2], ['Техосмотр', 4]] ),  class: "form-control"%>
+		  	</div>
+		  	</div>
+		  	
+		  	<div class="col-md-6">
+		  	<%= f.input :sprice, label: "Стоимость сервиса, #{$valuta}", as: :integer %>
+		  	</div>
+		  	
+	    	<!-- дата  -->
+	    	<div class="col-md-6">
+	    	<div class="form-group">
+		    	<label for="sdate" class="control-label">Дата проведения работ</label>
+		    	<%= date_field_tag 'sdate', @tehservice.sdate.to_date, class: "form-control" %>
+	    	</div>
+	        </div>	
+	    	<!-- время  -->
+	    	<div class="col-md-6">
+	        <%= f.input :sttime, as: :time ,label: "Время проведения работ" , default: @tehservice.sdate ? Time.parse(@tehservice.sdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>	  	
+		  	</div>
+		  	
+		  	<%= f.input :comments , as: :text %>
+		  	
+		  	<div  align="center"><%= submit_tag('Сохранить', class: "btn btn-primary") %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>
+		  	
+		 <% end %>        
+		  	  	  
+  	  </div> <!--panel body-->	
+    </div> <!--panel-->
+    </div>		
+ </div><!--row-->   
   
-</center>

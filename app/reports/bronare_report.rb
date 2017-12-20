@@ -25,7 +25,7 @@ class BronareReport < Prawn::Document
        text " Nume <b>#{client.name}</b>", :align => :left,:inline_format => true
        text " tel. #{client.tel}", :align => :left
        move_down 5
-       text " Data de la #{contract.stdate.strftime("%d.%m.%Y")} pina la #{contract.enddate.strftime("%d.%m.%Y")}", :align => :left
+       text " Data de la #{contract.stdate.strftime("%d.%m.%Y %R")} pina la #{contract.enddate.strftime("%d.%m.%Y %R")}", :align => :left
        text " Suma #{contract.garant_summ}", :align => :left
        move_down 10
        text "Locator", :align => :left, :style => :bold
