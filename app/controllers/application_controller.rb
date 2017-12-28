@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   before_action :rusdayofweek
   $GreenDelay = 12*60*60
   $valuta = "EUR"
+  
+  around_action :with_time_zone, if: 'current_user.try(:time_zone)'
 
   protected
 
@@ -41,6 +43,12 @@ class ApplicationController < ActionController::Base
                                               when "Friday"    then "Пятница"
                                               when "Saturday"  then "Суббота"
                                               when "Sunday"    then "Воскресение" end      
+ end
+ 
+ def with_time_zone(&block)
+    time_zone = current_user.time_zone
+    logger.debug "Используется часовой пояс пользователя: #{time_zone}"
+    Time.use_zone(time_zone, &block)
  end
   
 end

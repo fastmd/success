@@ -52,6 +52,9 @@ class ContractsController < ApplicationController
         redirect_to contracts_path 
       end
     else
+      gon.cars = Car.all
+      gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")
       if params[:va] == 'newbroni'  then render 'newbroni'  else  render 'new' end  
     end 
   end
@@ -85,6 +88,9 @@ class ContractsController < ApplicationController
         redirect_to contracts_path 
       end
     else
+      gon.cars = Car.all
+      gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")      
       render 'edit'
     end
   end
@@ -191,6 +197,9 @@ class ContractsController < ApplicationController
   end
   
   def broni2contract
+    gon.cars = Car.all
+    gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")    
     @contract = Contract.find(params[:id])
     # пробег
     unless (params[:contract][:parcurs].nil?) then
@@ -247,15 +256,14 @@ class ContractsController < ApplicationController
     @summ = (@pretperday * @daysinperiod).round(2) 
     @contract.summ = @summ
     # suma lei 
-    @contract.costlei = ((@pretperday * @daysinperiod).round(2) * @curs).round(2)
-    render "edit"      
+    @contract.costlei = ((@pretperday * @daysinperiod).round(2) * @curs).round(2)    
   end
   
   def contract2arh
     # contract
     @contract = Contract.find(params[:id])
     @contract.flag = 3
-    d = @contract.enddate.to_datetime
+    d = @contract.enddate.to_datetime.in_time_zone
     unless (params[:contract]['fendtime(4i)'].nil?) then d = d.change(hour: params[:contract]['fendtime(4i)'].to_i) end
     unless (params[:contract]['fendtime(5i)'].nil?) then d = d.change(min: params[:contract]['fendtime(5i)'].to_i) end      
     @contract.fenddate = d
@@ -282,7 +290,7 @@ class ContractsController < ApplicationController
   def wlong_init(wlong)
     wlong.parcurs = params[:parcurs]
     wlong.car_id = params[:car_id]
-    d = (params[:stdate]).to_datetime 
+    d = (params[:stdate]).to_datetime.in_time_zone 
     unless (contract_params['sttime(4i)'].nil?) then d = d.change(hour: contract_params['sttime(4i)'].to_i) end
     unless (contract_params['sttime(5i)'].nil?) then d = d.change(min: contract_params['sttime(5i)'].to_i) end  
     wlong.wdate = d
@@ -312,14 +320,14 @@ class ContractsController < ApplicationController
     contract.user_id= contract_params[:user_id]
     # stdate
     if params[:stdate] then
-      d = (params[:stdate]).to_datetime 
+      d = (params[:stdate]).to_datetime.in_time_zone 
       unless (contract_params['sttime(4i)'].nil?) then d = d.change(hour: contract_params['sttime(4i)'].to_i) end
       unless (contract_params['sttime(5i)'].nil?) then d = d.change(min: contract_params['sttime(5i)'].to_i) end  
       contract.stdate = d
     end
     # enddate
     if params[:enddate] then
-      d = (params[:enddate]).to_datetime 
+      d = (params[:enddate]).to_datetime.in_time_zone 
       unless (contract_params['endtime(4i)'].nil?) then d = d.change(hour: contract_params['endtime(4i)'].to_i) end
       unless (contract_params['endtime(5i)'].nil?) then d = d.change(min: contract_params['endtime(5i)'].to_i) end  
       contract.enddate = d

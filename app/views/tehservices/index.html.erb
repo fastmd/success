@@ -29,6 +29,7 @@
   <thead>
     <tr class="info">
       <th>№</th>
+      <th>.........</th>
       <th>Тип</th>
       <th>Дата и время выполнения</th>
       <th>Цена</th> 
@@ -37,15 +38,17 @@
   </thead>
   <tbody>
   <% @tehservices.each do |item| %>
-    <tr>
+        <% if item.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
 	  	<td><%= item.id %></td>
+	  	<td><%= link_to " " , tehservices_edit_path(:id => item.id), :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать' %>
+			<%= link_to " " , tehservices_destroy_path(:id => item.id), :class=> "glyphicon glyphicon-remove", :title => 'Удалить', 
+			                  data: { confirm: "Удалить ТО № #{item.id} от #{item.sdate.strftime('%d.%m.%Y %R')}?" } %></td>
 	  	<td><%= case item.stype when 1 then "Замена масла и фильтров"  
 	  		                    when 3 then "Техническое обслуживание" 
                                 when 2 then "Страховка"
                                 when 4 then "Техосмотр"
                                 else  item.stype 
-	  		 end %>		
-	  		</td>
+	  		 end %></td>
 	  	<td><%= item.sdate.strftime('%d.%m.%Y %R') %></td>
 	  	<td><%= number_to_currency(item.sprice,:unit=>'€') %></td>
 	  	<td><%= item.comments %></td>

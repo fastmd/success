@@ -1,13 +1,14 @@
-<% provide(:title, 'Новое ТО') %>
+<% provide(:title, 'Редактирование ТО') %>
 
   <div class="row">	  	
 	<div class="col-md-6">
   	<div  class="panel panel-info">
-  	  <div class="panel-heading"><strong>Новое ТО:</strong></div> 		
+  	  <div class="panel-heading"><strong>Редактирование ТО № <%= @tehservice.id %>:</strong></div> 		
 	  <div class="panel-body">
 		<%= simple_form_for(@tehservice, url: tehservices_create_path) do |f| %>
 			  	
 		  	<%= f.input :user_id, :as => :hidden %>
+		  	<%= f.input :id, :as => :hidden %>
 		  	
 	        <!-- автомобиль --> 
 	    	<div class="form-group">
@@ -34,12 +35,12 @@
 	    	<div class="col-md-6">
 	    	<div class="form-group">
 		    	<label for="sdate" class="control-label">Дата проведения работ</label>
-		    	<%= date_field_tag 'sdate', @tehservice.sdate.to_date, class: "form-control" %>
+		    	<%= date_field_tag 'sdate', @tehservice.sdate.in_time_zone.to_date, class: "form-control" %>
 	    	</div>
 	        </div>	
 	    	<!-- время  -->
 	    	<div class="col-md-6">
-	        <%= f.input :sttime, as: :time ,label: "Время проведения работ" , default: @tehservice.sdate ? Time.parse(@tehservice.sdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>	  	
+	        <%= f.input :sttime, as: :time ,label: "Время проведения работ" , default: @tehservice.sdate ? Time.parse(@tehservice.sdate.in_time_zone.strftime('%R')) : Time.parse(Time.current.strftime('%R')) %>	  	
 		  	</div>
 		  	
 		  	<%= f.input :comments , as: :text %>

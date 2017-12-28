@@ -52,7 +52,11 @@ Rails.application.routes.draw do
   get  'tehservices/index'
   post 'tehservices/create'
   get  'tehservices/create'
-  patch  'tehservices/create'   
+  patch 'tehservices/create'
+  post "tehservices/edit"
+  get  "tehservices/edit"
+  post "tehservices/destroy"
+  get  "tehservices/destroy"  
   
   get 'cars/smonth'
   post 'cars/smonth'
