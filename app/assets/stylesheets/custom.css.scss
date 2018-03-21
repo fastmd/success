@@ -199,6 +199,8 @@ cbody {
 footer {
   margin-top: 45px;
   padding-top: 5px;
+  padding-left: 30px;
+  padding-right: 30px;  
   border-top: 1px solid #eaeaea;
   color: $lightGray;
   a {
@@ -238,4 +240,9 @@ footer {
   font-family: 'Quicksand', sans-serif;
   color: #7F042D;
   font-size: 12px;
+}
+
+.menucontainer-fluid {
+    padding-left: 30px;
+    padding-right: 30px;
 }

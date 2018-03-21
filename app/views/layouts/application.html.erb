@@ -3,8 +3,11 @@
 	<head>
 	  <title><%= full_title(yield(:title)) %></title>
 	  <%= favicon_link_tag 'holub-ifon.png' %>
-	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	<!--  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %> -->
+	  <%= csrf_meta_tags %>
+      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+      <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 	  <%= javascript_include_tag "jquery.dataTables.min", 'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag "dataTables.bootstrap.min", 'data-turbolinks-track' => true %>
 	  <%= javascript_include_tag "dataTables.buttons.min", 'data-turbolinks-track' => true %>
@@ -16,16 +19,22 @@
 	  <%= stylesheet_link_tag "buttons.dataTables.min" %>
 	  <%= stylesheet_link_tag "common" %>
 	  <%= stylesheet_link_tag "mixins" %>
-	  <%= csrf_meta_tags %>
+	<!--  <%= csrf_meta_tags %>  -->
 	  <%= render 'layouts/shim' %>
 	</head>
 	<body>
-    <div class="container">
+    <div class="container-fluid">
     	<div class="row">
+    	  <div class="col">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     		  <%= render 'layouts/header' %>	    	
-	      	  <%= render 'layouts/messages' %>	  
-	    	  <%= yield %> 
-	    	  <%= render 'layouts/footer' %> 
+	      	  <%= render 'layouts/messages' %>
+	      	  <div class="container-fluid">	  
+	    	  <%= yield %>
+	    	  </div> 
+	    	  <%= render 'layouts/footer' %>
+	    	</div>
+	       </div>	   
 	    </div>	 
      </div>   <!-- /container -->      
    </body>

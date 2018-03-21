@@ -33,7 +33,7 @@
 			   <th>Aгент</th>
 			   <th>Автомобиль</th>
 			   <th>Период</th>
-			   <th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th>Гар. сумма</th>
 			   <th>Цена в день, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 			   <th>Клиент</th>			   
 			</tr>	
@@ -53,7 +53,7 @@
 						<td><%= "#{c.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{c.enddate.strftime('%d.%m.%Y_%R')}" %></br>
 						        <%= if c.dperiod then "#{c.dperiod} " +  
 						        	  (case c.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
-						<td><%= number_to_currency(c.garant_summ,:unit=>'€', precision: 0) %></td>
+						<td><%= c.garant_summ %></td>
 						<td><%= number_to_currency(c.price,:unit=>'€', precision: 0) %></td>
 						<td><small><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname}" end %></small></td>					
 					</tr>		

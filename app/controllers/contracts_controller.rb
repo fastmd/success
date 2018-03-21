@@ -49,7 +49,7 @@ class ContractsController < ApplicationController
       if params[:va] == 'newbroni'  then 
         redirect_to contracts_indexbroni_path 
       else 
-        redirect_to contracts_path 
+        if @contract.flag == '3' then redirect_to contracts_indexarc_path else redirect_to contracts_path end
       end
     else
       gon.cars = Car.all
@@ -82,11 +82,9 @@ class ContractsController < ApplicationController
     contract_save
     if @flag == 1 then
       if params[:printfromedit] then  redirect_to contracts_show_path(:id => @contract.id, format: "pdf") and return end
-      if @contract.flag == 1 then 
-        redirect_to contracts_indexbroni_path 
-      else 
-        redirect_to contracts_path 
-      end
+      case @contract.flag when 1 then redirect_to contracts_indexbroni_path
+                          when 3 then redirect_to contracts_indexarc_path 
+                          else redirect_to contracts_path end
     else
       gon.cars = Car.all
       gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
@@ -103,15 +101,17 @@ class ContractsController < ApplicationController
       begin
         if contract.destroy! then 
           flash.discard
-          flash[:notice] = if contract.flag == 2 then "Контракт № #{contract.id}/#{contract.cnum} от #{contract.order_date.strftime('%d.%m.%Y')} удален." 
+          flash[:notice] = if contract.flag != 1 then "Контракт № #{contract.id}/#{contract.cnum} от #{contract.order_date.strftime('%d.%m.%Y')} удален." 
                            else "Бронь № #{contract.id}/#{contract.cnum} от #{contract.order_date.strftime('%d.%m.%Y')} удалена."end          
         end
       rescue
-        flash[:warning] = if contract.flag == 2 then "Не удалось удалить контракт #{contract.id}/#{contract.cnum} от #{contract.order_date.strftime('%d.%m.%Y')}."
+        flash[:warning] = if contract.flag != 1 then "Не удалось удалить контракт #{contract.id}/#{contract.cnum} от #{contract.order_date.strftime('%d.%m.%Y')}."
                           else "Не удалось удалить бронь #{contract.id}/#{contract.cnum} от #{contract.order_date.strftime('%d.%m.%Y')}." end              
       end
     end    
-    if contract.flag == 1 then redirect_to contracts_indexbroni_path else redirect_to contracts_path end 
+    case contract.flag when 1 then redirect_to contracts_indexbroni_path 
+                       when 3 then  redirect_to contracts_indexarc_path
+                       else redirect_to contracts_path end 
   end  
    
   def new
@@ -409,9 +409,10 @@ class ContractsController < ApplicationController
     # when calcel
     if params[:cancel] then
       flash.discard
-      #render inline: "<%= params.inspect %><br><br>" and return
-      case when (params[:va] = 'broni2contract') then redirect_to root_path
-           when (params[:va] == 'newbroni' or params[:flag] == '1') then redirect_to contracts_indexbroni_path 
+      #render inline: "<%= (params[:contract][:flag]).inspect %><br><br>" and return
+      case when (params[:va] == 'broni2contract') then redirect_to root_path
+           when (params[:va] == 'newbroni' or params[:flag] == '1') then redirect_to contracts_indexbroni_path
+           when  params[:contract][:flag] == '3'  then redirect_to contracts_indexarc_path
            else redirect_to contracts_path 
       end
     end       

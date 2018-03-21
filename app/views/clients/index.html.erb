@@ -29,17 +29,13 @@
 			<tr class="info">
 			   <th>ID</th>	
 			   <th>...............</th>
-			   <th>Фамилия</th>
-			   <th>Имя</th>
-			   <th>Отчество</th>
+			   <th>ФИО</th>
 			   <th>Паспорт</th>
 			   <th>Дата рождения</th>
-			   <th>Дата выдачи</th>
 			   <th>IDNP</th>
 			   <th>Страна</th>			   
 			   <th>Адрес</th>
-			   <th>E-mail</th>
-			   <th>Телефон</th>
+			   <th>E-mail Телефон</th>
 			</tr>	
 		</thead>
 		<tbody>
@@ -50,17 +46,13 @@
 							<%= link_to " " , clients_destroy_path(:id => cl.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить клиента', data: { confirm: "Удалить клиента #{cl.id} #{cl.sname} #{cl.name} #{cl.fname}?" } %>
 							<%= link_to " " , new_contract_path(:client_id => cl.id),:method => :get, :class=> "glyphicon glyphicon-file", :title => 'Создать контракт' %>
 							<%= link_to " " , contracts_newbroni_path(:client_id => cl.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %></td>
-						<td><%= cl.sname %></td>
-						<td><%= cl.name %></td>
-						<td><%= cl.fname %></td>
-						<td><%= cl.pseria %></td>
+						<td><%= cl.sname %> <%= cl.name %> <%= cl.fname %></td>
+						<td><%= cl.pseria %> <%= cl.dn %></td>
 						<td><%= cl.bdate %></td>
-						<td><%= cl.dn %></td>
 						<td><%= cl.idno %></td>
 						<td><%= cl.de %></td>
 						<td><%= cl.address %></td>
-						<td><%= cl.pemail %></td>						
-						<td><%= cl.tel %></td>						
+						<td><%= cl.pemail %> <%= cl.tel %></td>						
 					</tr>		
 			<% end %>
 			

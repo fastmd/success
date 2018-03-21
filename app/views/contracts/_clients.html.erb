@@ -6,10 +6,11 @@
 	  <thead>
 	    <tr>
 	      <th>№</th>
-	      <th>Фамилия</th>
-	      <th>Имя</th>
-	      <th>Отчество</th>	      
-	      <th>Дата рождения</th> 
+	      <th>ФИО</th>
+	      <th>Паспорт</th>      
+	      <th>Дата рождения</th>
+	      <th>IDNP</th>
+		  <th>Страна</th> 
 	    </tr>
 	  </thead>
 	  <tbody>
@@ -20,10 +21,11 @@
 		  		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
                 </button>
 		  	</td>
-		  	<td><%= clitem.sname%></td>
-		  	<td><%= clitem.name%></td>
-		  	<td><%= clitem.fname%></td>
+		  	<td><%= clitem.sname%> <%= clitem.name%> <%= clitem.fname%></td>
+		  	<td><%= clitem.pseria %> <%= clitem.dn %></td>
 		  	<td><%= clitem.bdate%></td>
+		  	<td><%= clitem.idno %></td>
+			<td><%= clitem.de %></td>
 		  	</tr> 	
 	  	<% end %>  
 	  </tbody>

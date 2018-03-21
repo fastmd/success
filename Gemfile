@@ -65,21 +65,23 @@ gem 'prawn-table', '~> 0.2.2'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'autoprefixer-rails'
-gem 'will_paginate-bootstrap'
+#gem 'will_paginate-bootstrap'
 gem 'simple_form', '~> 3.4'
 
-gem 'jquery-datatables-rails', '~> 3.4.0', github: 'rweng/jquery-datatables-rails'
+#gem 'jquery-datatables-rails', '~> 3.4.0', github: 'rweng/jquery-datatables-rails'
 
-gem 'will_paginate'
+#gem 'will_paginate'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
-
+  gem 'byebug', platform: :mri
+  gem 'listen', '~> 3.0.5'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0' 
+
+  # Access an IRB console on exception pages or by using <%= console %> in views
+  #gem 'web-console', '~> 2.0'
+
 end
 

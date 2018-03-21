@@ -27,42 +27,40 @@
 	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
 		<thead>
 			<tr  class="info">
+			   <th>.......</th>	
 			   <th>№</th>
-			   <th>От</th>
+		  <!-- <th>От</th> -->
 			   <th>Aгент</th>
 			   <th>Автомобиль</th>
 			   <th>Период</th>
-			   <th>Гар. сумма</th>
 			   <th>Залог, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 			   <th>Цена в день</th>
-			   <th>Сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-			   <th>Курс</th>
-			   <th>Сумма, лей</th>
+			   <th>Сумма</th>
 			   <th>Клиент</th>
-			   <th>Пробег</br> на начало</th>
-			   <th>Пробег</br> на конец</th>	
+			   <th>Пробег</th>	
 			</tr>	
 		</thead>
 		<tbody>
 			<% @contracts.each do |c| %>
 					<% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
-						<td><%= "#{c.id}/#{c.cnum}" %></td>
-						<td><%= c.order_date.strftime('%Y.%m.%d') %></td>
+						<td><%= link_to " " , contracts_show_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-eye-open", :title => 'Посмотреть контракт' %>							
+							<%= link_to " " , contracts_edit_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать контракт' %>
+							<%= link_to image_tag('Apps-Pdf-B-icon.png', :alt => "PDF", :width => "20", :height => "20"), contracts_show_path(:id => c.id, format: "pdf") %>
+							<%= link_to " " , contracts_destroy_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить контакт', data: { confirm: "Удалить контракт #{c.id}/#{c.cnum} от #{c.order_date.strftime('%d.%m.%Y')}?" } %>
+						<td><%= "#{c.id}" + if c.cnum!='' then "/#{c.cnum} " else " " end %></td>
+			    <!--    <td><%= c.order_date.strftime('%Y.%m.%d') %></td> -->
 						<td><%= unless c.user.nil? then c.user.username end %></td>
 						<td><%= unless c.car.nil? then "#{c.car.marca} #{c.car.gnum}" end %></td>
-						<td><small><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y_%R')}" else "" end %></br>
+						<td><%= unless c.stdate.nil? then "#{c.stdate.strftime('%d.%m.%Y_%R')}" else "" end %></br>
 						    <%= unless c.enddate.nil? then "#{c.enddate.strftime('%d.%m.%Y_%R')}" else "" end %></br>
 							<%= unless c.fenddate.nil? then "(#{c.fenddate.strftime('%d.%m.%Y_%R')})" else "" end %></br>
-						    <%= if c.dperiod then "#{c.dperiod} "+(case c.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></small></td>
-						<td><%= number_to_currency(c.garant_summ,:unit=>'€', precision: 0) %></td>
+						    <%= if c.dperiod then "#{c.dperiod} "+(case c.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
 						<td><%= number_to_currency(c.zalog,:unit=>'€', precision: 0) %></td>
-						<td><%= number_to_currency(c.price,:unit=>'€', precision: 0) %></td>
-						<td><%= number_to_currency(c.summ,:unit=>'€', precision: 0, separator: ".", delimiter: "") %></td>
-						<td><%= "#{c.curs} MDL" %></td>
-						<td><%= "#{c.costlei} MDL" %></td>
-						<td><small><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname}" end %></small></td>
-						<td><%= if Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.stdate).count!=0 then Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.stdate).order(:updated_at).last.parcurs end %></td>
-						<td><%= if Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.fenddate).count!=0 then Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.fenddate).order(:updated_at).last.parcurs end %></td>					
+						<td><%= number_to_currency(c.price,:unit=>'€', precision: 0) %></td> 
+						<td><%= number_to_currency(c.summ,:unit=>'€', precision: 0, separator: ".", delimiter: "") %> x <%= "#{c.curs} MDL" %> = <%= "#{c.costlei} MDL" %></td>
+						<td><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname} #{c.client.tel} #{c.client.pemail}" end %></td>
+						<td><%= if Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.stdate).count!=0 then Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.stdate).order(:updated_at).last.parcurs end %>
+						    <%= if Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.fenddate).count!=0 then Wlong.where("(car_id = ? AND wdate = ?)", c.car_id, c.fenddate).order(:updated_at).last.parcurs end %></td>					
 					</tr>		
 			<% end %>			
 		</tbody>

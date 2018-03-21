@@ -268,8 +268,8 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
   	  <div class="panel panel-info">
   	  	<div class="panel-heading"><strong><%= case when (@contract.flag == 1 and @contract.id.nil?) then "Новая бронь" 
   	  		                                        when (@contract.flag == 2 and @contract.id.nil?) then "Новый контракт" 
-  	  		                                        when (@contract.flag == 1 and @contract.id) then "Редактирование брони № #{@contract.id}/#{@contract.cnum}" 
-  	  		                                        when (@contract.flag == 2 and @contract.id) then "Редактирование контракта № #{@contract.id}/#{@contract.cnum}" 
+  	  		                                        when (@contract.flag == 1 and @contract.id) then ("Редактирование брони № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end) 
+  	  		                                        when (@contract.flag == 2 and @contract.id) then ("Редактирование контракта № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end) 
   	  		                                        else "" end %><%= " от #{@contract.order_date.strftime('%d.%m.%Y')}" %>	                       
   	  	</strong></div>
   	  	<div class="panel-body">
@@ -301,18 +301,18 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	</div>
     	<!-- гарант сумма -->
     	<div class="col-md-6"> 
-    	<label for="garant_summ" class="control-label"><%= "Гарантийная сумма, #{$valuta}" %></label>
-    	<%= text_field_tag 'garant_summ', @contract.garant_summ, :input_html => { :size => 25}, class: "form-control" %>
+    	<label for="garant_summ" class="control-label"><%= "Гарантийная сумма" %></label>
+    	<%= text_field_tag 'garant_summ', @contract.garant_summ, :input_html => { :size => 25}, class: "form-control", :readonly => if @contract.flag == 1 then false else true end %>
     	</div>
     	<!-- залог -->
     	<div class="col-md-6"> 
-    	<% if @contract.flag == 2 then %>
+    	<% if @contract.flag != 1 then %>
     	    <label for="zalog" class="control-label"><%= "Залог, #{$valuta}" %></label>
     		<%= text_field_tag 'zalog', @contract.zalog, class: "form-control" %>
     	<% end %>
     	</div>
     	<!-- пробег на начало -->
-    	<% if @contract.flag == 2 then %> 
+    	<% if @contract.flag != 1 then %> 
     	<div class="form-group">
     		<label for="parcurs" class="control-label">Пробег на начало</label>
     		<%= number_field_tag 'parcurs', @parcurs, class: "form-control", :id => "parcurs", class: "form-control" %>
@@ -360,7 +360,7 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	</div>
     	</div>   	
     	<!-- сумма договора в валюте -->
-    	<% if @contract.flag == 2 then %>
+    	<% if @contract.flag != 1 then %>
     	<div class="col-md-6">
     	    <div class="form-group"> 
 	    		<%= label_tag "Сумма договора, #{$valuta.upcase}" %>
