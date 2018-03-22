@@ -270,7 +270,7 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
   	  		                                        when (@contract.flag == 2 and @contract.id.nil?) then "Новый контракт" 
   	  		                                        when (@contract.flag == 1 and @contract.id) then ("Редактирование брони № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end) 
   	  		                                        when (@contract.flag == 2 and @contract.id) then ("Редактирование контракта № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end) 
-  	  		                                        else "" end %><%= " от #{@contract.order_date.strftime('%d.%m.%Y')}" %>	                       
+  	  		                                        else "" end %><%= " от #{@contract.stdate.strftime('%d.%m.%Y')}" %>	                       
   	  	</strong></div>
   	  	<div class="panel-body">
 
@@ -285,7 +285,7 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<!-- клиент -->  	    	
     	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a><br>
 	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	
-    	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname}" end , :readonly => true, class: "form-control" %>	   	
+    	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname} #{@contract.client.tel}" end , :readonly => true, class: "form-control" %>	   	
     	<%= f.hidden_field :client_id, :id => "client_id" %>
     	<!-- контроллер-экшн -->
     	<%= hidden_field_tag 'vc' , controller.controller_name %>
@@ -312,12 +312,18 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<% end %>
     	</div>
     	<!-- пробег на начало -->
+    	<div class="col-md-6">
     	<% if @contract.flag != 1 then %> 
     	<div class="form-group">
     		<label for="parcurs" class="control-label">Пробег на начало</label>
     		<%= number_field_tag 'parcurs', @parcurs, class: "form-control", :id => "parcurs", class: "form-control" %>
     	</div>
     	<% end %>
+    	</div>
+    	<!--- место ------->
+    	<div class="col-md-6">
+    	<%= f.input :place, collection: [['0', 'Аэропорт'], ['1', 'Офис']], label_method: :second, value_method: :first, label: 'Место выдачи машины', placeholder: 'Выбрать место...', :readonly => if @contract.flag == 1 then false else true end %>
+    	</div>
     	</div>
 		</div>
 		</div>    	

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171219162915) do
+ActiveRecord::Schema.define(version: 20180322082142) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20171219162915) do
     t.time     "sttime"
     t.time     "endtime"
     t.time     "fendtime"
+    t.integer  "place"
   end
 
   add_index "contracts", ["car_id"], name: "index_contracts_on_car_id"

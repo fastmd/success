@@ -50,7 +50,7 @@
 							<%= link_to image_tag('Apps-Pdf-B-icon.png', :alt => "PDF", :width => "20", :height => "20"), contracts_show_path(:id => c.id, format: "pdf") %>
 							<%= link_to " " , contracts_destroy_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить контакт', data: { confirm: "Удалить контракт #{c.id}/#{c.cnum} от #{c.order_date.strftime('%d.%m.%Y')}?" } %>
                         </td>						
-						<td><%= "#{c.id}/#{c.cnum}" %></td>
+						<td><%= "#{c.id}" + if c.cnum!='' then "/#{c.cnum} " else " " end %></td>
 				<!--	<td><%= c.order_date.strftime('%Y.%m.%d') %></td>  -->
 						<td><%= unless c.user.nil? then c.user.username end %></td>
 						<td><%= unless c.car.nil? then "#{c.car.marca} #{c.car.gnum}" end %></td>

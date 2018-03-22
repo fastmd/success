@@ -308,7 +308,7 @@ class ContractsController < ApplicationController
   end
     
   def contract_params
-    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:user,:stdate,:enddate,:fenddate,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs,:sttime,:endtime,:fendtime)
+    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:user,:stdate,:enddate,:fenddate,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs,:sttime,:endtime,:fendtime,:place)
   end
     
   def contract_init(contract)
@@ -318,6 +318,7 @@ class ContractsController < ApplicationController
     contract.car_id = if contract_params[:car_id].nil? then params[:car_id] else contract_params[:car_id] end
     contract.client_id = contract_params[:client_id]
     contract.user_id= contract_params[:user_id]
+    contract.place= contract_params[:place]
     # stdate
     if params[:stdate] then
       d = (params[:stdate]).to_datetime.in_time_zone 

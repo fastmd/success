@@ -12,7 +12,7 @@ class BronareReport < Prawn::Document
        text Time.now.strftime("Документ сгенерирован %e %b %Y в %H:%M"), :align => :right, :style => :italic, :size => 8
        move_down 5
        text "Act de rezervare cu Success&DivesGroup SRL", :size => 11, :style => :bold, :align => :center
-       text "№ #{contract.id}/#{contract.cnum} din #{contract.order_date.strftime("%d.%m.%Y")}", :align => :center
+       text "№ #{contract.id}#{if contract.cnum!='' then '/' else '' end}#{contract.cnum} din #{contract.stdate.strftime("%d.%m.%Y")}", :align => :center
        move_down 10
        text "Autovehicul <b>#{car.marca} #{car.gnum}</b>", :align => :left, :inline_format => true
        move_down 10
@@ -27,6 +27,7 @@ class BronareReport < Prawn::Document
        move_down 5
        text " Data de la #{contract.stdate.strftime("%d.%m.%Y %R")} pina la #{contract.enddate.strftime("%d.%m.%Y %R")}", :align => :left
        text " Suma #{contract.garant_summ}", :align => :left
+       text " Loc: #{case contract.place  when 0 then 'Aeroport' when 1 then 'Oficiu' else '' end}", :align => :left
        move_down 10
        text "Locator", :align => :left, :style => :bold
        move_down 10

@@ -200,10 +200,11 @@ class CarsController < ApplicationController
                     report_rind[ditem + 1] = {:flag => contritem.flag, 
                                               :client => " #{contritem.client.sname} #{contritem.client.name} #{contritem.client.fname}",
                                               :contract_id => contritem.id,
-                                              :contract_idtext => "<small> № #{contritem.id}/#{contritem.cnum} от #{contritem.order_date.to_date.to_formatted_s(:dday_month_year)}" +
-                                                           unless contritem.stdate.nil? then " с #{contritem.stdate.strftime('%d.%m.%Y %R')}" else "" end +
+                                              :contract_idtext => "№ #{contritem.id}" + if contritem.cnum!='' then "/#{contritem.cnum} " else " " end + 
+                                                           #" от #{contritem.order_date.to_date.to_formatted_s(:dday_month_year)}" +
+                                                           unless contritem.stdate.nil? then "<small> с #{contritem.stdate.strftime('%d.%m.%Y %R')}" else "" end +
                                                            unless contritem.enddate.nil? then " по #{contritem.enddate.strftime('%d.%m.%Y %R')}" else "" end +
-                                                           " (#{contritem.client.sname} #{contritem.client.name} #{contritem.client.fname})</small>", 
+                                                           "</small> (<strong>#{contritem.client.sname} #{contritem.client.name} #{contritem.client.fname} #{contritem.client.tel}</strong>)", 
                                               :contract => unless report_rind[ditem+1].nil? then "#{report_rind[ditem+1][:contract]}\n" else "" end +
                                                            "#{testdate.strftime('%d.%m.%Y')}" + " #{contritem.client.sname} #{contritem.client.name} #{contritem.client.fname} #{contritem.client.tel}" +
                                                            " № #{contritem.id}" + if contritem.cnum!='' then "/#{contritem.cnum} " else " " end + 

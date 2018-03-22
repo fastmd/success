@@ -2,7 +2,7 @@
 
    <div class="row">
   	<div id="pan1" class="panel panel-info">
-  	  <div class="panel-heading">Просмотр<%= if @contract.flag == 1 then  " брони"  else " контракта" end %><%= " № #{@contract.id}/#{@contract.cnum} от #{@contract.order_date.strftime('%d.%m.%Y')}" %></strong></div> 		
+  	  <div class="panel-heading">Просмотр<%= if @contract.flag == 1 then  " брони"  else " контракта" end %><%= " № #{@contract.id}#{if @contract.cnum!='' then '/' else '' end}#{@contract.cnum} от #{@contract.stdate.strftime('%d.%m.%Y')}" %></strong></div> 		
 	  <div class="panel-body">
  	
   		<%= simple_form_for @contract do |f| %>
@@ -22,7 +22,7 @@
 	    	<%= f.input :flag, :as => :hidden  %>    	
 	    	  	    	   	
 	    	<label for="client_info" class="control-label"><%= "Клиент" %></label>
-	    	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname}" else "не указан" end , :readonly => true, class: "form-control" %>	   	
+	    	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname} #{@contract.client.tel}" else "не указан" end , :readonly => true, class: "form-control" %>	   	
 	    	<%= f.hidden_field :client_id , :id => "client_id" %>
 	    	
 	    	<%= hidden_field_tag 'vc', controller.controller_name %>
@@ -46,12 +46,19 @@
 	    	    <div class="col-md-6">
 				<%= f.input :zalog, label: "Залог, #{$valuta}", as: :integer, :readonly => true %>
 				</div>
-		    	<!-- пробег на начало --> 
+		    	<!-- пробег на начало -->
+		    	<div class="col-md-6"> 
 		    	<div class="form-group">
 		    		<label for="parcurs" class="control-label">Пробег на начало</label>
 		    		<%= number_field_tag 'parcurs', @parcurs, class: "form-control", :readonly => true %>
+		    	</div>
 		    	</div> 						
 	    	<% end %>
+	    	
+	    	<!--- место ------->
+	    	<div class="col-md-6">
+	    	<%= f.input :place, collection: [['0', 'Аэропорт'], ['1', 'Офис']], label_method: :second, value_method: :first, label: 'Место выдачи машины', placeholder: 'Выбрать место...', :readonly => true %>
+	    	</div>	    	
     	
  	    </div>
 		</div>

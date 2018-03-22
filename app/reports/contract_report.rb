@@ -23,7 +23,7 @@ class ContractReport < Prawn::Document
     text Time.now.strftime("Документ сгенерирован %e %b %Y в %H:%M"), :align => :right, :style => :italic, :size => 8
     text "SERGIU    078777058", :size => 9, :style => :bold, :align => :right
     text "078777059", :size => 9, :style => :bold, :align => :right
-    text "<font size='10'>CONTRACT DE LOCAȚIUNE nr.</font> <font size='12'>#{contract.id}/#{contract.cnum}</font> din #{contract.order_date.strftime("%d.%m.%Y")}", :style => :bold, :align => :center, :inline_format => true
+    text "<font size='10'>CONTRACT DE LOCAȚIUNE nr.</font> <font size='12'>#{contract.id}#{if contract.cnum!='' then '/' else '' end}#{contract.cnum}</font> din #{contract.stdate.strftime("%d.%m.%Y")}", :style => :bold, :align => :center, :inline_format => true
     text "I. Părțile contractante:", :align => :center, :style => :bold
     text "<b>SRL  Success & DivesGroup</b>  în  persoana  directorului  Sârbu  Sergiu  în  calitate  de  locator,  pe  de  o  parte,"+
          "  și  cet. <b>#{client.sname} #{client.name} #{client.fname}</b> în calitate de locatar, pe de altă parte, au convenit să încheie prezentul contract de Locațiune, cu respectarea următoarelor clauze: ",:inline_format => true,:align => :justify
@@ -186,8 +186,8 @@ class ContractReport < Prawn::Document
     end  #bounding box
     move_down 2
     text "<b>Success&DivesGroup</b> numită în continuare <b><u>Locator</u></b>, pe de o parte și <b>#{client.sname} #{client.name} #{client.fname}</b>," + 
-         " numit în continuare <b><u>Locatar</u></b>, pe de altă parte, în baza contractului de locațiune nr. <b>#{contract.id}/#{contract.cnum}</b>" + 
-         " din <b>#{contract.order_date.strftime("%d.%m.%Y")}</b> - au încheiat prezentul act despre următoarele:",:align => :justify, :inline_format => true
+         " numit în continuare <b><u>Locatar</u></b>, pe de altă parte, în baza contractului de locațiune nr. <b>#{contract.id}#{if contract.cnum!='' then '/' else '' end}#{contract.cnum}</b>" + 
+         " din <b>#{contract.stdate.strftime("%d.%m.%Y")}</b> - au încheiat prezentul act despre următoarele:",:align => :justify, :inline_format => true
     text "Partea I. Transmiterea autovehiculului către Locatar", :align => :center, :style => :bold
     indent(5) do
       text "1.  Locatorul a transmis iar Locatarul a primit în folosință temporară următorul autovehicul:", :align => :left
