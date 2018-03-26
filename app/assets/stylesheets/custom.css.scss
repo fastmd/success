@@ -34,6 +34,29 @@ $brownlighten5: #efebe9;
 $brownlighten4: #d7ccc8;
 $brownlighten3: #bcaaa4; 
 
+/* ширина больше 1200px */
+@media (min-width: 1200px) {
+  .container-fluid {
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+}
+
+/* для диапазона (ширина >= 992px и <=1199px) */
+@media (min-width:992px) and (max-width:1199px) {
+  .container-fluid { 
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+/* ширина <= 767px */
+@media (max-width:767px) {
+  .container-fluid { 
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+
 .table-hover thead tr:hover th, .table-hover tbody tr:hover td {
 background-color: $superbiriuza;
 }
@@ -243,6 +266,4 @@ footer {
 }
 
 .menucontainer-fluid {
-    padding-left: 30px;
-    padding-right: 30px;
 }

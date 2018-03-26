@@ -1,8 +1,7 @@
-<div class="container-fluid">
 <header class="navbar navbar-fixed-top">
   <div class="navbar-inner navbar-inverse">
-    <div class="container-fluid menucontainer-fluid">
-      <div class="row-fluid">		
+    <div class="container-fluid">
+      <div class="row">		
       <%= link_to "AUTO10 #{image_tag('holub-ifon.png', :alt => 'image', :width => "40", :height => "35")}".html_safe, '#', id: "logo" %>
         <nav>
             <ul class="nav nav-pills pull-right">           
@@ -18,8 +17,8 @@
       </div>
    </div>
   <div class="navbar-default">  
-   <div class="container-fluid menucontainer-fluid">
-   	  <div class="row-fluid">	
+   <div class="container-fluid">
+   	  <div class="row">	
    	  <% if !current_user.nil? %>
         <%= image_tag('octo.jpg', :alt => "image", :width => "20", :height => "20") %>
         <%= "Пользователь: #{current_user.email}" %>  
@@ -29,11 +28,10 @@
   </div>
  </div>
  <div class="navbar-default">  
-   <div class="container-fluid menucontainer-fluid">
-   	  <div class="row-fluid">
+   <div class="container-fluid">
+   	  <div class="row">
 		<%= render 'layouts/nvbar' %>
       </div>        
   </div>
  </div> 
 </header>
-</div>

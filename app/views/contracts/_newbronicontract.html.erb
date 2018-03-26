@@ -24,11 +24,12 @@
 } );
 
   
-   function myFunction(a,b) 
+   function myFunction(a,b,c) 
     {  
 	    var text = a;   
 	    $("#client_id").val(a);
-	    $("#client_info").val(b);
+	    $("#client_info1").val(b);
+	    $("#client_info2").val(c);
     }
 
   $(function() {
@@ -284,9 +285,31 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<%= f.input :flag, :as => :hidden %>   	
     	<!-- клиент -->  	    	
     	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a><br>
-	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	
-    	<%= text_field_tag 'client_info', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname} #{@contract.client.tel}" end , :readonly => true, class: "form-control" %>	   	
+	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	    		   	
     	<%= f.hidden_field :client_id, :id => "client_id" %>
+   			
+		<div id="client_info">
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		  <div class="panel panel-default">
+		    <div class="panel-heading" role="tab" id="headingOne">
+		      <h4 class="panel-title">
+		        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">	
+		          <%= text_field_tag 'client_info1', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname} #{@contract.client.tel}" end , :readonly => true, class: "form-control" %> 
+		        <!-- <%= if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname} #{@contract.client.tel}" end %> -->
+		        </a>
+		      </h4>
+		    </div>
+		    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+		      <div class="panel-body">
+		        <%= text_area_tag 'client_info2', 
+		             if @contract.client then "Паспорт: #{@contract.client.pseria} #{@contract.client.dn}. Дата рождения: #{@contract.client.bdate}. IDNP: #{@contract.client.idno}. Страна: #{@contract.client.de}. Адрес: #{@contract.client.address}.  Email: #{@contract.client.pemail}." end , 
+		             :readonly => true, class: "form-control" %>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		</div>
+		
     	<!-- контроллер-экшн -->
     	<%= hidden_field_tag 'vc' , controller.controller_name %>
     	<%= hidden_field_tag 'va' , controller.action_name %>

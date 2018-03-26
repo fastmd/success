@@ -18,24 +18,18 @@
 	  <%= stylesheet_link_tag "buttons.bootstrap.min" %>
 	  <%= stylesheet_link_tag "buttons.dataTables.min" %>
 	  <%= stylesheet_link_tag "common" %>
-	  <%= stylesheet_link_tag "mixins" %>
+	  <%= stylesheet_link_tag "mixins" %>  
 	<!--  <%= csrf_meta_tags %>  -->
 	  <%= render 'layouts/shim' %>
 	</head>
 	<body>
-    <div class="container-fluid">
-    	<div class="row">
-    	  <div class="col">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    		  <%= render 'layouts/header' %>	    	
-	      	  <%= render 'layouts/messages' %>
-	      	  <div class="container-fluid">	  
-	    	  <%= yield %>
-	    	  </div> 
-	    	  <%= render 'layouts/footer' %>
-	    	</div>
-	       </div>	   
-	    </div>	 
-     </div>   <!-- /container -->      
+	    <%= render 'layouts/header' %>
+	    <div class="container-fluid">
+	    	<div class="row">
+		      	  <%= render 'layouts/messages' %>  
+		    	  <%= yield %>
+		    	  <%= render 'layouts/footer' %>
+		    	</div>	 
+	     </div>   <!-- /container -->      
    </body>
 </html>
