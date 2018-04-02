@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   
+  # You can have the root of your site routed with "root"
+  root to: 'cars#smonth'
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   get 'clients/index'
   
   devise_for :users
   get 'welcome/index'
-  get "car/smonth/:num" => 'cars#smonth'
+  get "cars/smonth" => 'cars#smonth'
   get "car/autotech" => 'cars#autotech'
   
   get "welcome/smonth/:num" => 'welcome#smonth'
@@ -67,7 +69,9 @@ Rails.application.routes.draw do
   get 'cars/destroy'
   post 'cars/destroy'
   get "cars/autotech"
-  post "cars/autotech"  
+  post "cars/autotech"
+  get 'cars/show'
+  post 'cars/show'    
   
   get 'cparams/show'
   post 'cparams/show'
@@ -76,8 +80,6 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
-  root 'cars#smonth'
   #resources :contracts  do
    # end
    

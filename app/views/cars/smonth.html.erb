@@ -1,155 +1,177 @@
-<%= javascript_include_tag "bootstrap.min", 'data-turbolinks-track' => true %>
-
 <% provide(:title, 'График') %>
 
 	<% if @broni_today.count != 0 then %>	
 		<h4 style="color: blue" align="center">Брони в работу на сегодня</h4>
-		<div class="table-responsive">	
-		<div class="table-responsive">	
-		<table id="b1" class="table table-bordered table-condensed table-hover table-striped">
+		<table id="b1" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 			<thead>
 				<tr class="info">
-					<th>No</th>
-					<th>Автомобиль</th>
+					<th style="width:3%"></th>
+					<th class="all" style="width:3%">No</th>
+					<th class="all"></th>
+					<th class="all">От</th>
+					<th class="all">Автомобиль</th>
 					<th>Клиент</th>
-					<th>Агент</th>
-					<th>Период</th>
-					<th width=10%>Пробег</th>
-					<th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-					<th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-					<th></th>
+					<!-- <th class="none">Агент</th>	-->
+				    <th>С даты</th>
+				    <th>По дату</th>
+				    <th>На срок</th>
+					<th>Гар. сумма</th>
+					<!--<th class="none">Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>-->
 				</tr>
 			</thead>
+			<tfoot>
+				<tr class="info">
+					<th style="width:3%"></th>
+					<th class="all" style="width:3%">No</th>
+					<th class="all"></th>
+					<th class="all">От</th>
+					<th class="all">Автомобиль</th>
+					<th>Клиент</th>
+					<!-- <th class="none">Агент</th>	-->
+				    <th>С даты</th>
+				    <th>По дату</th>
+				    <th>На срок</th>
+					<th>Гар. сумма</th>
+					<!--<th class="none">Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>-->
+				</tr>
+			</tfoot>			
 			<tbody>			
 				<% @broni_today.each do |contract| %>
-					<%= simple_form_for :contract,:url => {controller: "contracts", action: "broni2contract"} do |f| %>
-					    <%= hidden_field_tag 'id', contract.id  %>
 						<tr>
-							<td><%= link_to "#{contract.id}/#{contract.cnum}",  contract_path(contract) %></td>
+							<td></td>
+							<td><%= link_to(("#{contract.id}" + if contract.cnum!='' then "/#{contract.cnum} " else " " end),  contract_path(contract)) %></td>
+							<td><%= link_to("Контракт",  contracts_broni2contract_path(:id => contract.id), class: "btn btn-info btn-xs") %></td>
+							<td><%= contract.stdate.strftime('%Y.%m.%d') %></td>
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
-							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
-							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><small><%= "#{contract.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{contract.enddate.strftime('%d.%m.%Y_%R')}" %></br>
-						        <%= if contract.dperiod then 
+							<td><%= if contract.client then "#{contract.client.sname} #{contract.client.name} #{contract.client.fname}  #{contract.client.tel} #{contract.client.pemail}" end %></td>
+							<!-- <td><%= if contract.user then "#{contract.user.username}" end %></td>	-->
+							<td><%= "#{contract.stdate.strftime('%d.%m.%Y %R')}" %></td>
+							<td><%= "#{contract.enddate.strftime('%d.%m.%Y %R')}" %></td>
+						    <td><%= if contract.dperiod then 
 						        	  "#{contract.dperiod} " +  
-						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></small></td>
-							<td><small><%= f.input :parcurs, as: :integer, label: "по факту",:input_html => { :size => 7, :length => 5,:value => if contract.car.wlongs.last then "#{contract.car.wlongs.last.parcurs}" end, class: 'special-semieconom',style: 'width: 80px' } %></small></td>
+						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
 							<td><%= contract.garant_summ %></td>
-	 						<td><%= contract.price %></td>
-							<td><%= submit_tag("Контракт", class: "btn btn-info btn-xs") %></td>
-						</tr>
-					<% end %>							
+	 						<!--<td><%= contract.price %></td>-->
+						</tr>							
 				<% end %>
 			</tbody>	
 		</table>
-		</div>
 	<% end %>
 	
     <% if @broni_tomorrow.count != 0 then %>	
 		<h4 style="color: blue" align="center">Брони в работу на завтра</h4>
-		<div class="table-responsive">	
-		<table id="b1" class="table table-bordered table-condensed table-hover table-striped">
+		<table id="b2" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 			<thead>
 				<tr class="info">
-					<th>No</th>
-					<th>Автомобиль</th>
+					<th style="width:3%"></th>
+					<th class="all" style="width:3%">No</th>
+					<th class="all"></th>
+					<th class="all">От</th>
+					<th class="all">Автомобиль</th>
 					<th>Клиент</th>
-					<th>Агент</th>
-					<th>Период</th>
-					<th width=10%>Пробег</th>
-					<th>Гар. сумма, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-					<th>Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-					<th></th>
+					<!-- <th class="none">Агент</th>	-->
+				    <th>С даты</th>
+				    <th>По дату</th>
+				    <th>На срок</th>
+					<th>Гар. сумма</th>
+					<!--<th class="none">Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>-->
 				</tr>
 			</thead>
+			<tfoot>
+				<tr class="info">
+					<th style="width:3%"></th>
+					<th class="all" style="width:3%">No</th>
+					<th class="all"></th>
+					<th class="all">От</th>
+					<th class="all">Автомобиль</th>
+					<th>Клиент</th>
+					<!-- <th class="none">Агент</th>	-->
+				    <th>С даты</th>
+				    <th>По дату</th>
+				    <th>На срок</th>
+					<th>Гар. сумма</th>
+					<!--<th class="none">Цена, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>-->
+				</tr>
+			</tfoot>
 			<tbody>			
 				<% @broni_tomorrow.each do |contract| %>
-					<%= simple_form_for :contract,:url => {controller: "contracts", action: "broni2contract"} do |f| %>
-					    <%= hidden_field_tag 'id', contract.id  %>
 						<tr>
-							<td><%= link_to "#{contract.id}/#{contract.cnum}",  contract_path(contract) %></td>
+							<td></td>
+							<td><%= link_to(("#{contract.id}" + if contract.cnum!='' then "/#{contract.cnum} " else " " end),  contract_path(contract)) %></td>
+							<td><%= link_to("Контракт",  contracts_broni2contract_path(:id => contract.id), class: "btn btn-info btn-xs") %></td>
+							<td><%= contract.stdate.strftime('%Y.%m.%d') %></td>
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
-							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
-							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><small><%= "#{contract.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{contract.enddate.strftime('%d.%m.%Y_%R')}" %></br>
-						        <%= if contract.dperiod then 
+							<td><%= if contract.client then "#{contract.client.sname} #{contract.client.name} #{contract.client.fname}  #{contract.client.tel} #{contract.client.pemail}" end %></td>
+							<!-- <td><%= if contract.user then "#{contract.user.username}" end %></td>	-->
+							<td><%= "#{contract.stdate.strftime('%d.%m.%Y %R')}" %></td>
+							<td><%= "#{contract.enddate.strftime('%d.%m.%Y %R')}" %></td>
+						    <td><%= if contract.dperiod then 
 						        	  "#{contract.dperiod} " +  
-						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></small></td>
-							<td><small><%= f.input :parcurs, as: :integer, label: "по факту",:input_html => { :size => 10, :value => if contract.car.wlongs.last then "#{contract.car.wlongs.last.parcurs}" end, class: 'special-semieconom',style: 'width: 80px' } %></small></td>
+						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
 							<td><%= contract.garant_summ %></td>
-	 						<td><%= contract.price %></td>
-							<td><%= submit_tag("Контракт", class: "btn btn-info  btn-xs") %></td>
-						</tr>
-					<% end %>							
+	 						<!--<td><%= contract.price %></td>-->
+						</tr>								
 				<% end %>
 			</tbody>	
 		</table>
-		</div>
 	<% end %>
 	
 	<% if @contracts_close_today.count != 0 then %>	
 		<h4 style="color: blue" align="center">Контракты к закрытию на сегодня</h4>
-		<div class="table-responsive">	
-		<table id="b1" class="table table-bordered table-condensed table-hover  table-striped">
+		<table id="b3" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 			<thead>
 				<tr class="info">
-					<th>No</th>
-					<th>Автомобиль</th>
+					<th style="width:3%"></th>
+					<th class="all" style="width:3%">No</th>
+					<th class="all"></th>
+					<th class="all">От</th>
+					<th class="all">Автомобиль</th>
 					<th>Клиент</th>
-					<th>Агент</th>
-					<th>Период</th>
-					<th width="12%">Время окончания</th>
-					<th width=10%>Пробег</th>
-					<th></th>
+					<!-- <th>Агент</th>	-->
+				    <th>С даты</th>
+				    <th>По дату</th>
+				    <th>На срок</th>
+				    <th>Залог</th>
 				</tr>
 			</thead>
+			<tfoot>
+				<tr class="info">
+					<th style="width:3%"></th>
+					<th class="all" style="width:3%">No</th>
+					<th class="all"></th>
+					<th class="all">От</th>
+					<th class="all">Автомобиль</th>
+					<th>Клиент</th>
+					<!-- <th>Агент</th>	-->
+				    <th>С даты</th>
+				    <th>По дату</th>
+				    <th>На срок</th>
+				    <th>Залог</th>
+				</tr>
+			</tfoot>			
 			<tbody>
 				<% @contracts_close_today.each do |contract| %>
-					<%= simple_form_for :contract,:url => {controller: "contracts", action: "contract2arh"} do |f|%>
-					    <%= hidden_field_tag 'id', contract.id  %>
 					    <tr>
-							<td><%= link_to "#{contract.id}/#{contract.cnum}",  contract_path(contract) %></td>
+					    	<td></td>
+							<td><%= link_to(("#{contract.id}" + if contract.cnum!='' then "/#{contract.cnum} " else " " end),  contract_path(contract)) %></td>
+							<td><%= link_to("Закрыть",  contracts_contract2arh_path(:id => contract.id), class: "btn btn-info btn-xs") %></td>
+							<td><%= contract.stdate.strftime('%Y.%m.%d') %></td>	
 							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
-							<td><%= if contract.client then "#{contract.client.id} #{contract.client.sname} #{contract.client.name} #{contract.client.fname}" end %></td>
-							<td><%= if contract.user then "#{contract.user.username}" end %></td>
-							<td><small><%= "#{contract.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{contract.enddate.strftime('%d.%m.%Y_%R')}" %></br>
-						        <%= if contract.dperiod then 
+							<td><%= if contract.client then "#{contract.client.sname} #{contract.client.name} #{contract.client.fname}  #{contract.client.tel} #{contract.client.pemail}" end %></td>
+							<!-- <td><%= if contract.user then "#{contract.user.username}" end %></td>	-->
+							<td><%= "#{contract.stdate.strftime('%d.%m.%Y %R')}" %></td>
+							<td><%= "#{contract.enddate.strftime('%d.%m.%Y %R')}" %></td>
+						    <td><%= if contract.dperiod then 
 						        	  "#{contract.dperiod} " +  
-						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></small></td>
-							<td><small><%= unless contract.enddate.nil? then " #{contract.enddate.strftime('%R')}" else "" end %>
-							    <%= f.input :fendtime, as: :time , default: Time.parse(contract.enddate.strftime('%R')), label: "по факту", input_html: { class: 'special-econom' } %></small></td>
-							<td><small><%= unless contract.car.wlongs.last.nil? then "#{contract.car.wlongs.last.parcurs}" else "" end %>
-								<%= f.input :parcurs, as: :integer, label: "по факту",:input_html => { :size => 8, :maxlength => 6, :value => if contract.car.wlongs.last then "#{contract.car.wlongs.last.parcurs}" end, class: 'special-semieconom',style: 'width: 80px' } %></small></td>
-							<td><%= submit_tag("Закрыть", class: "btn btn-info  btn-xs") %></td>
+						        	  (case contract.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
+							<td><%= contract.zalog %></td>
 						</tr>
-					<% end %> <!-- form_tag-->
 				<% end %>  <!-- each -->
 			</tbody>	
 		</table>
-		</div>	
 	<% end %>	
 			
 	<h4 align="center">Текущие брони и контракты по машинам <% if @filter==1 then %><span class="glyphicon glyphicon-filter" aria-hidden="true"></span><% end %></h4>
-<!--	
-	<nav class="navbar">
-	  <ul class="nav nav-pills pull-left">
-		<li><%= form_tag("/cars/smonth", method: "get", class: 'form-inline') do %>
-	    	<div class="form-group">
-			  <%= select_tag(:qmarca, options_for_select(@fmarcas, @qmarca), class: "form-control", prompt: "Марка...", include_blank: false, title: "Марка") %>
-			  <%= submit_tag("Фильтр", class: "btn btn-primary", name: "filter", title: "фильтр") %>
-			</div>
-			<% end %>
-		</li>
-		<li><%= form_tag("/cars/smonth", method: "get", class: 'form-inline') do %>
-	    	<div class="form-group">
-			  <%= text_field_tag(:q, @data_for_search, placeholder: 'Enter your search query here', class: "form-control", title: "машина") %>
-			  <%= submit_tag("Поиск", class: "btn btn-primary", name: "search", title: "поиск") %>
-			</div>
-			<% end %>
-		</li>				    
-	  </ul>  
-	</nav>
--->		
 
 	<div align="center">
 	  <!-- Nav tabs -->
@@ -170,7 +192,7 @@
 		    <div role="tabpanel" class="<%= if @months[i-1] == @currentdate then "tab-pane fade in active" else "tab-pane fade" end %>" id="<%= "#{i}" %>" >
 		    	<br>		
 				<div class="table-responsive">	
-				<table class="table table-bordered table-condensed table-hover  table-striped">
+				<table id="b3" class="table table1 table-bordered table-condensed table-hover table-striped" style="width:100%">
 					<thead>	
 					<tr>
 						<th><center>№</center></th>
@@ -249,17 +271,122 @@
 							<% end %>						
 						<% end %>
 					</tbody>
+					<tfoot>	
+					<tr>
+						<th><center>№</center></th>
+						<th align="center"><center>Автомобиль</center></th>
+						<% (0..(daycount-1)).each do |d| %>
+							<th class=<%= case (titleitem[d+2]) when 2 then "warning" when 1 then "danger" else "" end %>>
+							<center><font color=<%= case (titleitem[d+2]) when 2 then "orange" when 1 then "red" else "" end %>><%= d+1 %></font></center></th>
+						<% end %>	
+					</tr>
+					</tfoot>					
 				</table>
 				</div>	   	
 		    </div>
 		    <!-- end of one month table -->
 	    <% end	%>              
 	  </div>
-	</div>
 	</div>		
-	
+
 <script>
-$(document).ready(function(){
-    $('[data-toggle="popover"]').popover();   
-});
+$(document).ready(function() {
+    $('#b1').DataTable( {
+        "order": [[ 1, "asc" ],[ 3, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        paging:         false,
+        searching:         false,
+        info:           false,  
+         responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ]
+    } ); 
+    
+    $('#b2').DataTable( {
+        "order": [[ 1, "asc" ],[ 3, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        paging:         false,
+        searching:         false,
+        info:           false,  
+         responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ]
+    } ); 
+        
+    $('#b3').DataTable( {
+        "order": [[ 1, "asc" ],[ 3, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        paging:         false,
+        searching:         false,
+        info:           false,  
+         responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ]
+    } ); 
+        
+    $('[data-toggle="popover"]').popover(); 
+
+} );
+
 </script>
+	

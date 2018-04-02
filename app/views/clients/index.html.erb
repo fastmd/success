@@ -1,9 +1,9 @@
 <% provide(:title, 'Клиенты') %>
 
 <script>
-	$(document).ready(function() {
-    $('#mcl').DataTable( {
-        "order": [[ 2, "asc" ],[ 3, "asc" ],[ 4, "asc" ]],
+$(document).ready(function() {
+    var table = $('#clienttable').DataTable( {
+        "order": [[ 0, "asc" ]],
         "language": {
             "lengthMenu": "Отображать _MENU_ строк на странице",
             "zeroRecords": "Ничего не найдено - увы...",
@@ -18,44 +18,56 @@
                 last:       ">>"
             }
         },
-        "pagingType": "full_numbers"
-    } );
+        "pagingType": "full_numbers",
+        "pageLength": 25,
+         "fixedHeader": {
+               headerOffset: ($('#navMenu').outerHeight() - 1)
+         }
+    } ); 
 } );
-</script>
-
-  <div class="table-responsive">	
-	<table id="mcl" class="table table-bordered table-condensed table-hover">	
+</script>	  	  
+	 	  	
+	<table id="clienttable" class="table table-bordered table-condensed table-hover table-striped responsive compact" style="width:100%">	
 		<thead>
 			<tr class="info">
-			   <th>ID</th>	
-			   <th>...............</th>
-			   <th>ФИО</th>
-			   <th>Паспорт</th>
-			   <th>Дата рождения</th>
-			   <th>IDNP</th>
-			   <th>Страна</th>			   
-			   <th>Адрес</th>
-			   <th>E-mail Телефон</th>
+			   <th class="all">ФИО</th>		
+			   <th class="none">......</th>
+			   <th class="min-tablet">E-mail Телефон</th>
+			   <th class="min-desktop">Паспорт</th>
+			   <th class="min-desktop">Дата рождения</th>
+			   <th class="min-desktop">IDNP</th>
+			   <th class="min-desktop">Страна</th>			   
+			   <th class="min-desktop">Адрес</th>			   
 			</tr>	
 		</thead>
+		<tfoot>
+			<tr class="info">
+			   <th class="all">ФИО</th>		
+			   <th class="none">......</th>
+			   <th class="min-tablet">E-mail Телефон</th>
+			   <th class="min-tablet-l">Паспорт</th>
+			   <th class="min-tablet-l">Дата рождения</th>
+			   <th class="min-tablet-l">IDNP</th>
+			   <th class="min-tablet-l">Страна</th>			   
+			   <th class="min-desktop">Адрес</th>			   
+			</tr>	
+		</tfoot>		
 		<tbody>
 			<% @clients.each do |cl| %>
 					<% if cl.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
-						<td><%= "#{cl.id}" %></td>
+						<td><%= cl.sname %> <%= cl.name %> <%= cl.fname %></td>					
 						<td><%= link_to " " , edit_client_path(cl),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать клиента' %>
 							<%= link_to " " , clients_destroy_path(:id => cl.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить клиента', data: { confirm: "Удалить клиента #{cl.id} #{cl.sname} #{cl.name} #{cl.fname}?" } %>
 							<%= link_to " " , new_contract_path(:client_id => cl.id),:method => :get, :class=> "glyphicon glyphicon-file", :title => 'Создать контракт' %>
-							<%= link_to " " , contracts_newbroni_path(:client_id => cl.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %></td>
-						<td><%= cl.sname %> <%= cl.name %> <%= cl.fname %></td>
-						<td><%= cl.pseria %> <%= cl.dn %></td>
+							<%= link_to " " , contracts_newbroni_path(:client_id => cl.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %>
+							<%= " ID=#{cl.id}" %></td>
+						<td><%= cl.pemail %> <%= cl.tel %></td>
+						<td><%= cl.pseria %><%= if cl.dn then " от #{cl.dn}" end %></td>
 						<td><%= cl.bdate %></td>
 						<td><%= cl.idno %></td>
 						<td><%= cl.de %></td>
-						<td><%= cl.address %></td>
-						<td><%= cl.pemail %> <%= cl.tel %></td>						
+						<td><%= cl.address %></td>											
 					</tr>		
-			<% end %>
-			
+			<% end %>		
 		</tbody>
 	</table>
-  </div>

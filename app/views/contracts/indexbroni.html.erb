@@ -1,9 +1,9 @@
 <% provide(:title, 'Брони') %>
 
 <script>
-	$(document).ready(function() {
-    $('#mcl').DataTable( {
-        "order": [[ 2, "desc" ],[ 1, "desc" ]],
+$(document).ready(function() {
+    var table = $('#pstable').DataTable( {
+        "order": [[ 3, "desc" ],[ 1, "desc" ]],
         "language": {
             "lengthMenu": "Отображать _MENU_ строк на странице",
             "zeroRecords": "Ничего не найдено - увы...",
@@ -18,48 +18,83 @@
                 last:       ">>"
             }
         },
-        "pagingType": "full_numbers"
-    } );
+        "pagingType": "full_numbers",
+        "pageLength": 25,
+         "fixedHeader": {
+               headerOffset: ($('#navMenu').outerHeight() - 1)
+         },
+         responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ]         
+    } ); 
 } );
-</script>
-
-  <div class="table-responsive">	
-	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
+</script>	  	  
+	 	  	
+	<table id="pstable" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">	
 		<thead>
 			<tr  class="info">
-			   <th>..........</th>	
-			   <th>№</th>
-		<!--   <th>От</th>  -->
-			   <th>Aгент</th>
-			   <th>Автомобиль</th>
-			   <th>Период</th>
+			   <th style="width:5%"></th>	
+			   <th class="all" style="width:5%">№</th>	
+			   <th class="none">..........</th>	
+		       <th  class="min-desktop">От</th>
+			   <th class="none">Aгент</th>
+			   <th class="all">Автомобиль</th>
+			   <th>С даты</th>
+			   <th>По дату</th>
+			   <th class="none">На срок</th>
 			   <th>Гар. сумма</th>
-			   <th>Цена в день, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
-			   <th>Клиент</th>
-			   <th>Место</th>			   
+			   <th class="none">Цена в день, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th style="width:30%">Клиент</th>
+			   <th class="min-desktop">Место</th>			   
 			</tr>	
 		</thead>
+		<tfoot>
+			<tr  class="info">
+			   <th style="width:5%"></th>	
+			   <th class="all" style="width:5%">№</th>	
+			   <th class="none">..........</th>	
+		       <th class="all">От</th>
+			   <th class="none">Aгент</th>
+			   <th class="all">Автомобиль</th>
+			   <th>С даты</th>
+			   <th>По дату</th>
+			   <th class="none">На срок</th>
+			   <th>Гар. сумма</th>
+			   <th class="none">Цена в день, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th style="width:30%">Клиент</th>
+			   <th>Место</th>			   
+			</tr>	
+		</tfoot>		
 		<tbody>
 			<% @contracts.each do |c| %>
 					<% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
+						<td></td>
+						<td><%= link_to ("#{c.id}" + if c.cnum!='' then "/#{c.cnum} " else " " end), contracts_show_path(:id => c.id),:method => :get, :title => 'Посмотреть контракт' %></td>
 						<td><%= link_to " " , contracts_show_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-eye-open", :title => 'Посмотреть бронь' %>
 							<%= link_to image_tag('Apps-Pdf-B-icon.png', :alt => "PDF", :width => "20", :height => "20"), contracts_show_path(:id => c.id, format: "pdf") %>
 							<%= link_to " " , contracts_edit_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать бронь' %>
 							<%= link_to " " , contracts_destroy_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить бронь', data: { confirm: "Удалить контракт #{c.id}/#{c.cnum} от #{c.order_date.strftime('%d.%m.%Y')}?" } %>
 						</td>
-						<td><%= "#{c.id}" + if c.cnum!='' then "/#{c.cnum} " else " " end %></td>
+						<td><%= c.stdate.strftime('%Y.%m.%d') %></td>
 				<!--	<td><%= c.order_date.strftime('%Y.%m.%d') %></td> -->
 						<td><%= unless c.user.nil? then c.user.username end %></td>
-						<td><%= unless c.car.nil? then "#{c.car.marca} #{c.car.gnum}" end %></td>
-						<td><%= "#{c.stdate.strftime('%d.%m.%Y_%R')}" %></br><%= "#{c.enddate.strftime('%d.%m.%Y_%R')}" %></br>
-						        <%= if c.dperiod then "#{c.dperiod} " +  
+						<td><% unless c.car.nil? then %><%= link_to "#{c.car.marca} #{c.car.gnum}" , cars_show_path(:id => c.car.id),:method => :get, :title => 'Посмотреть авто' %><% end %></td>
+						<td><%= "#{c.stdate.strftime('%d.%m.%Y %R')}" %></td>
+						<td><%= "#{c.enddate.strftime('%d.%m.%Y %R')}" %></td>
+						<td><%= if c.dperiod then "#{c.dperiod} " +  
 						        	  (case c.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
 						<td><%= c.garant_summ %></td>
 						<td><%= number_to_currency(c.price,:unit=>'€', precision: 0) %></td>
-						<td><%= unless c.client.nil? then "#{c.client.id} #{c.client.sname} #{c.client.name} #{c.client.fname} #{c.client.tel} #{c.client.pemail}" end %></td>
+						<td><% unless c.client.nil? then %><%= link_to "#{c.client.sname} #{c.client.name} #{c.client.fname} #{c.client.tel} #{c.client.pemail}" , edit_client_path(c.client),:method => :get, :title => 'Редактировать клиента' %><% end %></td>
 						<td><%= case c.place when 0 then 'Аэропорт' when 1 then 'Офис' else '' end %></td>					
 					</tr>		
 			<% end %>			
 		</tbody>
 	</table>
-  </div>

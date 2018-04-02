@@ -1,9 +1,10 @@
 <% provide(:title, 'Авто') %>
 
+
 <script>
-	$(document).ready(function() {
-    $('#mcl').DataTable( {
-        "order": [[ 2, "asc" ],[ 3, "asc"]],
+$(document).ready(function() {
+    $('#pstable2').DataTable( {
+        "order": [[ 1, "asc" ],[ 2, "asc" ]],
         "language": {
             "lengthMenu": "Отображать _MENU_ строк на странице",
             "zeroRecords": "Ничего не найдено - увы...",
@@ -18,19 +19,32 @@
                 last:       ">>"
             }
         },
-        "pagingType": "full_numbers"
-    } );
+        "pagingType": "full_numbers",
+        "pageLength": 25,
+         "fixedHeader": {
+               headerOffset: ($('#navMenu').outerHeight() - 1)
+         },
+        responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ]
+    } ); 
 } );
-</script>
-
-  <div class="table-responsive">	
-	<table id="mcl" class="table table-bordered table-condensed table-hover table-striped">	
+</script>	  	  
+	 	  
+	<table id="pstable2" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 		<thead>
 			<tr class="info">
-			   <th>ID</th>
-			   <th>...............</th>
-			   <th>Марка</th>
-			   <th>Гос. номер</th>
+			   <th style="width:5%"></th>
+			   <th class="all">Марка</th>
+			   <th class="all">Гос. номер</th>
+			   <th class="none">........</th>
 			   <th>Залог, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
 			   <th>Цена1, в день</th>
 			   <th>Цена2, в день</th>
@@ -38,26 +52,51 @@
 			   <th>Цена4, в день</th>
 			   <th>Цена5, в день</th>
 			   <th>Цена6, в день</th>
-			   <th>Цена7, в день</th>	
-			   <th>№ кузова</th>
-			   <th>№ двигателя</th>
-			   <th>Год выпуска</th>
-			   <th>Цвет</th>
-			   <th>Объем двигателя</th>
-			   <th>Масса, кг</th>
-			   <th>Стоимость, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th class="none">Цена7, в день</th>	
+			   <th class="none">№ кузова</th>
+			   <th class="none">№ двигателя</th>
+			   <th class="none">Год выпуска</th>
+			   <th class="none">Цвет</th>
+			   <th class="none">Объем двигателя</th>
+			   <th class="none">Масса, кг</th>
+			   <th class="none">Стоимость</th>
  			</tr>	
 		</thead>
+		<tfoot>
+			<tr class="info">
+			   <th style="width:5%"></th>	
+			   <th class="all">Марка</th>
+			   <th class="all">Гос. номер</th>
+			   <th class="none">........</th>
+			   <th>Залог, <% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %></th>
+			   <th>Цена1, в день</th>
+			   <th>Цена2, в день</th>
+			   <th>Цена3, в день</th>
+			   <th>Цена4, в день</th>
+			   <th>Цена5, в день</th>
+			   <th>Цена6, в день</th>
+			   <th class="none">Цена7, в день</th>	
+			   <th class="none">№ кузова</th>
+			   <th class="none">№ двигателя</th>
+			   <th class="none">Год выпуска</th>
+			   <th class="none">Цвет</th>
+			   <th class="none">Объем двигателя</th>
+			   <th class="none">Масса, кг</th>
+			   <th class="none">Стоимость</th>
+ 			</tr>	
+		</tfoot>		
 		<tbody>
 			<% @cars.each do |c| %>
-				   <% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>			
-						<td><%= "#{c.id}" %></td>
-						<td><%= link_to " " , edit_car_path(c),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать авто' %>
+				   <% if c.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
+				   	    <td></td>			
+						<td><%= link_to "#{c.marca}" , cars_show_path(:id => c.id),:method => :get, :title => 'Посмотреть авто' %></td>
+						<td><%= link_to "#{c.gnum}" , cars_show_path(:id => c.id),:method => :get, :title => 'Посмотреть авто' %></td>
+						<td><%= link_to " " , cars_show_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-eye-open", :title => 'Посмотреть авто' %>
+							<%= link_to " " , edit_car_path(c),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => 'Редактировать авто' %>
 							<%= link_to " " , cars_destroy_path(:id => c.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => 'Удалить авто', data: { confirm: "Удалить авто #{c.id} #{c.marca} #{c.gnum}?" } %>
 							<%= link_to " " , new_contract_path(:car_id => c.id),:method => :get, :class=> "glyphicon glyphicon-file", :title => 'Создать контракт' %>
-							<%= link_to " " , contracts_newbroni_path(:car_id => c.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %></td>
-						<td><%= "#{c.marca}" %></td>
-						<td><%= "#{c.gnum}" %></td>
+							<%= link_to " " , contracts_newbroni_path(:car_id => c.id),:method => :get, :class=> "glyphicon glyphicon-flag", :title => 'Создать бронь' %>
+							<%= " ID=#{c.id}" %></td>
 					    <td><%= number_to_currency(c.gaj,:unit=>'€', precision: 0) %></td>	
 					    <td><% if c.int1 then %>&le;<%= "#{c.int1} дн. - #{c.int1price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
 	                    <td><% if c.int2 then %>&le;<%= "#{c.int2} дн. - #{c.int2price}"%><% if $valuta.upcase=='EUR' then %>&euro;<% else %><%= "#{$valuta}" %><% end %><% end %></td>
@@ -76,5 +115,4 @@
 					</tr>		
 			<% end %>			
 		</tbody>
-	</table>
-  </div>
+	</table> 

@@ -39,7 +39,7 @@
 	        </div>	
 	    	<!-- время  -->
 	    	<div class="col-md-6">
-	        <%= f.input :sttime, as: :time ,label: "Время проведения работ" , default: @tehservice.sdate ? Time.parse(@tehservice.sdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')) %>	  	
+	        <%= f.input :sttime, as: :time ,label: "Время проведения работ" , default: @tehservice.sdate ? Time.parse(@tehservice.sdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), minute_step: 15 %>	  	
 		  	</div>
 		  	
 		  	<%= f.input :comments , as: :text %>

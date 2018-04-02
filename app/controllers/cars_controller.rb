@@ -306,6 +306,7 @@ private
   end
   
   def redirect_cancel
+    if params[:editfromshow] then  redirect_to edit_car_path(:id => params[:id]) and return end
     if params[:cancel] then
       flash.discard 
       redirect_to cars_index_path

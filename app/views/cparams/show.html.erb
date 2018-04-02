@@ -1,7 +1,3 @@
-<%= javascript_include_tag "raphael", 'data-turbolinks-track' => true %>
-<%= javascript_include_tag "morris.min", 'data-turbolinks-track' => true %>
-<%= stylesheet_link_tag "morris" %>
-
 <% provide(:title, 'Курс') %>
 
   <div class="row">	  	
@@ -12,13 +8,62 @@
 		<%= simple_form_for(:cparam, url: cparams_path, html: { class: 'form-inline' }) do |f| %>
 		  <%= f.input :curs, label: "Курс #{$valuta}", placeholder: @cparam, as: :decimal %><br><br>
 		  <div  align="center"><%= button_tag "Сохранить", type: 'submit', class: "btn btn-primary glyphicon glyphicon-ok pull-center" %>
-		  	                   <%= button_tag "Отмена", type: 'submit', class: "btn btn-warning glyphicon glyphicon-remove pull-center", name: "cancel" %>  
+		  	                   <%= button_tag "Домой", type: 'submit', class: "btn btn-warning glyphicon glyphicon-home pull-center", name: "cancel" %>  
           </div>  
 		<% end %>
 	  </div> <!--panel-body--->    
 	 </div> <!--panel-->
    </div>
- </div>	 
+ </div>	
+ 
+<script>
+$(document).ready(function() {
+    var table = $('#pstable').DataTable( {
+        "order": [[ 0, "desc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers",
+        "pageLength": 25,
+         "fixedHeader": {
+               headerOffset: ($('#navMenu').outerHeight() - 1)
+         }
+    } );
+    
+} );
+</script>	  	  
+ 
+ <table id="pstable" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
+  <thead>
+    <tr class="info">
+      <th class="all">Дата</th>	
+      <th class="all">Курс, MDL</th> 
+    </tr>
+  </thead>
+  <tfoot>
+    <tr class="info">
+      <th class="all">Дата</th>	
+      <th class="all">Курс, MDL</th> 
+    </tr>
+  </tfoot>  
+  <tbody>
+  <% @cparams.each do |item| %>
+    <% if item.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
+        <td><%= item.created_at.strftime('%Y.%m.%d %R') %></td>	
+	  	<td><%= number_to_currency(item.curs,:unit=>'') %></td>
+    </tr>
+  <% end %>    
+  </tbody>
+</table> 
       	    
-  <%=  content_tag(:div, "", id: "rates_chart", data: {rates: @rates}) %></br></br>     	    
-  <div id="myfirstchart" style="height: 1px;"></div></br></br>

@@ -1,8 +1,9 @@
 <% provide(:title, 'ТО') %>
 
+
 <script>
-	$(document).ready(function() {
-    $('#mcl').DataTable( {
+$(document).ready(function() {
+    var table = $('#pstable1').DataTable( {
         "order": [[ 1, "asc" ]],
         "language": {
             "lengthMenu": "Отображать _MENU_ строк на странице",
@@ -11,49 +12,75 @@
             "infoEmpty": "Нет доступных строк",
             "infoFiltered": "(Отфильтровано из _MAX_ строк)",
             "search": "Поиск",
-             paginate: {
+             "paginate": {
                 first:      "<<",
                 previous:   "<",
                 next:       ">",
                 last:       ">>"
             }
         },
-        "pagingType": "full_numbers"
-    } );
+        "pagingType": "full_numbers",
+        "pageLength": 25,
+         "fixedHeader": {
+               headerOffset: ($('#navMenu').outerHeight() - 1)
+         },
+         responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+        } ] 
+    } ); 
 } );
-</script>
-
-	<div class="table-responsive">	
-		<table id="mcl" class="table table-bordered table-condensed table-hover table-striped"">			
+</script>	  	  
+	 	  	
+	<table id="pstable1" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">			
 			<thead>
 				<tr  class="info">
-					<th>№</th>
-					<th>Автомобиль</th>
+					<th style="width:5%"></th>
+					<th class="all">Автомобиль</th>
 					<th>Текущий пробег</th>
 					<th>ТO</th>
 					<th>Масло и фильтры</th>
 					<th>Страховка</th>
 					<th>Техосмотр</th>				
-					<th>Стоимость<br> за текущий месяц</th>
-					<th>Стоимость<br> за текущий год</th>
-					<th>Действие</th>					
+					<th>Стоимость за текущий месяц</th>
+					<th>Стоимость за текущий год</th>
+					<th class="none">.......</th>					
 				</tr>
 			</thead>
+			<tfoot>
+				<tr  class="info">
+					<th style="width:5%"></th>
+					<th class="all">Автомобиль</th>
+					<th>Текущий пробег</th>
+					<th>ТO</th>
+					<th>Масло и фильтры</th>
+					<th>Страховка</th>
+					<th>Техосмотр</th>				
+					<th>Стоимость за текущий месяц</th>
+					<th>Стоимость за текущий год</th>
+					<th class="none">.......</th>					
+				</tr>
+			</tfoot>			
 			<tbody>	
   	          <% @report.each do |item| %>
 				<tr>
-					<td><%= item[:i] %></td>
+					<td></td>
 					<td><%= link_to "#{item[:marca_gnum]}",:controller => :tehservices, :action => :index ,:car_id => item[:car_id] %></td>
-					<td><%= item[:parcurs][:parcurs] %><br><%= item[:parcurs][:wdate] %></td>
-					<td class=<%= if item[:to][:tored] then "danger" end %>><%= item[:to][:parcurs] %><br><%= item[:to][:maxtosdate] %></td>
-					<td class=<%= if item[:oil][:oilred] then "danger" end %>><%= item[:oil][:parcurs] %><br><%= item[:oil][:maxoilsdate] %></td>	
-					<td class=<%= if item[:asig][:asigred] then "danger" end %>><%= item[:asig][:asigdt] %><br><%= item[:asig][:maxasigsdate] %></td>
-					<td class=<%= if item[:tosm][:tosmred] then "danger" end %>><%= item[:tosm][:tosmdt] %><br><%= item[:tosm][:maxtosmsdate] %></td>					
+					<td><%= item[:parcurs][:parcurs] %> <%= item[:parcurs][:wdate] ? "(#{item[:parcurs][:wdate]})" : '' %></td>
+					<td class=<%= if item[:to][:tored] then "danger" end %>><%= item[:to][:parcurs] %> <%= item[:to][:maxtosdate] ? "(#{item[:to][:maxtosdate]})" : '' %></td>
+					<td class=<%= if item[:oil][:oilred] then "danger" end %>><%= item[:oil][:parcurs] %> <%= item[:oil][:maxoilsdate] ? "(#{ item[:oil][:maxoilsdate]})" : '' %></td>	
+					<td class=<%= if item[:asig][:asigred] then "danger" end %>><%= item[:asig][:asigdt] %> <%= item[:asig][:maxasigsdate] ? "(#{ item[:asig][:maxasigsdate]})" : '' %></td>
+					<td class=<%= if item[:tosm][:tosmred] then "danger" end %>><%= item[:tosm][:tosmdt] %> <%= item[:tosm][:maxtosmsdate] ? "(#{  item[:tosm][:maxtosmsdate]})" : '' %></td>					
 					<td><%= number_to_currency(item[:monthsprice],:unit=>'€') %></td>
 					<td><%= number_to_currency(item[:yearsprice],:unit=>'€') %></td>
-					<td><%= link_to "ТО", :controller => :tehservices, :action => :new ,:car_id => item[:car_id] %></td>	
+					<td><%= link_to "Новое ТО", :controller => :tehservices, :action => :new ,:car_id => item[:car_id] %></td>	
 				</tr>	
 			   <% end %>
 			</tbody>	
 		</table>
-	</div>	

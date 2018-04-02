@@ -1,37 +1,57 @@
-<header class="navbar navbar-fixed-top">
+<header id="navMenu" class="navbar navbar-fixed-top">
+	
   <div class="navbar-inner navbar-inverse">
     <div class="container-fluid">
-      <div class="row">		
-      <%= link_to "AUTO10 #{image_tag('holub-ifon.png', :alt => 'image', :width => "40", :height => "35")}".html_safe, '#', id: "logo" %>
+      <div class="row">
+	 <div class="navbar-header">
+	     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>                     
+	      </button> 
+	<!--    <div class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          	<% if current_user.nil? then %>
+	            <%= link_to "#{DateTime.now.strftime('%d.%m.%Y')}", '#' %>
+          	<% else %>
+	            <%= link_to "#{if !Cparam.last.nil? then Cparam.last.curs else 1 end} MDL #{DateTime.now.strftime('%d.%m.%Y')}", cparams_show_path %>
+            <% end %>                 
+	   </div>   --> 
+      <%= link_to "AUTO10 #{image_tag('holub-ifon.png', :alt => 'image', :width => "40", :height => "35")}".html_safe, root_path, id: "logo" %>
+      </div>
+    <div class="collapse navbar-collapse" id="myNavbar">     
         <nav>
             <ul class="nav nav-pills pull-right">           
           	<% if current_user.nil? then %>
 	            <li><%= link_to "Сегодня: #{@day_week_ru} #{DateTime.now.strftime('%d.%m.%Y')}", '#' %></li>
           	<% else %>
-	            <li><%= link_to "Текущий курс: #{if !Cparam.last.nil? then Cparam.last.curs else 1 end} MDL за 1 #{$valuta}", '#' %></li>
+	            <li><%= link_to "Текущий курс: #{if !Cparam.last.nil? then Cparam.last.curs else 1 end} MDL за 1 #{$valuta}", cparams_show_path %></li>
 	            <li><%= link_to "Сегодня: #{@day_week_ru} #{DateTime.now.strftime('%d.%m.%Y')}", '#' %></li>
             <% end %>
             </ul>
           </nav>
+     </div>  
+      </div>                        
       </div>                
-      </div>
    </div>
+   
   <div class="navbar-default">  
-   <div class="container-fluid">
-   	  <div class="row">	
+     <div class="container-fluid">
+     <div class="row">  	
    	  <% if !current_user.nil? %>
         <%= image_tag('octo.jpg', :alt => "image", :width => "20", :height => "20") %>
         <%= "Пользователь: #{current_user.email}" %>  
         <%= link_to "Выход", destroy_user_session_path, method: :delete, :class => "glyphicon glyphicon-hand-left" %>
       <% end %>
-      </div>        
-  </div>
+      </div>         
+  </div> 
  </div>
+ 
  <div class="navbar-default">  
    <div class="container-fluid">
    	  <div class="row">
 		<%= render 'layouts/nvbar' %>
       </div>        
   </div>
- </div> 
+ </div>
+  
 </header>
+

@@ -6,7 +6,7 @@
 	 		<li class="active"><%= link_to "Назад", clients_path, :class => "glyphicon glyphicon-level-up" %></li>
 	 	<% end %>
 	 	<% if cc == 'clients' and (ca == 'index') then %>
-	 		<li class="active"><%= link_to "Новый клиент", clients_new_path, :class => "glyphicon glyphicon-user" %></li>
+	 		<li class="active"><%= link_to "Новый клиент", clients_new_path, :class => "glyphicon glyphicon-user", :title => 'Новый клиент' %></li>
 	 	<% end %>
 	 	<% if (cc == 'contracts' and (ca == 'new')) then %>
 	 		<li class="active"><%= link_to "Назад", contracts_path, :class => "glyphicon glyphicon-level-up" %></li>
@@ -15,13 +15,13 @@
 	 		<li class="active"><%= link_to "Назад", contracts_indexbroni_path, :class => "glyphicon glyphicon-level-up" %></li>
 	 	<% end %>	 	
 	    <% if cc == 'contracts' and (ca == 'index') then %>
-	 		<li class="active"><%= link_to "Новый контракт", contracts_new_path, :class => "glyphicon glyphicon-file" %></li>
+	 		<li class="active"><%= link_to "Новый контракт", contracts_new_path, :class => "glyphicon glyphicon-file", :title => 'Новый контракт' %></li>
 	 	<% end %>
 	    <% if cc == 'contracts' and (ca == 'indexbroni') then %>
-	 		<li class="active"><%= link_to "Новая бронь", contracts_newbroni_path, :class => "glyphicon glyphicon-flag" %></li>
+	 		<li class="active"><%= link_to "Новая бронь", contracts_newbroni_path, :class => "glyphicon glyphicon-flag", :title => 'Новая бронь' %></li>
 	 	<% end %>
 	    <% if cc == 'cars' and (ca == 'index') then %>
-	 		<li class="active"><%= link_to "Новoe авто", cars_new_path, :class => "glyphicon glyphicon-bed" %></li>
+	 		<li class="active"><%= link_to "Новoe авто", cars_new_path, :class => "glyphicon glyphicon-bed", :title => 'Новый автомобиль' %></li>
 	 	<% end %>
 	    <% if cc == 'cars' and (ca == 'edit' or ca == 'new') then %>
 	 		<li class="active"><%= link_to "Назад", cars_path, :class => "glyphicon glyphicon-level-up" %></li>
@@ -29,14 +29,31 @@
 	    <% if cc == 'tehservices' and (ca == 'index' or ca == 'new') then %>
 	 		<li class="active"><%= link_to "Назад", car_autotech_path, :class => "glyphicon glyphicon-level-up" %></li>
 	 	<% end %>
-	 	<li class=<%= if cc=='cars' and ca=='smonth' then 'active' else '' end %>><%= link_to "Домой", cars_smonth_path, :class => "glyphicon glyphicon-home" %></li>	    
-	    <li class=<%= if cc=='contracts' and (ca=='indexbroni' or ca=='newbroni') then 'active' else '' end %>><%= link_to 'Брони', contracts_indexbroni_path, :class => "glyphicon glyphicon-flag" %></li> 
-	    <li class=<%= if cc=='contracts' and (ca=='index' or ca=='new') then 'active' else '' end %>><%= link_to 'Контракты',contracts_path, :class => "glyphicon glyphicon-file" %></li>
-	    <li class=<%= if cc=='contracts' and (ca=='indexarc') then 'active' else '' end %>><%= link_to 'Архив',contracts_indexarc_path, :class => "glyphicon glyphicon-duplicate" %></li>
-	    <li class=<%= if cc=='clients' then 'active' else '' end %>><%= link_to 'Клиенты', clients_path, :class => "glyphicon glyphicon-user" %></li>
-	    <li class=<%= if cc=='cars' and (ca=='index' or ca=='new' or ca=='edit') then 'active' else '' end %>><%= link_to 'Авто', cars_index_path, :class => "glyphicon glyphicon-bed" %></li>
-	    <li class=<%= if cc=='cars' and ca=='autotech' then 'active' else '' end %>><%= link_to 'ТО', car_autotech_path, :class => "glyphicon glyphicon-wrench" %></li>	    
-	    <li class=<%= if cc=='cparams' then 'active' else '' end %>><%= link_to 'Курс',cparams_show_path, :class => "glyphicon glyphicon-euro" %></li>
+	 	
+	 	<li class="hidden-xs hidden-sm <%= if cc=='cars' and ca=='smonth' then "active" else "" end %>")><%= link_to "Домой", cars_smonth_path, :class => "glyphicon glyphicon-home" %></li>
+	 	<li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='cars' and ca=='smonth' then "active" else "" end %>"><%= link_to "", cars_smonth_path, :class => "glyphicon glyphicon-home", :title => 'Домой' %></li>
+	 		    		    
+	    <li class="hidden-xs hidden-sm <%= if cc=='contracts' and (ca=='indexbroni' or ca=='newbroni') then 'active' else '' end %>"><%= link_to 'Брони', contracts_indexbroni_path, :class => "glyphicon glyphicon-flag" %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='contracts' and (ca=='indexbroni' or ca=='newbroni') then 'active' else '' end %>"><%= link_to '', contracts_indexbroni_path, :class => "glyphicon glyphicon-flag", :title => 'Брони' %></li>
+	     
+	    <li class="hidden-xs hidden-sm <%= if cc=='contracts' and (ca=='index' or ca=='new') then 'active' else '' end %>"><%= link_to 'Контракты',contracts_path, :class => "glyphicon glyphicon-file", :title => 'Контракты активные'  %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='contracts' and (ca=='index' or ca=='new') then 'active' else '' end %>"><%= link_to '',contracts_path, :class => "glyphicon glyphicon-file", :title => 'Контракты активные' %></li>
+	    
+	    <li class="hidden-xs hidden-sm <%= if cc=='contracts' and (ca=='indexarc') then 'active' else '' end %>"><%= link_to 'Архив',contracts_indexarc_path, :class => "glyphicon glyphicon-duplicate", :title => 'Архив закрытых контрактов' %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='contracts' and (ca=='indexarc') then 'active' else '' end %>"><%= link_to '',contracts_indexarc_path, :class => "glyphicon glyphicon-duplicate", :title => 'Архив закрытых контрактов' %></li>
+	    
+	    <li class="hidden-xs hidden-sm <%= if cc=='clients' then 'active' else '' end %>"><%= link_to 'Клиенты', clients_path, :class => "glyphicon glyphicon-user" %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='clients' then 'active' else '' end %>"><%= link_to '', clients_path, :class => "glyphicon glyphicon-user", :title => 'Клиенты' %></li>
+	    
+	    <li class="hidden-xs hidden-sm <%= if cc=='cars' and (ca=='index' or ca=='new' or ca=='edit') then 'active' else '' end %>"><%= link_to 'Авто', cars_index_path, :class => "glyphicon glyphicon-bed", :title => 'Автомобили' %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='cars' and (ca=='index' or ca=='new' or ca=='edit') then 'active' else '' end %>"><%= link_to '', cars_index_path, :class => "glyphicon glyphicon-bed", :title => 'Автомобили' %></li>
+	    
+	    <li class="hidden-xs hidden-sm <%= if cc=='cars' and ca=='autotech' then 'active' else '' end %>"><%= link_to 'ТО', car_autotech_path, :class => "glyphicon glyphicon-wrench", :title => 'Техническое Обслуживание автомобилей' %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='cars' and ca=='autotech' then 'active' else '' end %>"><%= link_to '', car_autotech_path, :class => "glyphicon glyphicon-wrench", :title => 'Техническое Обслуживание автомобилей' %></li>
+	    	    
+	    <li class="hidden-xs hidden-sm <%= if cc=='cparams' then 'active' else '' end %>"><%= link_to 'Курс',cparams_show_path, :class => "glyphicon glyphicon-euro", :title => 'Курс действующий' %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='cparams' then 'active' else '' end %>"><%= link_to '',cparams_show_path, :class => "glyphicon glyphicon-euro", :title => 'Курс действующий' %></li>
+	    
 		<% if cc == 'cars' and (ca == 'smonth') then %>
 		<li><%= form_tag("/cars/smonth", method: "get", class: 'form-inline') do %>
 	      <div class="form-group">

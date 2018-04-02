@@ -2,34 +2,23 @@
 <html>
 	<head>
 	  <title><%= full_title(yield(:title)) %></title>
+      <meta charset="utf-8">
+      <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 	  <%= favicon_link_tag 'holub-ifon.png' %>
-	<!--  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %> -->
 	  <%= csrf_meta_tags %>
-      <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-      <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-	  <%= javascript_include_tag "jquery.dataTables.min", 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag "dataTables.bootstrap.min", 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag "dataTables.buttons.min", 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag "buttons.bootstrap.min", 'data-turbolinks-track' => true %>
-	  <%= javascript_include_tag "buttons.print.min", 'data-turbolinks-track' => true %>
-	  <%= stylesheet_link_tag "jquery.dataTables.min" %>
-	  <%= stylesheet_link_tag "dataTables.bootstrap.min" %>
-	  <%= stylesheet_link_tag "buttons.bootstrap.min" %>
-	  <%= stylesheet_link_tag "buttons.dataTables.min" %>
-	  <%= stylesheet_link_tag "common" %>
-	  <%= stylesheet_link_tag "mixins" %>  
-	<!--  <%= csrf_meta_tags %>  -->
-	  <%= render 'layouts/shim' %>
+	  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+	  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+	  <%= stylesheet_link_tag "custom" %>
+	  <%= render 'layouts/shim' %> 
 	</head>
 	<body>
-	    <%= render 'layouts/header' %>
+		<%= render 'layouts/header' %>
 	    <div class="container-fluid">
-	    	<div class="row">
+	    	<div class="row">	              
 		      	  <%= render 'layouts/messages' %>  
 		    	  <%= yield %>
 		    	  <%= render 'layouts/footer' %>
-		    	</div>	 
+		    </div>	 <!-- /row -->
 	     </div>   <!-- /container -->      
    </body>
 </html>
