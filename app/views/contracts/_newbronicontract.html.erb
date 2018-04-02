@@ -273,8 +273,10 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
   	  	                                   <% else %><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span><% end %>
   	  		                               <%= case when (@contract.flag == 1 and @contract.id.nil?) then "Новая бронь" 
   	  		                                        when (@contract.flag == 2 and @contract.id.nil?) then "Новый контракт" 
-  	  		                                        when (@contract.flag == 1 and @contract.id) then (if controller.action_name!='show' then "Редактирование" else "Просмотр" end + " брони № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end) 
-  	  		                                        when (@contract.flag == 2 and @contract.id) then (if controller.action_name!='show' then "Редактирование" else "Просмотр" end + " контракта № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end)  
+  	  		                                        when (@contract.flag == 1 and @contract.id) then (if controller.action_name!='show' then "Редактирование" else "Просмотр" end + " брони № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end)
+  	  		                                        when (@contract.flag == 2 and @contract.id and controller.action_name=='broni2contract') then ("Контракт из брони № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end) 
+  	  		                                        when (@contract.flag == 2 and @contract.id) then (if controller.action_name!='show' then "Редактирование" else "Просмотр" end + " контракта № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end)
+  	  		                                        when (@contract.flag == 3 and @contract.id and controller.action_name=='contract2arh') then ("Закрытие контракта № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end)  
   	  		                                        when (@contract.flag == 3 and @contract.id) then (if controller.action_name!='show' then "Редактирование" else "Просмотр" end + " закрытого контракта № #{@contract.id}" + if @contract.cnum!='' then "/#{@contract.cnum}" else "" end) 
   	  		                                        else "" end %><%= " от #{@contract.stdate.strftime('%d.%m.%Y')}" %>	                       
   	  	</strong></div>
