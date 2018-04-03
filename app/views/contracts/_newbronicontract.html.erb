@@ -408,9 +408,11 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	</div>
     	<div class="col-md-6">
     	<!-- время конца -->
+    	<% if @contract.flag == 3 then %>
     	<%= simple_fields_for :timeend do |n| %>
     		<%= n.input :endtime, as: :time ,label: "Время окончания аренды" , default: @contract.enddate ? Time.parse(@contract.enddate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end, minute_step: 15 %>
     	<% end %> 
+    	<% end %>
     	</div>
     	<% if @contract.flag == 3 then %>
     	<div class="col-md-6">
@@ -428,9 +430,11 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	</div>
     	<% end %>
     	<!-- ко-во дней -->
+    	<div class="col-md-12">
     	<div class="form-group">
-	  		<%= label_tag 'Кол-во дней' %>
+	  		<label for="dperiod" class="control-label">Количество дней</label>
 	    	<%= number_field_tag 'dperiod', @contract.dperiod, :onchange =>'whenchangeDates(3);', as: :integer, class: "form-control", :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end  %>
+    	</div>
     	</div>   	
     	<div class="col-md-6">     	   	  	   		
     	<!-- цена -->

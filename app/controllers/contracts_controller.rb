@@ -60,7 +60,7 @@ class ContractsController < ApplicationController
   end
      
   def update
-    #render inline: "<%= params.inspect %><br><br>" and return  
+    #render inline: "<%= params.inspect %><br><br>" and return 
     @contract = Contract.find(params[:id])
     @stdate = @contract.stdate
     @fenddate = @contract.fenddate
@@ -71,7 +71,7 @@ class ContractsController < ApplicationController
       client_save
       @contract.client_id = @client.id        
     end
-    unless params[:parcurs].nil? then
+    unless (params[:parcurs].nil? or params[:parcurs]=='') then
       if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @stdate).count != 0 then 
         @wlong = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @stdate).last 
       else
@@ -81,7 +81,7 @@ class ContractsController < ApplicationController
       wlong_save 
       #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
     end
-    unless params[:parcurse].nil? then
+    unless (params[:parcurse].nil? or params[:parcurse]=='') then
       if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @fenddate).count != 0 then 
         @wlong = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @fenddate).last 
       else
@@ -362,8 +362,10 @@ class ContractsController < ApplicationController
     # enddate
     if params[:enddate] then
       d = (params[:enddate]).to_datetime.in_time_zone 
-      unless (params['timeend']['endtime(4i)'].nil?) then d = d.change(hour: params['timeend']['endtime(4i)'].to_i) end
-      unless (params['timeend']['endtime(5i)'].nil?) then d = d.change(min: params['timeend']['endtime(5i)'].to_i) end  
+      #unless (params['timeend']['endtime(4i)'].nil?) then d = d.change(hour: params['timeend']['endtime(4i)'].to_i) end
+      #unless (params['timeend']['endtime(5i)'].nil?) then d = d.change(min: params['timeend']['endtime(5i)'].to_i) end
+      unless (params['timebeg']['sttime(4i)'].nil?) then d = d.change(hour: params['timebeg']['sttime(4i)'].to_i) end
+      unless (params['timebeg']['sttime(5i)'].nil?) then d = d.change(min: params['timebeg']['sttime(5i)'].to_i) end   
       contract.enddate = d
     end
     # fenddate
@@ -384,7 +386,11 @@ class ContractsController < ApplicationController
   end
   
   def contract_save
+    #render inline: "<%= params.inspect %><br><br>" and return
     @flag = 0
+    if @contract.flag == 3 and (params[:parcurse].nil? or params[:parcurse]=='') then
+      flash[:warning] = "Введите пробег на конец!!!"
+    else 
     t = Contract.where("(? is null or id !=?) and flag in (1,2) and car_id = ? and ((stdate between ? and ?) or (enddate between ? and ?) or (? between stdate and enddate) or (? between stdate and enddate))", 
                        @contract.id, @contract.id, @contract.car_id, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate)
     c = Contract.where("(? is null or id !=?) and flag in (1,2) and car_id = ? and ((stdate between ? and ?) or (enddate between ? and ?) or (? between stdate and enddate) or (? between stdate and enddate))", 
@@ -401,6 +407,7 @@ class ContractsController < ApplicationController
       rescue
         flash[:warning] = "Данные не сохранены. Проверьте правильность ввода."             
       end
+    end  
     end      
   end 
   
