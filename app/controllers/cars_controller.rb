@@ -147,7 +147,10 @@ class CarsController < ApplicationController
    @day = Date.today.day.to_i
    #--------------------
    @mn = @month
-   @currentdate = Date.today.change(day: 1)  
+   @currentdate = Date.today.change(day: 1) 
+   #----month-from-params----------
+   if params[:imonth] then @imonth = params[:imonth].to_i else @imonth = 6 end
+   if @imonth < 1 or @imonth > 12 then @imonth = 6 end    
    #----12-month-beg---------------
    @months = Array[]
    @title1 = Array[]
@@ -183,6 +186,7 @@ class CarsController < ApplicationController
      end
     # @cars = Car.all.order(:marca,:id)
      @report = Array[]
+     if monthitem == @imonth then
      i = 1
      if @cars.count != 0 then
         @cars.each do |caritem|
@@ -224,6 +228,7 @@ class CarsController < ApplicationController
            i += 1 
        end # cars.each
      end # if cars.count
+     end # @imonth
      @title1[monthitem-1] = @title
      @report1[monthitem-1] = @report
      @months[monthitem-1] = @ddateb

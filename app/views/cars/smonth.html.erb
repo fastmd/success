@@ -1,7 +1,7 @@
 <% provide(:title, 'График') %>
 
 	<% if @broni_today.count != 0 then %>	
-		<h4 style="color: blue" align="center">Брони в работу на сегодня</h4>
+		<h4 style="color: blue" align="center"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Брони в работу на сегодня</h4>
 		<table id="b1" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 			<thead>
 				<tr class="info">
@@ -59,7 +59,7 @@
 	<% end %>
 	
     <% if @broni_tomorrow.count != 0 then %>	
-		<h4 style="color: blue" align="center">Брони в работу на завтра</h4>
+		<h4 style="color: blue" align="center"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Брони в работу на завтра</h4>
 		<table id="b2" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 			<thead>
 				<tr class="info">
@@ -117,7 +117,7 @@
 	<% end %>
 	
 	<% if @contracts_close_today.count != 0 then %>	
-		<h4 style="color: blue" align="center">Контракты к закрытию на сегодня</h4>
+		<h4 style="color: blue" align="center"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> Контракты к закрытию на сегодня</h4>
 		<table id="b3" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 			<thead>
 				<tr class="info">
@@ -171,43 +171,50 @@
 		</table>
 	<% end %>	
 			
-	<h4 align="center">Текущие брони и контракты по машинам <% if @filter==1 then %><span class="glyphicon glyphicon-filter" aria-hidden="true"></span><% end %></h4>
-
+	<h4 align="center"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> <span class="glyphicon glyphicon-file" aria-hidden="true"></span> Текущие брони и контракты по машинам <% if @filter==1 then %><span class="glyphicon glyphicon-filter" aria-hidden="true"></span><% end %></h4>
+	
 	<div align="center">
-	  <!-- Nav tabs -->
-	  <ul class="nav nav-tabs" role="tablist" id="myTab">
-		<% (1..12).each do |i| %>
-			<% if @months[i-1] == @currentdate then %><li role="presentation" class="active" ><% else %><li role="presentation"><% end %>
-			<a href="#<%= i %>" aria-controls="<%= i %>" role="tab" data-toggle="tab" class="label label-info">
-		   <% if @months[i-1] == @currentdate then %><span class="badge"><% end %><%= "#{@months[i-1].to_formatted_s(:month_year)}" %><% if @months[i-1] == @currentdate then %></span><% end %></a></li>	
-		<% end	%>	  	
-	  </ul>	
-	  <!-- Tab panes -->
-	  <div class="tab-content">
+	<div>
+	  <ul class="nav nav-pills nav-justified">
 	  	<% (1..12).each do |i| %>
+		    <li>
+		    	<%= link_to("#{@months[i-1].to_formatted_s(:month_year)}",root_path(:imonth => i), class: "btn btn-#{if i == @imonth then 'info' else 'default' end} #{if @months[i-1] == @currentdate then 'glyphicon glyphicon-map-marker' end}") %>
+		    </li>
+	    <% end	%>    
+	  </ul><br />
+	  </div>		  		
+	  <!-- Tables -->
+	  	<% (@imonth..@imonth).each do |i| %>
 		    <!-- one month table -->
 		    <% titleitem = @title1[i-1] %>
 		    <% reportitem = @report1[i-1] %>
 		    <% daycount = titleitem.size - 2 %>
-		    <div role="tabpanel" class="<%= if @months[i-1] == @currentdate then "tab-pane fade in active" else "tab-pane fade" end %>" id="<%= "#{i}" %>" >
-		    	<br>		
-				<div class="table-responsive">	
-				<table id="b3" class="table table1 table-bordered table-condensed table-hover table-striped" style="width:100%">
+				<table id="b5" class="table table-bordered table-condensed table-hover table-striped compact">
 					<thead>	
-					<tr>
-						<th><center>№</center></th>
-						<th align="center"><center>Автомобиль</center></th>
+					<tr class="info">
+					    <!--<th style="max-width:2px" align="center" class="teconom"><center>№</center></th>-->
+						<th align="center" style="padding-right:0" class="teconom"><center>Автомобиль</center></th>
+						<% (0..(daycount-1)).each do |d| %>
+							<th  style="max-width:3px" class=<%= case (titleitem[d+2]) when 2 then "warning" when 1 then "danger" else "" end %>>
+							<center><font color=<%= case (titleitem[d+2]) when 2 then "orange" when 1 then "red" else "" end %>><%= d+1 %></font></center></th>
+						<% end %>	
+					</tr>
+					</thead>
+					<tfoot>	
+					<tr class="info">
+					    <!--<th style="max-width:2px" align="center" class="teconom"><center>№</center></th>-->
+						<th align="center" class="teconom"><center>Автомобиль</center></th>
 						<% (0..(daycount-1)).each do |d| %>
 							<th class=<%= case (titleitem[d+2]) when 2 then "warning" when 1 then "danger" else "" end %>>
 							<center><font color=<%= case (titleitem[d+2]) when 2 then "orange" when 1 then "red" else "" end %>><%= d+1 %></font></center></th>
 						<% end %>	
 					</tr>
-					</thead>
+					</tfoot>					
 					<tbody>
 						<% reportitem.each do |r| %>	
 							<tr>
-							<td><center><%= r[0] %></center></td>
-							<td><%= link_to "#{r[1]}", edit_car_path(:id => r[daycount+2]) %></td>
+						    <!--<td class="teconom"><center><%= r[0] %></center></td>-->
+							<td class="teconom"><%= link_to "#{r[1]}", edit_car_path(:id => r[daycount+2]) %></td>
 							<% (0..(daycount-1)).each do |d| %>
 								<td title="<%= if (r[d+2].nil?) then (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year) else "#{r[d+2][:contract]}" end %>" 
 									               id=<%= case when (!r[d+2].nil? and r[d+2][:flag]==1 and r[d+2][:beflag]=='b') then "grrbbroni"
@@ -262,7 +269,7 @@
 						            <% graphcurlink0 = link_to 'Бронь новая', contracts_newbroni_path(:car_id => graphcurcar, :stdate => graphstdate) %>
 						            <% graphcurlink1 = link_to 'Контракт новый', contracts_new_path(:car_id => graphcurcar, :stdate => graphstdate) %>								                                          
 								<% end %>
-				                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="auto"  data-html="true" id=<%= graphcurid %> title=<%= graphcurdate %> 
+				                <a tabindex="0" role="button" data-toggle="popover1" data-trigger="focus" data-placement="auto"  data-html="true" id=<%= graphcurid %> title=<%= graphcurdate %> 
 										data-content='<%= graphcurlink0 %><% if graphcurlink0 %></br><% end %>
 										              <%= graphcurlink1 %><% if graphcurlink1 %></br><% end %>
 										              <%= graphcurlink2 %><% if graphcurlink2 %></br><% end %>'><%= graphcurtext %></a>
@@ -270,24 +277,12 @@
 							    </td>
 							<% end %>						
 						<% end %>
-					</tbody>
-					<tfoot>	
-					<tr>
-						<th><center>№</center></th>
-						<th align="center"><center>Автомобиль</center></th>
-						<% (0..(daycount-1)).each do |d| %>
-							<th class=<%= case (titleitem[d+2]) when 2 then "warning" when 1 then "danger" else "" end %>>
-							<center><font color=<%= case (titleitem[d+2]) when 2 then "orange" when 1 then "red" else "" end %>><%= d+1 %></font></center></th>
-						<% end %>	
-					</tr>
-					</tfoot>					
+					</tbody>					
 				</table>
-				</div>	   	
-		    </div>
 		    <!-- end of one month table -->
-	    <% end	%>              
-	  </div>
-	</div>		
+	    <% end	%>	
+</div>	
+				
 
 <script>
 $(document).ready(function() {
@@ -383,8 +378,27 @@ $(document).ready(function() {
             targets:   0
         } ]
     } ); 
-        
+
     $('[data-toggle="popover"]').popover(); 
+    $('[data-toggle="popover1"]').popover();
+
+    
+$('#b4').dataTable( {
+    "order": [],
+    "columnDefs": [ {
+      "targets"  : 'no-sort',
+      "orderable": false
+    }]
+});
+   
+	$('#b5').dataTable( {
+		  "ordering": false,
+		  "paging":   false,
+		  "info":     false,
+          "fixedHeader": {
+               headerOffset: ($('#navMenu').outerHeight() - 1)
+          }
+	} );    
 
 } );
 
