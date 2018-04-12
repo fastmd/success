@@ -1,0 +1,105 @@
+<% provide(:title, 'Пользователи') %>
+
+<script>
+$(document).ready(function() {
+    var t = $('#pstable').DataTable( {
+        "order": [[ 3, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        "pagingType": "full_numbers",
+        "pageLength": 25,
+         "fixedHeader": {
+               headerOffset: ($('#navMenu').outerHeight() - 1)
+         },
+         responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+            }, {
+            "searchable": false,
+            "orderable": false,
+            "targets": 1
+            },
+         { type: 'de_datetime', targets: [2,8,9,10] }
+         ]      
+    } ); 
+    
+    t.on( 'order.dt search.dt', function () {
+        t.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();
+    
+} );
+</script>	  
+
+
+<%= link_to('Edit current user registration', edit_user_registration_path) %><br />
+
+
+ <table id="pstable" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
+ <% 2.times do |i| %>	
+  <% if i==0 then %><thead><% else %><tfoot><% end %>
+    <tr class="info">
+      <th style="width:3%"></th>
+      <th style="width:2%" class="all">№</th>
+      <th class="all">created at</th>	
+      <th class="all">username</th>
+      <th>email</th>
+      <th>role</th>
+      <th>sign in count</th>
+      <th>current sign in at</th>
+      <th>last sign in at</th>
+      <th>updated at</th>
+      <th>current sign in ip</th>
+      <th>last sign in ip</th>
+      <th class="none"></th> 
+    </tr>
+   <% if i==0 then %></thead><% else %></tfoot><% end %>
+  <% end %>
+  <tbody>
+  <% @users.each do |item| %>
+    <% if item.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
+    	<td></td>
+    	<td></td>
+        <td><%= item.created_at.strftime('%d.%m.%Y %R') %></td>	
+	  	<td><%= item.username %></td>
+	  	<td><%= item.email %></td>
+	  	<td><% case when item.superadmin_role? then %> superadmin 
+	  		         <% when item.supervisor_role? then %><span class="glyphicon glyphicon-king" aria-hidden="true">Администратор</span>
+	  		         <% when item.user_role? then %><span class="glyphicon glyphicon-knight" aria-hidden="true">Оператор</span>
+	  		         <% when item.nemo_role? then %><span class="glyphicon glyphicon-pawn" aria-hidden="true">немо</span>
+	  		         <% else %><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><% end %></td>
+	  	<td><%= item.sign_in_count %></td>
+	  	<td><%= item.current_sign_in_at.strftime('%d.%m.%Y %R') %></td>
+	  	<td><%= item.last_sign_in_at.strftime('%d.%m.%Y %R') %></td>
+	  	<td><%= item.updated_at.strftime('%d.%m.%Y %R') %></td>
+	  	<td><%= item.current_sign_in_ip %></td>
+	  	<td><%= item.last_sign_in_ip %></td>
+	  	<td><%= link_to " " , users_giveuserrole_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-knight", :title => "Назначить пользователю #{item.username} роль Оператор" %>
+	  		<%= link_to " " , users_givenemorole_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-pawn", :title => "Назначить пользователю #{item.username} роль Немо" %>
+	  		<%= link_to " " , users_dropallroles_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-eye-close", :title => "Послать пользователя #{item.username} к черту" %>
+	  		<%= link_to " " , users_givesupervisorrole_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-king", :title => "Назначить пользователю #{item.username} роль Администратор" %>
+	  		<%= link_to_if(!item.contracts.any?," " , users_dropuser_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => "Удалить пользователя #{item.username}", data: { confirm: "Удалить пользователя #{item.username} восвояси?" }) %>
+	  	</td>	  	
+    </tr>
+  <% end %>    
+  </tbody>
+</table> 

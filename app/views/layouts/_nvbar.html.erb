@@ -20,9 +20,12 @@
 	    <% if cc == 'contracts' and (ca == 'indexbroni') then %>
 	 		<li class="active"><%= link_to "Новая бронь", contracts_newbroni_path, :class => "glyphicon glyphicon-flag", :title => 'Новая бронь' %></li>
 	 	<% end %>
-	    <% if cc == 'cars' and (ca == 'index') then %>
+	    <% if cc == 'cars' and (ca == 'index') and (current_user.superadmin_role? || current_user.supervisor_role?) then %>
 	 		<li class="active"><%= link_to "Новoe авто", cars_new_path, :class => "glyphicon glyphicon-bed", :title => 'Новый автомобиль' %></li>
 	 	<% end %>
+	    <% if cc == 'tehservices' and (ca == 'index') then %>
+	 		<li class="active"><%= link_to "Новoe TO", tehservices_new_path(:car_id => @car.id) , :class => "glyphicon glyphicon-wrench", :title => 'Новoe TO' %></li>
+	 	<% end %>	 	
 	    <% if cc == 'cars' and (ca == 'edit' or ca == 'new') then %>
 	 		<li class="active"><%= link_to "Назад", cars_path, :class => "glyphicon glyphicon-level-up" %></li>
 	 	<% end %>
@@ -30,9 +33,12 @@
 	 		<li class="active"><%= link_to "Назад", car_autotech_path, :class => "glyphicon glyphicon-level-up" %></li>
 	 	<% end %>
 	 	
+		<% if current_user.superadmin_role? || current_user.supervisor_role? || current_user.user_role? || current_user.nemo_role? %>
 	 	<li class="hidden-xs hidden-sm <%= if cc=='cars' and ca=='smonth' then "active" else "" end %>")><%= link_to "Домой", cars_smonth_path, :class => "glyphicon glyphicon-home" %></li>
 	 	<li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='cars' and ca=='smonth' then "active" else "" end %>"><%= link_to "", cars_smonth_path, :class => "glyphicon glyphicon-home", :title => 'Домой' %></li>
-	 		    		    
+        <% end %>
+	 	
+	 	<% if current_user.superadmin_role? || current_user.supervisor_role? || current_user.user_role? %>	    		    
 	    <li class="hidden-xs hidden-sm <%= if cc=='contracts' and (ca=='indexbroni' or ca=='newbroni') then 'active' else '' end %>"><%= link_to 'Брони', contracts_indexbroni_path, :class => "glyphicon glyphicon-flag" %></li>
 	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='contracts' and (ca=='indexbroni' or ca=='newbroni') then 'active' else '' end %>"><%= link_to '', contracts_indexbroni_path, :class => "glyphicon glyphicon-flag", :title => 'Брони' %></li>
 	     
@@ -53,8 +59,19 @@
 	    	    
 	    <li class="hidden-xs hidden-sm <%= if cc=='cparams' then 'active' else '' end %>"><%= link_to 'Курс',cparams_show_path, :class => "glyphicon glyphicon-euro", :title => 'Курс действующий' %></li>
 	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='cparams' then 'active' else '' end %>"><%= link_to '',cparams_show_path, :class => "glyphicon glyphicon-euro", :title => 'Курс действующий' %></li>
-	    
-		<% if cc == 'cars' and (ca == 'smonth') then %>
+		<% end %>
+
+		<% if current_user.superadmin_role? || current_user.supervisor_role? then %>
+        <li class="hidden-xs hidden-sm <%= if cc=='users' then 'active' else '' end %>"><%= link_to 'Пользователи',users_index_path, :class => "glyphicon glyphicon-baby-formula", :title => 'Пользователи' %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg <%= if cc=='users' then 'active' else '' end %>"><%= link_to '',users_index_path, :class => "glyphicon glyphicon-baby-formula", :title => 'Пользователи' %></li>
+		<% end %>
+	    	    
+		<% if current_user.superadmin_role? then %>
+        <li class="hidden-xs hidden-sm"><%= link_to 'Admin',rails_admin_path, :class => "glyphicon glyphicon-alert", :title => 'Admin dashboard' %></li>
+	    <li class="visible-xs visible-sm hidden-md hidden-lg"><%= link_to '',rails_admin_path, :class => "glyphicon glyphicon-alert", :title => 'Admin dashboard' %></li>
+		<% end %>
+
+		<% if cc == 'cars' and (ca == 'smonth') and (current_user.superadmin_role? || current_user.supervisor_role?) then  %>
 		<li><%= form_tag("/cars/smonth", method: "get", class: 'form-inline') do %>
 	      <div class="form-group">
 			  <%= select_tag(:qmarca, options_for_select(@fmarcas, @qmarca), class: "form-control", prompt: "Марка...", include_blank: false, title: "Марка") %>

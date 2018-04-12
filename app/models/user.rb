@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   has_many :contracts, inverse_of: :user
+  has_many :tehservices, inverse_of: :user
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

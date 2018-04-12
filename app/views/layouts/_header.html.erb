@@ -8,13 +8,6 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>                     
 	      </button> 
-	<!--    <div class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          	<% if current_user.nil? then %>
-	            <%= link_to "#{DateTime.now.strftime('%d.%m.%Y')}", '#' %>
-          	<% else %>
-	            <%= link_to "#{if !Cparam.last.nil? then Cparam.last.curs else 1 end} MDL #{DateTime.now.strftime('%d.%m.%Y')}", cparams_show_path %>
-            <% end %>                 
-	   </div>   --> 
       <%= link_to "AUTO10 #{image_tag('holub-ifon.png', :alt => 'image', :width => "40", :height => "35")}".html_safe, root_path, id: "logo" %>
       </div>
     <div class="collapse navbar-collapse" id="myNavbar">     
@@ -38,7 +31,13 @@
      <div class="row">  	
    	  <% if !current_user.nil? %>
         <%= image_tag('octo.jpg', :alt => "image", :width => "20", :height => "20") %>
-        <%= "Пользователь: #{current_user.email}" %>  
+        Пользователь: 
+	  		         <% case when current_user.superadmin_role? then %> superadmin 
+	  		         <% when current_user.supervisor_role? then %><span class="glyphicon glyphicon-king" aria-hidden="true">Администратор</span>
+	  		         <% when current_user.user_role? then %><span class="glyphicon glyphicon-knight" aria-hidden="true">Оператор</span>
+	  		         <% when current_user.nemo_role? then %><span class="glyphicon glyphicon-pawn" aria-hidden="true">немо</span>
+	  		         <% else %><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><% end %>
+	  		         <strong><%= " #{current_user.username}"%></strong><%= " #{current_user.email} " %> 
         <%= link_to "Выход", destroy_user_session_path, method: :delete, :class => "glyphicon glyphicon-hand-left" %>
       <% end %>
       </div>         

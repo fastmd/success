@@ -53,8 +53,8 @@
 		  	</div>
 		  		  		  				
             </div>	<!--row-->
-	  		<div  align="center"><% if controller.action_name == 'edit' then %><%= f.button :submit, "Сохранить", class: "btn btn-primary" %><% else %>
-	  			                 <%= f.button :submit, "Редактировать", class: "btn btn-primary", name: "editfromshow" %><% end %>
+	  		<div  align="center"><% if controller.action_name == 'edit' and (current_user.superadmin_role? || current_user.supervisor_role?) then %><%= f.button :submit, "Сохранить", class: "btn btn-primary" %>
+	  			                 <% elsif current_user.superadmin_role? || current_user.supervisor_role? then %><%= f.button :submit, "Редактировать", class: "btn btn-primary", name: "editfromshow" %><% end %>
 	  			                  <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></div>	
 	  				  	
   			<% end %>

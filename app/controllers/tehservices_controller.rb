@@ -1,4 +1,5 @@
 class TehservicesController < ApplicationController
+  load_and_authorize_resource
   before_action :redirect_cancel , only: [:create, :update]
   
   def index
@@ -6,7 +7,8 @@ class TehservicesController < ApplicationController
     @tehservices = @car.tehservices.all
   end
   
-  def new 
+  def new
+    #render inline: "<%= params.inspect %><br><br>" and return 
     @tehservice = Tehservice.new
     @tehservice.user_id = current_user.id 
     @tehservice.car_id = params[:car_id]
@@ -24,17 +26,13 @@ class TehservicesController < ApplicationController
     end
     @tehservice = tehservice_init(@tehservice)
     @flag = 0
+    tehservice_save
     unless params[:parcurs].nil? then
-      if Wlong.where("(car_id = ? AND wdate = ?)", @tehservice.car_id, @tehservice.sdate).count != 0 then 
-        @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @tehservice.car_id, @tehservice.sdate).last 
-      else
-        @wlong = Wlong.new
-      end
+      @wlong = Wlong.new
       @wlong = wlong_init(@wlong)    
       wlong_save 
       #render inline: "<%= @wlong.inspect %><br><br><%= @tehservice.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
-    end     
-    tehservice_save
+    end      
     if @flag == 1 then
       redirect_to tehservices_index_path(:car_id => @tehservice.car_id) 
     else
@@ -44,7 +42,7 @@ class TehservicesController < ApplicationController
   
   def edit
     @tehservice = Tehservice.find(params[:id])
-    @wlong = Wlong.where("(car_id = ? AND wdate is not null AND wdate = ?)", @tehservice.car_id, @tehservice.sdate).last
+    @wlong = @tehservice.wlong
     if @wlong then @parcurs = @wlong.parcurs end
     #render inline: "<%= @tehservice.inspect %><br><br><%= @wlong.inspect %><br><br>" and return    
   end
@@ -63,13 +61,14 @@ class TehservicesController < ApplicationController
   end 
 
   def update  
-    @tehservice = Tehservice.find(params[:id])
+    @tehservice = Tehservice.find(tehservice_params[:id])
     @tehservice = tehservice_init(@tehservice)
     @flag = 0
+    #render inline: "<%= @wlong.inspect %><br><br><%= @tehservice.inspect %><br><br><%= @flag.inspect %><br><br>" and return   
     unless params[:parcurs].nil? then
-      if Wlong.where("(car_id = ? AND wdate = ?)", @tehservice.car_id, @tehservice.sdate).count != 0 then 
-        @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @tehservice.car_id, @tehservice.sdate).last 
-      else
+      @wlong = @tehservice.wlong 
+      #render inline: "wlong <%= @wlong.inspect %><br><br>tehservice<%= @tehservice.inspect %><br><br><%= @flag.inspect %><br><br>" and return
+      if @wlong.nil? then
         @wlong = Wlong.new
       end
       @wlong = wlong_init(@wlong)    
@@ -79,7 +78,7 @@ class TehservicesController < ApplicationController
     #render inline: "<%= @wlong.inspect %><br><br><%= @tehservice.inspect %><br><br><%= @flag.inspect %><br><br>" and return           
     tehservice_save
     if @flag == 1 then
-      redirect_to tehservices_index_path
+      redirect_to tehservices_index_path(:car_id => @tehservice.car_id)
     else
       render 'edit'
     end
@@ -87,7 +86,7 @@ class TehservicesController < ApplicationController
 
 private
   def tehservice_params
-    params.require(:tehservice).permit(:car_id,:user_id,:sdate,:sttime,:stype,:sprice,:comments,:id)
+    params.require(:tehservice).permit(:car_id,:user_id,:sdate,:stype,:sprice,:comments,:id)
   end
   
   def tehservice_init(tehservice)
@@ -100,21 +99,21 @@ private
     # stdate
     if params[:sdate] then
       d = (params[:sdate]).to_datetime.in_time_zone 
-      unless (tehservice_params['sttime(4i)'].nil?) then d = d.change(hour: tehservice_params['sttime(4i)'].to_i) end
-      unless (tehservice_params['sttime(5i)'].nil?) then d = d.change(min: tehservice_params['sttime(5i)'].to_i) end  
+      unless (params['timebeg']['sttime(4i)'].nil?) then d = d.change(hour: params['timebeg']['sttime(4i)'].to_i) end
+      unless (params['timebeg']['sttime(5i)'].nil?) then d = d.change(min: params['timebeg']['sttime(5i)'].to_i) end  
       tehservice.sdate = d
-    end    
+    end        
     tehservice    
   end
   
   def tehservice_save
     @flag = 0
     @parcurs = params[:parcurs]
-    t = Tehservice.where("(car_id = ? AND sdate = ?)", @tehservice.car_id, @tehservice.sdate).count
-    c = Tehservice.where("(car_id = ? AND sdate = ?)", @tehservice.car_id, @tehservice.sdate).last                      
-    if (t != 0 and !@tehservice.id) then
-      flash[:warning] = "ТО № #{c.id} от #{c.sdate.strftime('%d.%m.%Y %R')} уже существует. Проверьте правильность ввода."        
-    else
+    #t = Tehservice.where("(car_id = ? AND sdate = ?)", @tehservice.car_id, @tehservice.sdate).count
+    #c = Tehservice.where("(car_id = ? AND sdate = ?)", @tehservice.car_id, @tehservice.sdate).last                      
+    #if (t != 0 and !@tehservice.id) then
+    #  flash[:warning] = "ТО № #{c.id} от #{c.sdate.strftime('%d.%m.%Y %R')} уже существует. Проверьте правильность ввода."        
+    #else
       begin
         if @tehservice.save! then 
           flash.discard
@@ -124,17 +123,18 @@ private
       rescue
         flash[:warning] = "Данные не сохранены. Проверьте правильность ввода. Обязательные поля: дата, время, цена."             
       end
-    end      
+    #end      
   end  
   
   def wlong_init(wlong)
     wlong.parcurs = params[:parcurs]
     wlong.car_id = params[:car_id]
+    wlong.tehservice_id = @tehservice.id
     d = (params[:sdate]).to_datetime.in_time_zone 
-    unless (tehservice_params['sttime(4i)'].nil?) then d = d.change(hour: tehservice_params['sttime(4i)'].to_i) end
-    unless (tehservice_params['sttime(5i)'].nil?) then d = d.change(min: tehservice_params['sttime(5i)'].to_i) end  
+    unless (params['timebeg']['sttime(4i)'].nil?) then d = d.change(hour: params['timebeg']['sttime(4i)'].to_i) end
+    unless (params['timebeg']['sttime(5i)'].nil?) then d = d.change(min: params['timebeg']['sttime(5i)'].to_i) end  
     wlong.wdate = d
-    wlong    
+    wlong         
   end
   
   def wlong_save

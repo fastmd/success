@@ -30,6 +30,10 @@ $brownlighten5: #efebe9;
 $brownlighten4: #d7ccc8;
 $brownlighten3: #bcaaa4; 
 
+.jumbotron
+{
+background-color:$snow;
+}
 
 #nav-wrapper {
    position: fixed;
@@ -225,7 +229,7 @@ cbody {
 
 /* footer */
 footer {
-  margin-top: 45px;
+  margin-top: 25px;
   padding-top: 5px;
   padding-left: 30px;
   padding-right: 30px;  

@@ -3,10 +3,28 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root to: 'cars#smonth'
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  get 'clients/index'
+ 
   
-  devise_for :users
-  get 'welcome/index'
+  devise_for :users, controllers: {
+      sessions: 'users/sessions',
+      passwords: 'users/passwords',
+      registrations: 'users/registrations'
+  }
+
+  get 'users/index'
+  post 'users/index'
+  get 'users/giveuserrole'
+  post 'users/giveuserrole'
+  get 'users/givesupervisorrole'
+  post 'users/givesupervisorrole'
+  get 'users/givenemorole'
+  post 'users/givenemorole'
+  get 'users/dropallroles'
+  post 'users/dropallroles'
+  get 'users/dropuser'
+  post 'users/dropuser'
+
+  
   get "cars/smonth" => 'cars#smonth'
   get "car/autotech" => 'cars#autotech'
   
@@ -25,7 +43,8 @@ Rails.application.routes.draw do
   get 'clients/new'
   post 'clients/new'
   get 'clients/destroy'
-  post 'clients/destroy'   
+  post 'clients/destroy'
+  get 'clients/index'   
   
   get 'contracts/new'
   post 'contracts/new'
@@ -54,6 +73,9 @@ Rails.application.routes.draw do
   get  'tehservices/index'
   post 'tehservices/create'
   get  'tehservices/create'
+  post 'tehservices/update'
+  get  'tehservices/update'
+  patch 'tehservices/update'  
   patch 'tehservices/create'
   post "tehservices/edit"
   get  "tehservices/edit"

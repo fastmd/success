@@ -1,4 +1,5 @@
 class ContractsController < ApplicationController
+  load_and_authorize_resource
   before_action :redirect_cancel #, only: [:create, :update]
   
   def index
@@ -32,17 +33,17 @@ class ContractsController < ApplicationController
       client_save
       @contract.client_id = @client.id        
     end
+    contract_save
     unless params[:parcurs].nil? then
-      if Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).count != 0 then 
-        @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).last 
-      else
-        @wlong = Wlong.new
-      end
+      #if Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).count != 0 then 
+      #  @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).last 
+      #else
+      @wlong = Wlong.new
+      #end
       @wlong = wlong_init(@wlong)    
       wlong_save 
       #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
-    end     
-    contract_save
+    end         
     #render inline: "<%= params.inspect %><br><br>" and return
     if @flag == 1 then
       if params[:printfromedit] then  redirect_to contracts_show_path(:id => @contract.id, format: "pdf") and return end
@@ -311,7 +312,7 @@ class ContractsController < ApplicationController
   def wlong_init(wlong)
     wlong.parcurs = params[:parcurs]
     wlong.car_id = params[:car_id]
-    wlong.contract_id = params[:id]
+    wlong.contract_id = @contract.id
     d = (params[:stdate]).to_datetime.in_time_zone 
     unless (params['timebeg']['sttime(4i)'].nil?) then d = d.change(hour: params['timebeg']['sttime(4i)'].to_i) end
     unless (params['timebeg']['sttime(5i)'].nil?) then d = d.change(min: params['timebeg']['sttime(5i)'].to_i) end  
@@ -362,10 +363,10 @@ class ContractsController < ApplicationController
     # enddate
     if params[:enddate] then
       d = (params[:enddate]).to_datetime.in_time_zone 
-      #unless (params['timeend']['endtime(4i)'].nil?) then d = d.change(hour: params['timeend']['endtime(4i)'].to_i) end
-      #unless (params['timeend']['endtime(5i)'].nil?) then d = d.change(min: params['timeend']['endtime(5i)'].to_i) end
-      unless (params['timebeg']['sttime(4i)'].nil?) then d = d.change(hour: params['timebeg']['sttime(4i)'].to_i) end
-      unless (params['timebeg']['sttime(5i)'].nil?) then d = d.change(min: params['timebeg']['sttime(5i)'].to_i) end   
+      unless (params['timeend']['endtime(4i)'].nil?) then d = d.change(hour: params['timeend']['endtime(4i)'].to_i) end
+      unless (params['timeend']['endtime(5i)'].nil?) then d = d.change(min: params['timeend']['endtime(5i)'].to_i) end
+      #unless (params['timebeg']['sttime(4i)'].nil?) then d = d.change(hour: params['timebeg']['sttime(4i)'].to_i) end
+      #unless (params['timebeg']['sttime(5i)'].nil?) then d = d.change(min: params['timebeg']['sttime(5i)'].to_i) end   
       contract.enddate = d
     end
     # fenddate

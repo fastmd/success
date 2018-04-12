@@ -1,11 +1,21 @@
 <% provide(:title, 'График') %>
 
+<% if !current_user.superadmin_role? && !current_user.supervisor_role? && !current_user.user_role? && current_user.nemo_role? %>
+<div class="jumbotron">
+  <h1>Привет, <span class="glyphicon glyphicon-pawn" aria-hidden="true"></span>Немо!</h1>
+  <p>Вы успешно залогинились.</p>
+  <p>Теперь обратитесь к <span class="glyphicon glyphicon-king" aria-hidden="true"></span><strong>Администратору</strong> приложения для получения <span class="glyphicon glyphicon-knight" aria-hidden="true"></span>водительских прав.</p>
+</div>
+<% end %>
+
+<% if current_user.superadmin_role? || current_user.supervisor_role? || current_user.user_role? %>
 	<% if @broni_today.count != 0 then %>	
 		<h4 style="color: blue" align="center"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span> Брони в работу на сегодня</h4>
 		<table id="b1" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
 			<thead>
 				<tr class="info">
 					<th style="width:3%"></th>
+					<th style="width:2%" class="all"></th>
 					<th class="all" style="width:3%">No</th>
 					<th class="all"></th>
 					<th class="all">От</th>
@@ -22,6 +32,7 @@
 			<tfoot>
 				<tr class="info">
 					<th style="width:3%"></th>
+					<th style="width:2%" class="all"></th>
 					<th class="all" style="width:3%">No</th>
 					<th class="all"></th>
 					<th class="all">От</th>
@@ -39,11 +50,12 @@
 				<% @broni_today.each do |contract| %>
 						<tr>
 							<td></td>
+							<td></td>
 							<td><%= link_to(("#{contract.id}" + if contract.cnum!='' then "/#{contract.cnum} " else " " end),  contract_path(contract)) %></td>
 							<td><%= link_to("Контракт",  contracts_broni2contract_path(:id => contract.id), class: "btn btn-info btn-xs") %></td>
-							<td><%= contract.stdate.strftime('%Y.%m.%d') %></td>
-							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
-							<td><%= if contract.client then "#{contract.client.sname} #{contract.client.name} #{contract.client.fname}  #{contract.client.tel} #{contract.client.pemail}" end %></td>
+							<td><%= contract.stdate.strftime('%d.%m.%Y') %></td>
+							<td><% unless contract.car.nil? then %><%= link_to "#{contract.car.marca} #{contract.car.gnum}" , cars_show_path(:id => contract.car.id),:method => :get, :title => 'Посмотреть авто' %><% end %></td>
+							<td><% unless contract.client.nil? then %><%= link_to "#{contract.client.sname} #{contract.client.name} #{contract.client.fname} #{contract.client.tel} #{contract.client.pemail}" , edit_client_path(contract.client),:method => :get, :title => 'Редактировать клиента' %><% end %></td>
 							<!-- <td><%= if contract.user then "#{contract.user.username}" end %></td>	-->
 							<td><%= "#{contract.stdate.strftime('%d.%m.%Y %R')}" %></td>
 							<td><%= "#{contract.enddate.strftime('%d.%m.%Y %R')}" %></td>
@@ -64,6 +76,7 @@
 			<thead>
 				<tr class="info">
 					<th style="width:3%"></th>
+					<th style="width:2%" class="all"></th>
 					<th class="all" style="width:3%">No</th>
 					<th class="all"></th>
 					<th class="all">От</th>
@@ -80,6 +93,7 @@
 			<tfoot>
 				<tr class="info">
 					<th style="width:3%"></th>
+					<th style="width:2%" class="all"></th>
 					<th class="all" style="width:3%">No</th>
 					<th class="all"></th>
 					<th class="all">От</th>
@@ -97,11 +111,12 @@
 				<% @broni_tomorrow.each do |contract| %>
 						<tr>
 							<td></td>
+							<td></td>
 							<td><%= link_to(("#{contract.id}" + if contract.cnum!='' then "/#{contract.cnum} " else " " end),  contract_path(contract)) %></td>
 							<td><%= link_to("Контракт",  contracts_broni2contract_path(:id => contract.id), class: "btn btn-info btn-xs") %></td>
-							<td><%= contract.stdate.strftime('%Y.%m.%d') %></td>
-							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
-							<td><%= if contract.client then "#{contract.client.sname} #{contract.client.name} #{contract.client.fname}  #{contract.client.tel} #{contract.client.pemail}" end %></td>
+							<td><%= contract.stdate.strftime('%d.%m.%Y') %></td>
+							<td><% unless contract.car.nil? then %><%= link_to "#{contract.car.marca} #{contract.car.gnum}" , cars_show_path(:id => contract.car.id),:method => :get, :title => 'Посмотреть авто' %><% end %></td>
+							<td><% unless contract.client.nil? then %><%= link_to "#{contract.client.sname} #{contract.client.name} #{contract.client.fname} #{contract.client.tel} #{contract.client.pemail}" , edit_client_path(contract.client),:method => :get, :title => 'Редактировать клиента' %><% end %></td>
 							<!-- <td><%= if contract.user then "#{contract.user.username}" end %></td>	-->
 							<td><%= "#{contract.stdate.strftime('%d.%m.%Y %R')}" %></td>
 							<td><%= "#{contract.enddate.strftime('%d.%m.%Y %R')}" %></td>
@@ -122,6 +137,7 @@
 			<thead>
 				<tr class="info">
 					<th style="width:3%"></th>
+					<th style="width:2%" class="all"></th>
 					<th class="all" style="width:3%">No</th>
 					<th class="all"></th>
 					<th class="all">От</th>
@@ -137,6 +153,7 @@
 			<tfoot>
 				<tr class="info">
 					<th style="width:3%"></th>
+					<th style="width:2%" class="all"></th>
 					<th class="all" style="width:3%">No</th>
 					<th class="all"></th>
 					<th class="all">От</th>
@@ -153,11 +170,12 @@
 				<% @contracts_close_today.each do |contract| %>
 					    <tr>
 					    	<td></td>
+					    	<td></td>
 							<td><%= link_to(("#{contract.id}" + if contract.cnum!='' then "/#{contract.cnum} " else " " end),  contract_path(contract)) %></td>
 							<td><%= link_to("Закрыть",  contracts_contract2arh_path(:id => contract.id), class: "btn btn-info btn-xs") %></td>
-							<td><%= contract.stdate.strftime('%Y.%m.%d') %></td>	
-							<td><%= if contract.car then "#{contract.car.marca} #{contract.car.gnum}" end %></td>
-							<td><%= if contract.client then "#{contract.client.sname} #{contract.client.name} #{contract.client.fname}  #{contract.client.tel} #{contract.client.pemail}" end %></td>
+							<td><%= contract.stdate.strftime('%d.%m.%Y') %></td>	
+							<td><% unless contract.car.nil? then %><%= link_to "#{contract.car.marca} #{contract.car.gnum}" , cars_show_path(:id => contract.car.id),:method => :get, :title => 'Посмотреть авто' %><% end %></td>
+							<td><% unless contract.client.nil? then %><%= link_to "#{contract.client.sname} #{contract.client.name} #{contract.client.fname} #{contract.client.tel} #{contract.client.pemail}" , edit_client_path(contract.client),:method => :get, :title => 'Редактировать клиента' %><% end %></td>
 							<!-- <td><%= if contract.user then "#{contract.user.username}" end %></td>	-->
 							<td><%= "#{contract.stdate.strftime('%d.%m.%Y %R')}" %></td>
 							<td><%= "#{contract.enddate.strftime('%d.%m.%Y %R')}" %></td>
@@ -190,10 +208,10 @@
 		    <% reportitem = @report1[i-1] %>
 		    <% daycount = titleitem.size - 2 %>
 				<table id="b5" class="table table-bordered table-condensed table-hover table-striped compact">
-					<thead>	
+					<thead>		
 					<tr class="info">
-					    <!--<th style="max-width:2px" align="center" class="teconom"><center>№</center></th>-->
-						<th align="center" style="padding-right:0" class="teconom"><center>Автомобиль</center></th>
+					    <th style="max-width:2px" align="center" class="teconom"><center>№</center></th>
+						<th align="center" style="padding-right:0" class="teconom"><center>Автомобиль</center></th> 						
 						<% (0..(daycount-1)).each do |d| %>
 							<th  style="max-width:3px" class=<%= case (titleitem[d+2]) when 2 then "warning" when 1 then "danger" else "" end %>>
 							<center><font color=<%= case (titleitem[d+2]) when 2 then "orange" when 1 then "red" else "" end %>><%= d+1 %></font></center></th>
@@ -202,7 +220,7 @@
 					</thead>
 					<tfoot>	
 					<tr class="info">
-					    <!--<th style="max-width:2px" align="center" class="teconom"><center>№</center></th>-->
+					    <th style="max-width:2px" align="center" class="teconom"><center>№</center></th>
 						<th align="center" class="teconom"><center>Автомобиль</center></th>
 						<% (0..(daycount-1)).each do |d| %>
 							<th class=<%= case (titleitem[d+2]) when 2 then "warning" when 1 then "danger" else "" end %>>
@@ -213,8 +231,8 @@
 					<tbody>
 						<% reportitem.each do |r| %>	
 							<tr>
-						    <!--<td class="teconom"><center><%= r[0] %></center></td>-->
-							<td class="teconom"><%= link_to "#{r[1]}", edit_car_path(:id => r[daycount+2]) %></td>
+						    <td class="teconom"><center><%= r[0] %></center></td>
+							<td class="teconom"><%= link_to "#{r[1]}", cars_show_path(:id => r[daycount+2]) %></td>
 							<% (0..(daycount-1)).each do |d| %>
 								<td title="<%= if (r[d+2].nil?) then (@months[i-1]).change(day: (d+1)).to_formatted_s(:dday_month_year) else "#{r[d+2][:contract]}" end %>" 
 									               id=<%= case when (!r[d+2].nil? and r[d+2][:flag]==1 and r[d+2][:beflag]=='b') then "grrbbroni"
@@ -269,7 +287,7 @@
 						            <% graphcurlink0 = link_to 'Бронь новая', contracts_newbroni_path(:car_id => graphcurcar, :stdate => graphstdate) %>
 						            <% graphcurlink1 = link_to 'Контракт новый', contracts_new_path(:car_id => graphcurcar, :stdate => graphstdate) %>								                                          
 								<% end %>
-				                <a tabindex="0" role="button" data-toggle="popover1" data-trigger="focus" data-placement="auto"  data-html="true" id=<%= graphcurid %> title=<%= graphcurdate %> 
+				                <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-placement="auto"  data-html="true" id=<%= graphcurid %> title=<%= graphcurdate %> 
 										data-content='<%= graphcurlink0 %><% if graphcurlink0 %></br><% end %>
 										              <%= graphcurlink1 %><% if graphcurlink1 %></br><% end %>
 										              <%= graphcurlink2 %><% if graphcurlink2 %></br><% end %>'><%= graphcurtext %></a>
@@ -282,12 +300,12 @@
 		    <!-- end of one month table -->
 	    <% end	%>	
 </div>	
-				
+<% end %>
 
 <script>
 $(document).ready(function() {
-    $('#b1').DataTable( {
-        "order": [[ 1, "asc" ],[ 3, "asc" ]],
+    var t = $('#b1').DataTable( {
+        "order": [[ 2, "asc" ],[ 4, "asc" ]],
         "language": {
             "lengthMenu": "Отображать _MENU_ строк на странице",
             "zeroRecords": "Ничего не найдено - увы...",
@@ -314,11 +332,26 @@ $(document).ready(function() {
             className: 'control',
             orderable: false,
             targets:   0
-        } ]
+            }, {
+            "searchable": false,
+            "orderable": false,
+            "targets": [1,3]
+            },
+         { type: 'de_datetime', targets: [7,8] },
+         { type: 'de_date', targets: 4 }
+         ]  
     } ); 
     
-    $('#b2').DataTable( {
-        "order": [[ 1, "asc" ],[ 3, "asc" ]],
+    
+    
+    t.on( 'order.dt search.dt', function () {
+        t.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();       
+   
+    var t = $('#b3').DataTable( {
+        "order": [[ 2, "asc" ],[ 4, "asc" ]],
         "language": {
             "lengthMenu": "Отображать _MENU_ строк на странице",
             "zeroRecords": "Ничего не найдено - увы...",
@@ -334,7 +367,7 @@ $(document).ready(function() {
             }
         },
         paging:         false,
-        searching:         false,
+        searching:      false,
         info:           false,  
          responsive: {
             details: {
@@ -345,62 +378,101 @@ $(document).ready(function() {
             className: 'control',
             orderable: false,
             targets:   0
-        } ]
+            }, {
+            "searchable": false,
+            "orderable": false,
+            "targets": [1,3]
+            },
+         { type: 'de_datetime', targets: [7,8] },
+         { type: 'de_date', targets: 4 }
+         ]      
     } ); 
-        
-    $('#b3').DataTable( {
-        "order": [[ 1, "asc" ],[ 3, "asc" ]],
-        "language": {
-            "lengthMenu": "Отображать _MENU_ строк на странице",
-            "zeroRecords": "Ничего не найдено - увы...",
-            "info": "Страница _PAGE_ из _PAGES_",
-            "infoEmpty": "Нет доступных строк",
-            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
-            "search": "Поиск",
-             paginate: {
-                first:      "<<",
-                previous:   "<",
-                next:       ">",
-                last:       ">>"
-            }
-        },
-        paging:         false,
-        searching:         false,
-        info:           false,  
-         responsive: {
-            details: {
-                type: 'column'
-            }
-        },
-        columnDefs: [ {
-            className: 'control',
-            orderable: false,
-            targets:   0
-        } ]
-    } ); 
+
 
     $('[data-toggle="popover"]').popover(); 
-    $('[data-toggle="popover1"]').popover();
-
-    
-$('#b4').dataTable( {
-    "order": [],
-    "columnDefs": [ {
-      "targets"  : 'no-sort',
-      "orderable": false
-    }]
-});
    
 	$('#b5').dataTable( {
+			"language": {
+	            "lengthMenu": "Отображать _MENU_ строк на странице",
+	            "zeroRecords": "Ничего не найдено - увы...",
+	            "info": "Страница _PAGE_ из _PAGES_",
+	            "infoEmpty": "Нет доступных строк",
+	            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+	            "search": "Поиск",
+	             paginate: {
+	                first:      "<<",
+	                previous:   "<",
+	                next:       ">",
+	                last:       ">>"
+	            }
+	        },
 		  "ordering": false,
 		  "paging":   false,
 		  "info":     false,
           "fixedHeader": {
                headerOffset: ($('#navMenu').outerHeight() - 1)
-          }
-	} );    
+          },
+           columnDefs: [{
+            "searchable": false,
+            "orderable": false,
+            "targets": 0
+            }]
+	} );  
+     
+    t.on( 'order.dt search.dt', function () {
+        t.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw();  
 
+    var t = $('#b2').DataTable( {
+        "order": [[ 2, "asc" ],[ 4, "asc" ]],
+        "language": {
+            "lengthMenu": "Отображать _MENU_ строк на странице",
+            "zeroRecords": "Ничего не найдено - увы...",
+            "info": "Страница _PAGE_ из _PAGES_",
+            "infoEmpty": "Нет доступных строк",
+            "infoFiltered": "(Отфильтровано из _MAX_ строк)",
+            "search": "Поиск",
+             paginate: {
+                first:      "<<",
+                previous:   "<",
+                next:       ">",
+                last:       ">>"
+            }
+        },
+        paging:         false,
+        searching:      false,
+        info:           false,  
+         responsive: {
+            details: {
+                type: 'column'
+            }
+        },
+        columnDefs: [ {
+            className: 'control',
+            orderable: false,
+            targets:   0
+            }, {
+            "searchable": false,
+            "orderable": false,
+            "targets": [1,3]
+            },
+         { type: 'de_datetime', targets: [7,8] },
+         { type: 'de_date', targets: 4 }
+         ]  
+    } ); 
+        
+      
+    t.on( 'order.dt search.dt', function () {
+        t.column(1, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+            cell.innerHTML = i+1;
+        } );
+    } ).draw(); 
+    
 } );
 
 </script>
+
+
 	

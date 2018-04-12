@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180402204020) do
+ActiveRecord::Schema.define(version: 20180411224648) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -105,29 +105,32 @@ ActiveRecord::Schema.define(version: 20180402204020) do
     t.datetime "updated_at",               null: false
     t.text     "comments"
     t.integer  "user_id"
-    t.time     "sttime"
   end
 
   add_index "tehservices", ["car_id"], name: "index_tehservices_on_car_id"
   add_index "tehservices", ["user_id"], name: "index_tehservices_on_user_id"
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "username"
     t.string   "name"
     t.string   "surname"
     t.date     "bdate"
+    t.boolean  "superadmin_role",        default: false
+    t.boolean  "supervisor_role",        default: false
+    t.boolean  "user_role",              default: false
+    t.boolean  "nemo_role",              default: true
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

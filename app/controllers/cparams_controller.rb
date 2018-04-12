@@ -1,4 +1,5 @@
 class CparamsController < ApplicationController
+  load_and_authorize_resource
   before_action :redirect_cancel, only: [:create, :update]
   
   def show

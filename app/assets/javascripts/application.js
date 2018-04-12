@@ -18,5 +18,7 @@
 //= require responsive.bootstrap.min
 //= require dataTables.fixedHeader.min
 //= require bootstrap-sprockets
+//= require date-de
+//= require toastr
 //= require_tree .
 

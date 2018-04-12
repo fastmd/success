@@ -76,7 +76,10 @@
 	            var ddt = (y - x) / (1000 * 60 * 60 * 24);
 	            if (ddt < 0) { 
 	            	ddt = 0;
-	            }	             
+	            }
+	            if (ddt*(1000 * 60 * 60 * 24) < (y - x)) { 
+	            	ddt = ddt + 1;
+	            }                      
 	            $("#dperiod").val(ddt);
              }    
              else if ( ($("#stdate").val()) && ($("#dperiod").val()) && ((flag == 0) || (flag == 3)) ) 
@@ -408,7 +411,7 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	</div>
     	<div class="col-md-6">
     	<!-- время конца -->
-    	<% if @contract.flag == 3 then %>
+    	<% if @contract.flag then %>
     	<%= simple_fields_for :timeend do |n| %>
     		<%= n.input :endtime, as: :time ,label: "Время окончания аренды" , default: @contract.enddate ? Time.parse(@contract.enddate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end, minute_step: 15 %>
     	<% end %> 

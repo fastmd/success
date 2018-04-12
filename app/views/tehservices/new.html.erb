@@ -3,7 +3,7 @@
   <div class="row">	  	
 	<div class="col-md-6">
   	<div  class="panel panel-info">
-  	  <div class="panel-heading"><strong>Новое ТО:</strong></div> 		
+  	  <div class="panel-heading"><strong><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>Новое ТО:</strong></div> 		
 	  <div class="panel-body">
 		<%= simple_form_for(@tehservice, url: tehservices_create_path) do |f| %>
 			  	
@@ -22,12 +22,12 @@
             <div class="col-md-6">
             <div class="form-group"> 
 			  	<%= label_tag :"Введите тип сервиса" %>
-			  	<%= select_tag :stype, options_for_select([['Замена масла', 1], ['Техобслуживание', 3], ['Страховка', 2], ['Техосмотр', 4]] ),  class: "form-control"%>
+			  	<%= select_tag :stype, options_for_select([['Пробег', 0],['Замена масла', 1], ['Техобслуживание', 3], ['Страховка', 2], ['Техосмотр', 4]] ),  class: "form-control"%>
 		  	</div>
 		  	</div>
 		  	
 		  	<div class="col-md-6">
-		  	<%= f.input :sprice, label: "Стоимость сервиса, #{$valuta}", as: :integer %>
+		  	<%= f.input :sprice, label: "Стоимость сервиса, #{$valuta}", as: :integer, hint: "(для пробега стоимость не указывается)" %>
 		  	</div>
 		  	
 	    	<!-- дата  -->
@@ -39,7 +39,9 @@
 	        </div>	
 	    	<!-- время  -->
 	    	<div class="col-md-6">
-	        <%= f.input :sttime, as: :time ,label: "Время проведения работ" , default: @tehservice.sdate ? Time.parse(@tehservice.sdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), minute_step: 15 %>	  	
+	    	<%= simple_fields_for :timebeg do |n| %>
+	        	<%= n.input :sttime, as: :time ,label: "Время проведения работ" , default: @tehservice.sdate ? Time.parse(@tehservice.sdate.strftime('%R')) : Time.parse(Time.current.strftime('%R')), minute_step: 15 %>
+	        <% end %>		    		  	
 		  	</div>
 		  	
 		  	<%= f.input :comments , as: :text %>
