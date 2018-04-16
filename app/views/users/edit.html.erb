@@ -1,0 +1,25 @@
+<% provide(:title, "#{@user.username}") %>
+
+<div class="jumbotron">
+<h3><center>Поменяйте <u>имя</u> пользователя <strong><%= "#{@user.username}" %></strong>, <u>почту</u> или <u>пароль</u></center></h3>
+
+<%= simple_form_for(@user, :url => {:controller => "users", :action => "update"}, html: { method: :put }) do |f| %>
+  <%= f.error_notification %>
+
+  <%= f.input :username, label: "Пользователь", required: true, disabled: false, hint: "обязательное поле", as: :string %>
+  <%= f.input :email, label: "Электронная почта", required: true, autofocus: true, hint: "обязательное поле", as: :email %>
+
+  <%= f.input :reset_password_token, as: :hidden %>
+  <%= f.full_error :reset_password_token %>
+
+  <div class="form-inputs">
+    <%= f.input :password, label: "Новый пароль", required: false, autofocus: false, hint: "оставьте это поле незаполненным, если не хотите менять пароль. #{@minimum_password_length} знакa минимум.", as: :password %>
+    <%= f.input :password_confirmation, label: "Подтверждение нового пароля", hint: "оставьте это поле незаполненным, если не хотите менять пароль", required: false, as: :password %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Сохранить", class: "btn btn-info" %> <%= link_to "Отмена", :back, class: "btn btn-warning" %>
+  </div>
+<% end %>
+</div>
+

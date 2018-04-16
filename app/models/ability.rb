@@ -27,6 +27,8 @@ class Ability
     end
     if user.nemo_role?
       can :smonth, Car
+    end
+    if !user.nemo_role? and !user.user_role? and !user.supervisor_role? and !user.superadmin_role? then
     end    
         
     # Define abilities for the passed in user here. For example:

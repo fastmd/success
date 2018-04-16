@@ -3,8 +3,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root to: 'cars#smonth'
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
- 
-  
+   
   devise_for :users, controllers: {
       sessions: 'users/sessions',
       passwords: 'users/passwords',
@@ -23,6 +22,18 @@ Rails.application.routes.draw do
   post 'users/dropallroles'
   get 'users/dropuser'
   post 'users/dropuser'
+  get 'users/givesuperadminrole'
+  post 'users/givesuperadminrole'
+  get 'users/edit'
+  post 'users/edit'
+  get 'users/update'
+  post 'users/update'
+  get 'users/new'
+  post 'users/new'
+  get 'users/create'
+  post 'users/create'
+  put 'users/create'
+  resources :users, :controller => "users"
 
   
   get "cars/smonth" => 'cars#smonth'

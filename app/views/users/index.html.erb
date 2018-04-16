@@ -50,7 +50,7 @@ $(document).ready(function() {
 } );
 </script>	  
 
-
+<%= link_to('Новый пользователь', users_new_path) %><br />
 <%= link_to('Edit current user registration', edit_user_registration_path) %><br />
 
 
@@ -60,16 +60,16 @@ $(document).ready(function() {
     <tr class="info">
       <th style="width:3%"></th>
       <th style="width:2%" class="all">№</th>
-      <th class="all">created at</th>	
-      <th class="all">username</th>
+      <th class="all">Дата создания</th>	
+      <th class="all">Пользователь</th>
       <th>email</th>
-      <th>role</th>
-      <th>sign in count</th>
-      <th>current sign in at</th>
-      <th>last sign in at</th>
-      <th>updated at</th>
-      <th>current sign in ip</th>
-      <th>last sign in ip</th>
+      <th>Роль</th>
+      <th>Счетчик входов</th>
+      <th>Дата тек. входа</th>
+      <th>Дата посл. входа</th>
+      <th>Дата обновления</th>
+      <th>Текущий ip</th>
+      <th>Последний ip</th>
       <th class="none"></th> 
     </tr>
    <% if i==0 then %></thead><% else %></tfoot><% end %>
@@ -79,25 +79,29 @@ $(document).ready(function() {
     <% if item.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
     	<td></td>
     	<td></td>
-        <td><%= item.created_at.strftime('%d.%m.%Y %R') %></td>	
+        <td><%= if item.created_at then item.created_at.strftime('%d.%m.%Y %R') end %></td>	
 	  	<td><%= item.username %></td>
 	  	<td><%= item.email %></td>
-	  	<td><% case when item.superadmin_role? then %> superadmin 
+	  	<td><% case when item.superadmin_role? then %><span class="glyphicon glyphicon-queen" aria-hidden="true">superadmin</span> 
 	  		         <% when item.supervisor_role? then %><span class="glyphicon glyphicon-king" aria-hidden="true">Администратор</span>
 	  		         <% when item.user_role? then %><span class="glyphicon glyphicon-knight" aria-hidden="true">Оператор</span>
 	  		         <% when item.nemo_role? then %><span class="glyphicon glyphicon-pawn" aria-hidden="true">немо</span>
 	  		         <% else %><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span><% end %></td>
 	  	<td><%= item.sign_in_count %></td>
-	  	<td><%= item.current_sign_in_at.strftime('%d.%m.%Y %R') %></td>
-	  	<td><%= item.last_sign_in_at.strftime('%d.%m.%Y %R') %></td>
-	  	<td><%= item.updated_at.strftime('%d.%m.%Y %R') %></td>
+	  	<td><%= if item.current_sign_in_at then item.current_sign_in_at.strftime('%d.%m.%Y %R') end %></td>
+	  	<td><%= if item.last_sign_in_at then item.last_sign_in_at.strftime('%d.%m.%Y %R') end %></td>
+	  	<td><%= if item.updated_at then item.updated_at.strftime('%d.%m.%Y %R') end %></td>
 	  	<td><%= item.current_sign_in_ip %></td>
 	  	<td><%= item.last_sign_in_ip %></td>
 	  	<td><%= link_to " " , users_giveuserrole_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-knight", :title => "Назначить пользователю #{item.username} роль Оператор" %>
 	  		<%= link_to " " , users_givenemorole_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-pawn", :title => "Назначить пользователю #{item.username} роль Немо" %>
 	  		<%= link_to " " , users_dropallroles_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-eye-close", :title => "Послать пользователя #{item.username} к черту" %>
 	  		<%= link_to " " , users_givesupervisorrole_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-king", :title => "Назначить пользователю #{item.username} роль Администратор" %>
-	  		<%= link_to_if(!item.contracts.any?," " , users_dropuser_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => "Удалить пользователя #{item.username}", data: { confirm: "Удалить пользователя #{item.username} восвояси?" }) %>
+	  		<% if current_user.superadmin_role? then %>
+	  		  <%= link_to " " , users_givesuperadminrole_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-queen", :title => "Назначить пользователю #{item.username} роль superadmin" %>
+	  		<% end %>
+	  		<%= link_to_if(!item.contracts.any?," " , users_dropuser_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-remove", :title => "Грохнуть пользователя #{item.username} к чертовой матери", data: { confirm: "Удалить пользователя #{item.username} восвояси?" }) %>
+	  	    <%= link_to " " , edit_user_path(:id => item.id),:method => :get, :class=> "glyphicon glyphicon-pencil", :title => "Изменить имя, email или пароль пользователя #{item.username}" %>
 	  	</td>	  	
     </tr>
   <% end %>    
