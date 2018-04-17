@@ -200,6 +200,7 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
     @car = @contract.car
     @client = @contract.client
+    @client2 = @contract.client2
     # parcurs 
     if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @contract.stdate).count!=0 then 
       @parcurs = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @contract.stdate).last.parcurs 
@@ -217,7 +218,7 @@ class ContractsController < ApplicationController
         if @contract.flag == 1 then 
            format.pdf { send_data BronareReport.new.to_pdf(@contract,@car,@client), :type => 'application/pdf', :filename => "bronare_#{@car.marca}_#{@contract.id}_#{@contract.cnum}.pdf" }
         else
-           format.pdf { send_data ContractReport.new.to_pdf(@contract,@car,@client), :type => 'application/pdf', :filename => "contract_#{@car.marca}_#{@contract.id}_#{@contract.cnum}.pdf" }  
+           format.pdf { send_data ContractReport.new.to_pdf(@contract,@car,@client), :type => 'application/pdf', :filename => "contract_#{@car.marca}_#{@contract.id}_#{@contract.cnum}.pdf" } 
         end
     end
   end
@@ -342,7 +343,7 @@ class ContractsController < ApplicationController
   end
     
   def contract_params
-    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:user,:stdate,:enddate,:fenddate,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs,:sttime,:endtime,:fendtime,:place)
+    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:client2_id,:user,:stdate,:enddate,:fenddate,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs,:sttime,:endtime,:fendtime,:place)
   end
     
   def contract_init(contract)
@@ -351,6 +352,7 @@ class ContractsController < ApplicationController
     contract.flag = contract_params[:flag]
     contract.car_id = if contract_params[:car_id].nil? then params[:car_id] else contract_params[:car_id] end
     contract.client_id = contract_params[:client_id]
+    contract.client2_id = contract_params[:client2_id]
     contract.user_id= contract_params[:user_id]
     contract.place= contract_params[:place]
     # stdate

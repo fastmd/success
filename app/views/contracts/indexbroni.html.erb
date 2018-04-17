@@ -60,7 +60,9 @@
 						        	  (case c.dperiod when 1 then "день" when 2 then "дня" when 3 then "дня" when 4 then "дня" else "дней" end) end %></td>
 						<td><%= c.garant_summ %></td>
 						<td><%= number_to_currency(c.price,:unit=>'€', precision: 0) %></td>
-						<td><% unless c.client.nil? then %><%= link_to "#{c.client.sname} #{c.client.name} #{c.client.fname} #{c.client.tel} #{c.client.pemail}" , edit_client_path(c.client),:method => :get, :title => 'Редактировать клиента' %><% end %></td>
+						<td><% unless c.client.nil? then %><%= link_to "#{c.client.sname} #{c.client.name} #{c.client.fname} #{c.client.tel} #{c.client.pemail}" , edit_client_path(c.client),:method => :get, :title => 'Редактировать клиента' %><% end %>
+							<% unless c.client2.nil? then %><%= link_to ", #{c.client2.sname} #{c.client2.name} #{c.client2.fname} #{c.client2.tel} #{c.client2.pemail}" , edit_client_path(c.client2),:method => :get, :title => 'Редактировать клиента' %><% end %>
+						</td>
 						<td><%= case c.place when 0 then 'Аэропорт' when 1 then 'Офис' else '' end %></td>					
 					</tr>		
 			<% end %>			

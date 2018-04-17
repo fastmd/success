@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180411224648) do
+ActiveRecord::Schema.define(version: 20180416185451) do
 
   create_table "cars", force: :cascade do |t|
     t.string   "marca"
@@ -83,9 +83,11 @@ ActiveRecord::Schema.define(version: 20180411224648) do
     t.decimal  "price"
     t.decimal  "curs"
     t.integer  "place"
+    t.integer  "client2_id"
   end
 
   add_index "contracts", ["car_id"], name: "index_contracts_on_car_id"
+  add_index "contracts", ["client2_id"], name: "index_contracts_on_client2_id"
   add_index "contracts", ["client_id"], name: "index_contracts_on_client_id"
   add_index "contracts", ["user_id"], name: "index_contracts_on_user_id"
 

@@ -65,7 +65,9 @@
 						<td><%= c.zalog %></td>
 						<td><%= number_to_currency(c.price,:unit=>'€', precision: 0) %></td> 
 						<td><%= number_to_currency(c.summ,:unit=>'€', precision: 0, separator: ".", delimiter: "") %> x <%= "#{c.curs} MDL" %> = <%= "#{c.costlei} MDL" %></td>
-						<td><% unless c.client.nil? then %><%= link_to "#{c.client.sname} #{c.client.name} #{c.client.fname} #{c.client.tel} #{c.client.pemail}" , edit_client_path(c.client),:method => :get, :title => 'Редактировать клиента' %><% end %></td>
+						<td><% unless c.client.nil? then %><%= link_to "#{c.client.sname} #{c.client.name} #{c.client.fname} #{c.client.tel} #{c.client.pemail}" , edit_client_path(c.client),:method => :get, :title => 'Редактировать клиента' %><% end %>
+							<% unless c.client2.nil? then %><%= link_to ", #{c.client2.sname} #{c.client2.name} #{c.client2.fname} #{c.client2.tel} #{c.client2.pemail}" , edit_client_path(c.client2),:method => :get, :title => 'Редактировать клиента' %><% end %>
+						</td>
 						<td><%= if Wlong.where("(contract_id is not null and contract_id = ? AND car_id = ? AND wdate = ?)", c.id, c.car_id, c.stdate).count!=0 then Wlong.where("(contract_id is not null and contract_id = ? AND car_id = ? AND wdate = ?)", c.id, c.car_id, c.stdate).last.parcurs end %></td>
 						<td><%= if Wlong.where("(contract_id is not null and contract_id = ? AND car_id = ? AND wdate = ?)", c.id, c.car_id, c.fenddate).count!=0 then Wlong.where("(contract_id is not null and contract_id = ? AND car_id = ? AND wdate = ?)", c.id, c.car_id, c.fenddate).last.parcurs end %></td>					
 					</tr>		

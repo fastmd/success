@@ -304,14 +304,7 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<% end %>
 	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	    		   	
     	<%= f.hidden_field :client_id, :id => "client_id" %>
-    <!--	<%= f.input :client_id, label: 'Клиент ', :collection => Client.all.order(sname: :asc, name: :asc, fname: :asc), 
-				    :label_method => lambda { |client| "#{client.sname} | #{client.name} | #{client.fname} "}, 
-				    value_method: :id, include_blank: true, prompt: "Клиент..." %> 
-      <%= f.input :client do %>
-          <%= f.select :client, Client.all.order(:name).map { |r| [r.name, r.id] }, include_blank: true %>
-      <% end %>	 -->			    
-            
-   			
+    	
 		<div id="client_info">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 		  <div class="panel panel-default">
@@ -333,6 +326,14 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
 		  </div>
 		</div>
 		</div>
+		
+    	<%= f.input :client2_id, label: 'Второй водитель ', :collection => Client.all.order(sname: :asc, name: :asc, fname: :asc), 
+				    :label_method => lambda { |client| "#{client.sname}  #{client.name}  #{client.fname} "}, 
+				    value_method: :id, include_blank: true, prompt: "Выбрать второго водителя...", 
+				    :readonly => if ((@contract.flag == 1 or @contract.flag == 2) and controller.action_name!='show') then false else true end %> 
+   <!--   <%= f.input :client do %>
+          <%= f.select :client, Client.all.order(:name).map { |r| [r.name, r.id] }, include_blank: true %>
+      <% end %>	 	-->		    		
 		
     	<!-- контроллер-экшн -->
     	<%= hidden_field_tag 'vc' , controller.controller_name %>
