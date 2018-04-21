@@ -409,31 +409,33 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
 		      <div class="modal-body">
 	  	          <%= f.simple_fields_for(:client) do |fff| %>
                     <%= fff.input :id, as: :integer, as: :hidden %>
-					<%= fff.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
-					<%= fff.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
-					<%= fff.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25}, as: :hidden %>
-					<%= fff.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25} %>
+					<%= fff.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= fff.input :name, label: "Имя", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= fff.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25}, as: :hidden, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= fff.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
 					<div class="col-md-6">
-                    <label for='contract_client2_attributes_bdate' class="control-label">Дата рождения</label><%= date_field_tag 'contract_client_attributes_bdate', if !@contract.client or @contract.client.bdate.nil? then nil else @contract.client.bdate.to_date end, class: "form-control" %>
+                    <label for='contract_client2_attributes_bdate' class="control-label">Дата рождения</label>
+                    <%= date_field_tag 'contract_client_attributes_bdate', if !@contract.client or @contract.client.bdate.nil? then nil else @contract.client.bdate.to_date end, class: "form-control", :readonly => if (controller.action_name=='show') then true else false end %>
                     </div>
                     <div class="col-md-6">
-                    <label for='contract_client2_attributes_dn' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'contract_client_attributes_dn',if !@contract.client or @contract.client.dn.nil? then nil else @contract.client.dn.to_date end, class: "form-control" %>
+                    <label for='contract_client2_attributes_dn' class="control-label">Дата выдачи паспорта</label>
+                    <%= date_field_tag 'contract_client_attributes_dn',if !@contract.client or @contract.client.dn.nil? then nil else @contract.client.dn.to_date end, class: "form-control", :readonly => if (controller.action_name=='show') then true else false end %>
 					</div>
 					<div class="col-md-6">
-					<%= fff.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25} %>
+					<%= fff.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
 					</div>
 					<div class="col-md-6">
-					<%= fff.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true %>
+					<%= fff.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true, :readonly => if (controller.action_name=='show') then true else false end %>
 					</div>
-					<%= fff.input :address, label: "Адрес", as: :string, :input_html => { :size => 50} %>
-					<%= fff.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25} %>
-					<%= fff.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25} %>
-					<%= fff.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50} %>	   			  				  	
+					<%= fff.input :address, label: "Адрес", as: :string, :input_html => { :size => 50}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= fff.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= fff.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= fff.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50}, :readonly => if (controller.action_name=='show') then true else false end %>	   			  				  	
   			      <% end %> 
 		      </div>
 		      <div class="modal-footer">
 		        <!--<button type="button" class="btn btn-default" data-dismiss="modal" id="clientClosed">Cancel</button>-->
-		        <button type="button" class="btn btn-primary" data-dismiss="modal" id="clientOk">OK</button>
+		        <button type="button" class="btn btn-success" data-dismiss="modal" id="clientOk">Закрыть</button>
 		      </div>
 		    </div>
 		  </div>
@@ -465,31 +467,33 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
 		      <div class="modal-body">
 	  	          <%= f.simple_fields_for(:client2) do |ff| %>
                     <%= ff.input :id, as: :integer, as: :hidden %>
-					<%= ff.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
-					<%= ff.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
-					<%= ff.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25}, as: :hidden %>
-					<%= ff.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25} %>
+					<%= ff.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= ff.input :name, label: "Имя", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= ff.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25}, as: :hidden, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= ff.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
 					<div class="col-md-6">
-                    <label for='contract_client2_attributes_bdate' class="control-label">Дата рождения</label><%= date_field_tag 'contract_client2_attributes_bdate', if !@contract.client2 or @contract.client2.bdate.nil? then nil else @contract.client2.bdate.to_date end, class: "form-control" %>
+                    <label for='contract_client2_attributes_bdate' class="control-label">Дата рождения</label>
+                    <%= date_field_tag 'contract_client2_attributes_bdate', if !@contract.client2 or @contract.client2.bdate.nil? then nil else @contract.client2.bdate.to_date end, class: "form-control", :readonly => if (controller.action_name=='show') then true else false end %>
                     </div>
                     <div class="col-md-6">
-                    <label for='contract_client2_attributes_dn' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'contract_client2_attributes_dn',if !@contract.client2 or @contract.client2.dn.nil? then nil else @contract.client2.dn.to_date end, class: "form-control" %>
+                    <label for='contract_client2_attributes_dn' class="control-label">Дата выдачи паспорта</label>
+                    <%= date_field_tag 'contract_client2_attributes_dn',if !@contract.client2 or @contract.client2.dn.nil? then nil else @contract.client2.dn.to_date end, class: "form-control", :readonly => if (controller.action_name=='show') then true else false end %>
 					</div>
 					<div class="col-md-6">
-					<%= ff.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25} %>
+					<%= ff.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
 					</div>
 					<div class="col-md-6">
-					<%= ff.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true %>
+					<%= ff.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true, :readonly => if (controller.action_name=='show') then true else false end %>
 					</div>
-					<%= ff.input :address, label: "Адрес", as: :string, :input_html => { :size => 50} %>
-					<%= ff.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25} %>
-					<%= ff.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25} %>
-					<%= ff.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50} %>	   			  				  	
+					<%= ff.input :address, label: "Адрес", as: :string, :input_html => { :size => 50}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= ff.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= ff.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25}, :readonly => if (controller.action_name=='show') then true else false end %>
+					<%= ff.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50}, :readonly => if (controller.action_name=='show') then true else false end %>	   			  				  	
   			      <% end %> 
 		      </div>
 		      <div class="modal-footer">
 		        <!--<button type="button" class="btn btn-default" data-dismiss="modal" id="client2Closed">Cancel</button>-->
-		        <button type="button" class="btn btn-primary" data-dismiss="modal" id="client2Ok">OK</button>		        
+		        <button type="button" class="btn btn-success" data-dismiss="modal" id="client2Ok">Закрыть</button>		        
 		      </div>
 		    </div>
 		  </div>

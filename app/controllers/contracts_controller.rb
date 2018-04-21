@@ -383,7 +383,7 @@ class ContractsController < ApplicationController
     gon.clients = Client.all                                  
     @contract = Contract.find(params[:id])
     @car = @contract.car
-    unless @contract.client2_id? then @contract.client2 = Client.new end
+    if (!@contract.client2_id? and @contract.flag != 3)  then @contract.client2 = Client.new end
     unless @contract.client_id? then @contract.client = Client.new end  
     @clients = Client.all.order(:sname,:name,:fname)
     # parcurs 

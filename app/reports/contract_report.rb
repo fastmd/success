@@ -288,7 +288,7 @@ class ContractReport < Prawn::Document
     end   #bounding box
      
     #-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    if contract.client2 then
+    if contract.client2_id then
     start_new_page
     text "<u><link href='http://www.success.md'>success.md</link></u>", :size => 9, :style => :normal, :align => :left,:inline_format => true
     text Time.now.strftime("Документ сгенерирован %e %b %Y в %H:%M"), :align => :right, :style => :italic, :size => 8
