@@ -69,6 +69,7 @@ gem 'autoprefixer-rails', '~> 7.1', '>= 7.1.6'
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.6'
 
 gem 'simple_form', '~> 3.4'
+#gem 'cocoon', '~> 1.2', '>= 1.2.11'
 
 gem 'cancancan', '~> 2.1', '>= 2.1.4'
 gem 'toastr-rails', '~> 1.0', '>= 1.0.3'

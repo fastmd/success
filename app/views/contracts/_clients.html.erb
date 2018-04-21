@@ -19,12 +19,9 @@
 	  	<% clients = Client.all %>
 	  	<% clients.each do |clitem| %>
 		  	<tr>
-			  	<td title='Выбрать клиента'><button type="button" class="btn btn-info  btn-xs" onclick="myFunction(<%= clitem.id %>,
-			  		     '<%= clitem.sname %> <%= clitem.name %>  <%= clitem.fname %> <%= clitem.tel %>', 
-			  		     'Паспорт: <%= clitem.pseria %> <%= clitem.dn %>. Дата рождения: <%= clitem.bdate%>. IDNP: <%= clitem.idno %>. Страна: <%= clitem.de %>. Адрес: <%= clitem.address %>. Тел: <%= clitem.tel %>. Email: <%= clitem.pemail %>.')",
-			  		      '<%= clitem.sname %>'
-			  		      >
-			  		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+			  	<td title='Выбрать клиента'>
+			  		<button type="button" class="btn btn-info  btn-xs" onclick="myFunction(<%= clitem.id %>)">
+			  		   <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
 	                </button>
 			  	</td>
 			  	<td><%= clitem.sname%> <%= clitem.name%> <%= clitem.fname%></td>

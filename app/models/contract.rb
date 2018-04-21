@@ -16,5 +16,6 @@ class Contract < ActiveRecord::Base
   validates :user_id, presence: true, numericality: { only_integer: true }
   validates :flag, presence: true, numericality: { only_integer: true }
   
-  accepts_nested_attributes_for :client
+  accepts_nested_attributes_for :client, :allow_destroy => false, :reject_if  => :all_blank
+  accepts_nested_attributes_for :client2, :allow_destroy => false, :reject_if  => :all_blank
 end

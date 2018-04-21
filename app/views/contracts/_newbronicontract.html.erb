@@ -24,97 +24,23 @@
 } );
 
   
-   function myFunction(a,b,c,d) 
-    {  
-	    var text = a;   
+  $(function() {
+    $("#pan1").toggle();
+    calcPeriodDesf();
+  });
+  
+  function myFunction(a) {     
 	    $("#client_id").val(a);
-	    $("#client_info1").val(b);
-	    $("#client_info2").val(c);
-	    $("#client_sname").val(d);
-    }
-
-  $(function() {
-    $("#pan1").toggle()
-    $("#rem2").toggle()
-    $("#clname").attr('disabled', 'disabled');    
-  });
-  
-  $(function() {
-  $("#rem1").change( function() {
-    $("#pan1").toggle()
-    $("#pan2").toggle()
-    $("#lrem2").toggle()
-    $("#rem2").toggle()
-    $("#pser").toggle()
-    $("#clname").toggle()
-    $("#lclinf").toggle()
-    $("#client_info").toggle()
-  });
-  });
-  
-  $(function() {
-  $("#rem2").change( function() {
-    $("#pan2").toggle()
-    $("#lrem1").toggle()
-    $("#lclinf").toggle()
-    $("#client_info").toggle()
-    $("#rem1").toggle()
-    $("#pser").toggle()
-  });
-  });
-  
-  function disableElements()
-  {
-   document.getElementById("#clname").disabled=true;
+	    $("#contract_client_id").val(a);
   }
   
-   function calcPeriod(flag){  
-             if ( ($("#stdate").val()) && ($("#enddate").val()) && ((flag == 0) || (flag == 1)) && (flag != 3) ) 
-             {
-             	var x = new Date($("#stdate").val());
-                var y = new Date($("#enddate").val());
-	            var ddt = (y - x) / (1000 * 60 * 60 * 24);
-	            if (ddt < 0) { 
-	            	ddt = 0;
-	            }
-	            if (ddt*(1000 * 60 * 60 * 24) < (y - x)) { 
-	            	ddt = ddt + 1;
-	            }                      
-	            $("#dperiod").val(ddt);
-             }    
-             else if ( ($("#stdate").val()) && ($("#dperiod").val()) && ((flag == 0) || (flag == 3)) ) 
-             {
-                var z = Number($("#dperiod").val());
-                var x = new Date($("#stdate").val());             
-                var dd = x.getDate() + z;
-                x.setDate(dd);
-                var yyyy = x.getFullYear();
-                var mm = x.getMonth() + 1;
-                dd = x.getDate();
-                mm = (mm < 10 ? "0" + mm:mm);
-			    dd = (dd < 10 ? "0" + dd:dd);	
-                if (yyyy && mm && dd) {             
-                	$("#enddate").val(String(yyyy) + '-' + String(mm) + '-'+ String(dd));
-                }               	
-             } 
-             else if ( ($("#enddate").val()) && ($("#dperiod").val()) && ((flag == 1) || (flag == 3)) )
-             {
-                var z = Number($("#dperiod").val());
-                var x = new Date($("#enddate").val());             
-                var dd = x.getDate() - z;
-                x.setDate(dd);
-                var yyyy = x.getFullYear();
-                var mm = x.getMonth() + 1;
-                dd = x.getDate();
-                mm = (mm < 10 ? "0" + mm:mm);
-			    dd = (dd < 10 ? "0" + dd:dd);	
-                if (yyyy && mm && dd) {             
-                	$("stdate").val(String(yyyy) + '-' + String(mm) + '-'+ String(dd));
-                }             	
-             }                        	            
-   };
- 
-   function priceperday(){
+  function rem1changed() {
+    $("#pan1").toggle();
+    $("#pan2").toggle();
+    $("#client_info").toggle();
+  }
+    
+   function priceperday() {
         var car = $("#car_id").val();
         var cars = gon.cars;
         var price = 0;
@@ -171,7 +97,7 @@
            }
         }             
         $("#price").val(price);	            
-   };
+   }
    
   function getzalog(){
         var car = $("#car_id").val();
@@ -187,7 +113,7 @@
            }
         }             
         $("#zalog").val(zalog);	            
-   };
+   }
  
    function getparcurs(){
         var car = $("#car_id").val();
@@ -202,9 +128,9 @@
         }                      
         $("#parcurs").val(null);
         document.getElementById('lastparcurs').innerHTML = 'Пробег на начало ' + parcurs;	            
-   };
+   }
  
-  function getgarantsum(){
+  function getgarantsum() {
         var car = $("#car_id").val();
         var cars = gon.cars;
         var zalog = 0;  
@@ -218,9 +144,9 @@
            }
         }             
         $("#garant_summ").val(zalog);	            
-   }; 
+   } 
      
-  function calccontrsum(){
+  function calccontrsum() {
         var summ = 0;
         var costlei = 0;
         if ( ($("#price").val()) && ($("#dperiod").val()) )
@@ -233,9 +159,9 @@
         }
         $("#summ").val(summ);
         $("#costlei").val(costlei);             	            
-   }; 
+   } 
    
-   function getPriceFromSumm(){
+   function getPriceFromSumm() {
    	    var price = 0;
    	    var costlei = 0;
 		if ( ($("#summ").val()) && ($("#dperiod").val()) )
@@ -248,21 +174,172 @@
         }
         $("#price").val(price);
         $("#costlei").val(costlei); 	  	
-   };
+   }
    
-   function whenchangeCar(){
-   	 getzalog();
-   	 getgarantsum();
-   	 getparcurs();
-   	 priceperday();
-   	 calccontrsum();
-   };    
+   function whenchangeCar() {
+    	var contrFlag = document.getElementById("contract_flag").value;
+   	    if (contrFlag == 1) {
+   	 	   getgarantsum();
+    	}
+    	if ((contrFlag == 1) || (contrFlag == 2)) {
+   	 	   priceperday();
+    	 }
+		if (contrFlag == 2) {
+	   	 getzalog();
+	   	 getparcurs(); 
+	   	 calccontrsum();
+   	    }
+   }    
  
-   function whenchangeDates(flag){
+   function whenchangeDates(flag) {
+     var contrFlag = document.getElementById("contract_flag").value;
    	 calcPeriod(flag);
    	 priceperday();
-   	 calccontrsum();
-   }; 
+   	 if (contrFlag == 2) {
+   	     calccontrsum();
+   	 }
+   }
+     
+   function timebegChanged(id) {
+     if (id == "timebeg_sttime_4i") {
+       	document.getElementById("timeend_endtime_4i").value = document.getElementById("timebeg_sttime_4i").value;
+       	document.getElementById("timeend_endtime_5i").value = document.getElementById("timebeg_sttime_5i").value;
+     }	
+     if (id == "timebeg_sttime_5i") {
+       	document.getElementById("timeend_endtime_5i").value = document.getElementById("timebeg_sttime_5i").value;
+     }
+     whenchangeDates(0);   	 
+   }  
+
+   function calcPeriod(flag) {  
+       if ( ($("#stdate").val()) && ($("#enddate").val()) && ((flag == 0) || (flag == 1)) && (flag != 3) ) {
+             	var x = new Date($("#stdate").val());
+             	x.setHours(document.getElementById("timebeg_sttime_4i").value);
+             	x.setMinutes(document.getElementById("timebeg_sttime_5i").value);
+                var y = new Date($("#enddate").val());
+             	y.setHours(document.getElementById("timeend_endtime_4i").value);
+             	y.setMinutes(document.getElementById("timeend_endtime_5i").value);                
+	            var ddt = Math.ceil((y - x) / (1000 * 60 * 60 * 24));
+	            if (ddt < 0) { ddt = 0; }                     
+	            $("#dperiod").val(ddt);
+        } else if ( ($("#stdate").val()) && ($("#dperiod").val()) && ((flag == 0) || (flag == 3)) ) {
+                var z = Number($("#dperiod").val());
+                var x = new Date($("#stdate").val());          
+                var dd = x.getDate() + z;
+                x.setDate(dd);        
+                $("#enddate").val(convDateForField(x));
+                document.getElementById("timeend_endtime_4i").value = document.getElementById("timebeg_sttime_4i").value;
+                document.getElementById("timeend_endtime_5i").value = document.getElementById("timebeg_sttime_5i").value;   
+        } else if ( ($("#enddate").val()) && ($("#dperiod").val()) && ((flag == 1) || (flag == 3)) ) {
+                var z = Number($("#dperiod").val());
+                var x = new Date($("#enddate").val());             
+                var dd = x.getDate() - z;
+                x.setDate(dd);          
+                $("stdate").val(convDateForField(x));
+                document.getElementById("timebeg_sttime_4i").value = document.getElementById("timeend_endtime_4i").value;
+                document.getElementById("timebeg_sttime_5i").value = document.getElementById("timeend_endtime_5i").value;                	
+       }
+       calcPeriodDesf();                        	            
+   }
+   
+   function calcPeriodDesf() {
+      if (($("#stdate").val()) && ($("#enddate").val())) {
+             	var x = new Date($("#stdate").val());
+             	x.setHours(document.getElementById("timebeg_sttime_4i").value);
+             	x.setMinutes(document.getElementById("timebeg_sttime_5i").value);
+                var y = new Date($("#enddate").val());
+             	y.setHours(document.getElementById("timeend_endtime_4i").value);
+             	y.setMinutes(document.getElementById("timeend_endtime_5i").value);                
+	            var ddays = Math.floor((y - x) / (1000 * 60 * 60 * 24));
+	            var dhours = Math.floor(((y - x) % (1000 * 60 * 60 * 24))/(1000 * 60 * 60));
+	            var dmins = Math.floor(((y - x) -  Math.abs(ddays) * (1000 * 60 * 60 * 24) - Math.abs(dhours) * (1000 * 60 * 60))/(1000 * 60));
+	            if (y < x) {                     
+	            	document.getElementById("dperiodDesf").value = "начальная дата > конечной!!!";
+	            } else {
+	            	document.getElementById("dperiodDesf").value = "" + ddays + " дн. " + dhours + " ч. " + dmins + " мин.";	
+	            }
+        }
+        else {
+        	    document.getElementById("dperiodDesf").value = "";
+        }
+           	  	
+   }	
+   
+   function convDateForField(x) {
+       var yyyy = x.getFullYear();
+       var mm = x.getMonth() + 1;
+       var dd = x.getDate();
+       mm = (mm < 10 ? "0" + mm:mm);
+	   dd = (dd < 10 ? "0" + dd:dd);	
+       if (yyyy && mm && dd) {             
+           return (String(yyyy) + '-' + String(mm) + '-'+ String(dd));
+       }
+       else {
+       	   return null;
+       }
+   }    
+   
+   function getClientById(id) {
+        var clients = gon.clients;
+        var nclients = clients.length;
+        var from, ndate, i;   	
+        var attrname = id.replace("id", "attributes_");
+                document.getElementById(attrname.concat("id")).value = null;
+	           	document.getElementById(attrname.concat("sname")).value = null;
+	           	document.getElementById(attrname.concat("name")).value = null;
+	            //document.getElementById(attrname.concat("sname")).disabled = false;
+	           	//document.getElementById(attrname.concat("name")).disabled = false;
+	           	document.getElementById(attrname.concat("fname")).value = null;
+	           	document.getElementById(attrname.concat("pseria")).value = null;
+	           	document.getElementById(attrname.concat("idno")).value = null;
+	           	document.getElementById(attrname.concat("de")).value = null;
+	           	document.getElementById(attrname.concat("address")).value = null;
+	           	document.getElementById(attrname.concat("pemail")).value = null;
+	           	document.getElementById(attrname.concat("tel")).value = null;
+	           	document.getElementById(attrname.concat("comments")).value = null;
+	           	document.getElementById(attrname.concat("bdate")).value = null;
+	           	document.getElementById(attrname.concat("dn")).value = null;
+        var clientId = document.getElementById(id).value;
+        if (clientId) {	           	
+	        for (i = 0; i < nclients; i++) {
+	           if (clients[i].id == clientId) {
+	           	    document.getElementById(attrname.concat("id")).value = clients[i].id;
+		           	document.getElementById(attrname.concat("sname")).value = clients[i].sname;
+		           	//document.getElementById(attrname.concat("sname")).disabled = true;
+		           	document.getElementById(attrname.concat("name")).value = clients[i].name;
+		           	//document.getElementById(attrname.concat("name")).disabled = true;
+		           	document.getElementById(attrname.concat("fname")).value = clients[i].fname;
+		           	document.getElementById(attrname.concat("pseria")).value = clients[i].pseria;
+		           	document.getElementById(attrname.concat("idno")).value = clients[i].idno;
+		           	document.getElementById(attrname.concat("de")).value = clients[i].de;
+		           	document.getElementById(attrname.concat("address")).value = clients[i].address;
+		           	document.getElementById(attrname.concat("pemail")).value = clients[i].pemail;
+		           	document.getElementById(attrname.concat("tel")).value = clients[i].tel;
+		           	document.getElementById(attrname.concat("comments")).value = clients[i].comments;
+		           	if (clients[i].bdate) {   
+			           	var from = clients[i].bdate.split(".");
+			           	var ndate = new Date(from[2], from[1] - 1, from[0]);
+			           	document.getElementById(attrname.concat("bdate")).value = convDateForField(ndate);
+		           	}
+		           	if (clients[i].dn) { 
+			           	from = clients[i].dn.split(".");
+			           	ndate = new Date(from[2], from[1] - 1, from[0]);
+			           	document.getElementById(attrname.concat("dn")).value = convDateForField(ndate);
+		           	}
+	           	}
+	        }
+        }
+   }        
+     
+  function makeNewClient(c) {
+  	  var attrname = c.concat("_id");
+  	  if (c == "client") {
+  	      document.getElementById(attrname).value = null;
+  	  } 	  
+  	  attrname = "contract_".concat(attrname);
+  	  document.getElementById(attrname).value = null;
+  	  getClientById(attrname);
+  }   
      
   </script>
 
@@ -288,7 +365,8 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
         <div class="row">	  	
 		<div class="col-md-6">
 		<div class="panel  panel-default">		  	
-		<div class="panel-body">  	  		
+		<div class="panel-body">
+	    <%= f.error_notification %>  	  		
 	    <!-- ручной номер документа -->
 	    <div class="col-md-6">
     		<%= f.input :cnum, label: "Номер ручной", as: :string, :input_html => { :size => 25}, :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end %>
@@ -300,40 +378,123 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<%= f.input :flag, :as => :hidden %>   	
     	<!-- клиент -->
     	<% if @contract.flag != 3 and controller.action_name!='show' then %>  	    	
-    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1" %>Создать нового клиента </label></a><br>
-    	<% end %>
-	    <a><label id="lrem2" for="rem_lab"><%= check_box_tag 'active','0',false, :id => "rem2" %>Клиент</label></a>    	    		   	
-    	<%= f.hidden_field :client_id, :id => "client_id" %>
-    	
-		<div id="client_info">
-		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-		  <div class="panel panel-default">
-		    <div class="panel-heading" role="tab" id="headingOne">
-		      <h4 class="panel-title">
-		        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">	
-		          <%= text_field_tag 'client_info1', if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname} #{@contract.client.tel}" end , :readonly => true, class: "form-control" %> 
-		        <!-- <%= if @contract.client then "#{@contract.client.sname} #{@contract.client.name} #{@contract.client.fname} #{@contract.client.tel}" end %> -->
-		        </a>
-		      </h4>
-		    </div>
-		    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-		      <div class="panel-body">
-		        <%= text_area_tag 'client_info2', 
-		             if @contract.client then "Паспорт: #{@contract.client.pseria} #{@contract.client.dn}. Дата рождения: #{@contract.client.bdate}. IDNP: #{@contract.client.idno}. Страна: #{@contract.client.de}. Адрес: #{@contract.client.address}.  Email: #{@contract.client.pemail}." end , 
-		             :readonly => true, class: "form-control" %>
+    	<a><label id="lrem1" for="rem_lab"><%= check_box_tag 'active','1',false, :id => "rem1", :onchange => "rem1changed()" %>Создать нового клиента </label></a><br>
+    	<% end %>  	    		   	
+    	<%= f.hidden_field :client_id, :id => "client_id", :input_html => { :onchange => "getClientById(this.id)" } %>
+ 
+        <div id="client_info">
+    	<%= f.input :client_id, label: 'Клиент ', :collection => Client.all.order(:sname, :name, :fname), 
+				    :label_method => lambda { |client| "#{client.sname}  #{client.name}  #{client.fname} "}, 
+				    value_method: :id, include_blank: false, prompt: "Выбрать клиента...", 
+				    :readonly => if ((@contract.flag == 1 or @contract.flag == 2) and controller.action_name!='show') then false else true end,
+				    :input_html => { :onchange => "getClientById(this.id)" }, required: true %> 		
+        <!-----------------------------------------------1b---------------------------------------------->
+		<!-- Button trigger modal -->
+		<% if @contract.flag != 3 and controller.action_name!='show' then %>
+			<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#clientModal" onclick="makeNewClient('client')">Клиент - новый</button>
+			<%= link_to 'Клиент - Редактировать', "#", data: {toggle: "modal", target: "#clientModal"}, class: "btn btn-default btn-sm" %>
+		<% else %>		
+			<%= link_to 'Клиент - Просмотр', "#", data: {toggle: "modal", target: "#clientModal"}, class: "btn btn-default btn-sm" %>
+		<% end %>
+		</div>
+		
+		<!-- Modal -->
+		<div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="clientModalLabel">Клиент</h4>
+		      </div>
+		      <div class="modal-body">
+	  	          <%= f.simple_fields_for(:client) do |fff| %>
+                    <%= fff.input :id, as: :integer, as: :hidden %>
+					<%= fff.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
+					<%= fff.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
+					<%= fff.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25}, as: :hidden %>
+					<%= fff.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25} %>
+					<div class="col-md-6">
+                    <label for='contract_client2_attributes_bdate' class="control-label">Дата рождения</label><%= date_field_tag 'contract_client_attributes_bdate', if !@contract.client or @contract.client.bdate.nil? then nil else @contract.client.bdate.to_date end, class: "form-control" %>
+                    </div>
+                    <div class="col-md-6">
+                    <label for='contract_client2_attributes_dn' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'contract_client_attributes_dn',if !@contract.client or @contract.client.dn.nil? then nil else @contract.client.dn.to_date end, class: "form-control" %>
+					</div>
+					<div class="col-md-6">
+					<%= fff.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25} %>
+					</div>
+					<div class="col-md-6">
+					<%= fff.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true %>
+					</div>
+					<%= fff.input :address, label: "Адрес", as: :string, :input_html => { :size => 50} %>
+					<%= fff.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25} %>
+					<%= fff.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25} %>
+					<%= fff.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50} %>	   			  				  	
+  			      <% end %> 
+		      </div>
+		      <div class="modal-footer">
+		        <!--<button type="button" class="btn btn-default" data-dismiss="modal" id="clientClosed">Cancel</button>-->
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" id="clientOk">OK</button>
 		      </div>
 		    </div>
 		  </div>
 		</div>
-		</div>
+		<!-----------------------------------------------1e---------------------------------------------->		    		
+				
 		
-    	<%= f.input :client2_id, label: 'Второй водитель ', :collection => Client.all.order(sname: :asc, name: :asc, fname: :asc), 
+    	<%= f.input :client2_id, label: 'Второй водитель ', :collection => Client.all.order(:sname, :name, :fname), 
 				    :label_method => lambda { |client| "#{client.sname}  #{client.name}  #{client.fname} "}, 
 				    value_method: :id, include_blank: true, prompt: "Выбрать второго водителя...", 
-				    :readonly => if ((@contract.flag == 1 or @contract.flag == 2) and controller.action_name!='show') then false else true end %> 
-   <!--   <%= f.input :client do %>
-          <%= f.select :client, Client.all.order(:name).map { |r| [r.name, r.id] }, include_blank: true %>
-      <% end %>	 	-->		    		
+				    :readonly => if ((@contract.flag == 1 or @contract.flag == 2) and controller.action_name!='show') then false else true end,
+				    :input_html => { :onchange => "getClientById(this.id)" }, required: false %> 	
+        <!-----------------------------------------------2b---------------------------------------------->
+		<!-- Button trigger modal -->
+		<% if @contract.flag != 3 and controller.action_name!='show' then %>
+			<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal" onclick="makeNewClient('client2')">Второй водитель - новый</button>
+			<%= link_to 'Второй водитель - Редактировать', "#", data: {toggle: "modal", target: "#myModal"}, class: "btn btn-default btn-sm" %>
+		<% else %>
+			<%= link_to 'Второй водитель - Просмотр', "#", data: {toggle: "modal", target: "#myModal"}, class: "btn btn-default btn-sm" %>
+		<% end %>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Второй водитель</h4>
+		      </div>
+		      <div class="modal-body">
+	  	          <%= f.simple_fields_for(:client2) do |ff| %>
+                    <%= ff.input :id, as: :integer, as: :hidden %>
+					<%= ff.input :sname, label: "Фамилия", as: :string, :input_html => { :size => 25} %>
+					<%= ff.input :name, label: "Имя", as: :string, :input_html => { :size => 25} %>
+					<%= ff.input :fname, label: "Отчество", as: :string, :input_html => { :size => 25}, as: :hidden %>
+					<%= ff.input :pseria, label: "Серия и номер паспорта", as: :string, :input_html => { :size => 25} %>
+					<div class="col-md-6">
+                    <label for='contract_client2_attributes_bdate' class="control-label">Дата рождения</label><%= date_field_tag 'contract_client2_attributes_bdate', if !@contract.client2 or @contract.client2.bdate.nil? then nil else @contract.client2.bdate.to_date end, class: "form-control" %>
+                    </div>
+                    <div class="col-md-6">
+                    <label for='contract_client2_attributes_dn' class="control-label">Дата выдачи паспорта</label><%= date_field_tag 'contract_client2_attributes_dn',if !@contract.client2 or @contract.client2.dn.nil? then nil else @contract.client2.dn.to_date end, class: "form-control" %>
+					</div>
+					<div class="col-md-6">
+					<%= ff.input :idno, label: "IDNP", as: :string, :input_html => { :size => 25} %>
+					</div>
+					<div class="col-md-6">
+					<%= ff.input :de, label: "Страна", as: :country, priority: ["MD","RU","UA","RO","IT","GB","DE","FR","ES","NL" ], include_blank: true %>
+					</div>
+					<%= ff.input :address, label: "Адрес", as: :string, :input_html => { :size => 50} %>
+					<%= ff.input :pemail, label: "E-mail", as: :email, :input_html => { :size => 25} %>
+					<%= ff.input :tel, label: "Контактный телефон", as: :tel, :input_html => { :size => 25} %>
+					<%= ff.input :comments, label: "Примечание", as: :text, :input_html => { :size => 50} %>	   			  				  	
+  			      <% end %> 
+		      </div>
+		      <div class="modal-footer">
+		        <!--<button type="button" class="btn btn-default" data-dismiss="modal" id="client2Closed">Cancel</button>-->
+		        <button type="button" class="btn btn-primary" data-dismiss="modal" id="client2Ok">OK</button>		        
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-------------------------------------------2e-------------------------------------------------->		    		
 		
     	<!-- контроллер-экшн -->
     	<%= hidden_field_tag 'vc' , controller.controller_name %>
@@ -345,7 +506,8 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
         <!-- автомобиль --> 
     	<div class="form-group">
           	<label for="car_id" class="control-label">Автомобиль</label>		
-    	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @contract.car_id), :onchange =>'whenchangeCar();', include_blank: true, class: "form-control", :readonly => if (@contract.flag != 3  and controller.action_name!='show') then false else true end %>
+    	  	<%= select_tag "car_id", options_for_select(Car.all.collect {|p| [ p.marca + " "+p.gnum, p.id ] }, @contract.car_id), :onchange =>'whenchangeCar();', 
+    	  	        include_blank: false, class: "form-control", :readonly => if (@contract.flag != 3  and controller.action_name!='show') then false else true end, prompt: "Выбрать машину..." %>
     	</div>
     	<!-- гарант сумма -->
     	<div class="col-md-6">
@@ -400,7 +562,9 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<div class="col-md-6">
     	<!-- время начала -->
     	<%= simple_fields_for :timebeg do |n| %>
-        	<%= n.input :sttime, as: :time ,label: "Время начала аренды" , default: @contract.stdate ? Time.parse(@contract.stdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end, minute_step: 15 %>
+        	<%= n.input :sttime, as: :time, label: "Время начала аренды" , default: @contract.stdate ? Time.parse(@contract.stdate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), 
+        	    :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end, minute_step: 15,
+        	    :input_html => { :onchange => "timebegChanged(this.id)" } %>
         <% end %>
         </div>
     	<div class="col-md-6">
@@ -414,7 +578,9 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<!-- время конца -->
     	<% if @contract.flag then %>
     	<%= simple_fields_for :timeend do |n| %>
-    		<%= n.input :endtime, as: :time ,label: "Время окончания аренды" , default: @contract.enddate ? Time.parse(@contract.enddate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end, minute_step: 15 %>
+    		<%= n.input :endtime, as: :time ,label: "Время окончания аренды" , default: @contract.enddate ? Time.parse(@contract.enddate.strftime('%R')) : Time.parse(Time.now.strftime('%R')), 
+    		    :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end, minute_step: 15,
+    		    :input_html => { :onchange => "whenchangeDates(0)" } %>
     	<% end %> 
     	<% end %>
     	</div>
@@ -434,12 +600,18 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	</div>
     	<% end %>
     	<!-- ко-во дней -->
-    	<div class="col-md-12">
+    	<div class="col-md-6">
     	<div class="form-group">
 	  		<label for="dperiod" class="control-label">Количество дней</label>
 	    	<%= number_field_tag 'dperiod', @contract.dperiod, :onchange =>'whenchangeDates(3);', as: :integer, class: "form-control", :readonly => if (@contract.flag == 3  or controller.action_name=='show') then true else false end  %>
     	</div>
-    	</div>   	
+    	</div>
+    	<div class="col-md-6">
+    	<div class="form-group">
+	    	<%= label_tag "Период без округлений" %>
+	    	<%= text_field_tag 'dperiodDesf', nil, :readonly => true, class: "form-control"  %>
+    	</div>    		
+    	</div> 	
     	<div class="col-md-6">     	   	  	   		
     	<!-- цена -->
     	<div class="form-group">
@@ -452,7 +624,7 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     	<div class="col-md-6">
     	    <div class="form-group"> 
 	    		<%= label_tag "Сумма договора, #{$valuta.upcase}" %>
-	    		<%= number_field_tag 'summ', @contract.summ ,:onkeyup =>"getPriceFromSumm();", as: :integer, class: "form-control", :readonly => if (@contract.flag == 2  and controller.action_name!='show') then false else true end  %>
+	    		<%= number_field_tag 'summ', @contract.summ ,:onchange =>"getPriceFromSumm();", as: :integer, class: "form-control", :readonly => if (@contract.flag == 2  and controller.action_name!='show') then false else true end  %>
     	    </div>
     	</div>
     	<div class="col-md-6">   
@@ -468,6 +640,9 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
     		</div>
     	</div>	
     	<% end %>
+    	<div class="col-md-12">
+    		<%= f.input :comment, label: "Примечание", as: :text, :readonly => if (controller.action_name!='show') then false else true end %>
+    	</div>
     	</div>
 		</div>
 		</div>    	

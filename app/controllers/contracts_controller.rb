@@ -27,52 +27,230 @@ class ContractsController < ApplicationController
   def create
     @contract = Contract.new(contract_params)
     @contract = contract_init(@contract)
+    #---driver1-----------------------------------------------
     unless params[:active].nil? then
+      @flag = 0
       @client = Client.new(client_params)
       @client = client_init(@client)
       client_save
-      @contract.client_id = @client.id        
+      @contract.client = @client     
+    else 
+       if params[:contract][:client_attributes] then
+         #render inline: "<%= params[:contract][:client_id].inspect %><br><br><%= @contract.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return  
+         if params[:contract][:client_id].nil? or params[:contract][:client_id] == "" then
+             @flag = 0
+             @client = Client.new
+             @client = contract_client_init(@client)
+             @contract.client = @client
+             if (@client.name!="" and @client.sname!="" and @client.name.length>3 and @client.sname.length>3) then
+                #render inline: "новый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return                 
+                client_save
+                @contract.client = @client
+             else
+                flash[:warning] = "Проверьте имя и фамилию клиента."
+             end     
+         else
+             @oclient = @client = @contract.client
+             @client = contract_client_init(@client)
+             if (@client.sname != @oclient.sname) or (@client.name != @oclient.name) or (@client.address != @oclient.address) or (@client.pseria != @oclient.pseria) or (@client.idno != @oclient.idno) or
+                (@client.dn != @oclient.dn) or (@client.de != @oclient.de) or (@client.tel != @oclient.tel) or (@client.bdate != @oclient.bdate) or (@client.pemail != @oclient.pemail) or
+                (@client.comments != @oclient.comments) then
+                   #render inline: "старый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return
+                   @flag = 0
+                   @contract.client = @client
+                   client_save
+             end 
+             #render inline: "<%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return   
+         end
+      end                      
     end
+    if (@flag == 0) then
+        gon.cars = Car.all
+        gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")       
+        gon.clients = Client.all
+        flash[:warning] = "Ошибка в клиенте."
+        if params[:va] == 'newbroni'  then 
+          render 'newbroni'  and return 
+        else  
+          render 'new'  and return
+        end       
+    end
+    #---driver2-----------------------------------------------
+    if params[:contract][:client2_attributes] then
+         #render inline: "<%= params[:contract][:client_id].inspect %><br><br><%= @contract.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return  
+         if params[:contract][:client2_id].nil? or params[:contract][:client2_id] == "" then
+             @contract.client2_id = nil
+             @client = Client.new
+             @client = contract_client2_init(@client)
+             if (@client.name.length>3 and @client.sname.length>3) then
+                #render inline: "новый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return                 
+                @flag = 0
+                @contract.client2 = @client
+                client_save
+                @contract.client2 = @client
+             else
+               if (@client.name!="" or @client.sname!="") then
+                @contract.client2 = @client  
+                @flag = 0
+                flash[:warning] = "Проверьте имя и фамилию второго водителя."
+               end 
+             end     
+         else
+             @oclient = @client = @contract.client2
+             @client = contract_client2_init(@client)
+             if (@client.sname != @oclient.sname) or (@client.name != @oclient.name) or (@client.address != @oclient.address) or (@client.pseria != @oclient.pseria) or (@client.idno != @oclient.idno) or
+                (@client.dn != @oclient.dn) or (@client.de != @oclient.de) or (@client.tel != @oclient.tel) or (@client.bdate != @oclient.bdate) or (@client.pemail != @oclient.pemail) or
+                (@client.comments != @oclient.comments) then
+                   #render inline: "старый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return
+                   @flag = 0
+                   @contract.client2 = @client
+                   client_save
+             end 
+             #render inline: "<%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return   
+         end
+    end
+    if (@flag == 0) then
+        gon.cars = Car.all
+        gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")       
+        gon.clients = Client.all
+        flash[:warning] = "Ошибка второго водителя."
+        if params[:va] == 'newbroni'  then 
+          render 'newbroni'  and return 
+        else  
+          render 'new'  and return
+        end       
+    end
+    #---contract----------------------------------------------
+    @flag = nil                     
     contract_save
-    unless params[:parcurs].nil? then
-      #if Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).count != 0 then 
-      #  @wlong = Wlong.where("(car_id = ? AND wdate = ?)", @contract.car_id, @contract.stdate).last 
-      #else
+    if (@flag == 0) then
+        gon.cars = Car.all
+        gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")       
+        gon.clients = Client.all
+       # flash[:warning] = "Ошибка в контракте."
+        if params[:va] == 'newbroni'  then 
+          render 'newbroni'  and return 
+        else  
+          render 'new'  and return
+        end       
+    end
+    #---parcurs-----------------------------------------------
+    if (!params[:parcurs].nil? and params[:parcurs]!="" and @contract.flag == 2) then
       @wlong = Wlong.new
-      #end
       @wlong = wlong_init(@wlong)    
       wlong_save 
       #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
     end         
     #render inline: "<%= params.inspect %><br><br>" and return
-    if @flag == 1 then
-      if params[:printfromedit] then  redirect_to contracts_show_path(:id => @contract.id, format: "pdf") and return end
-      if params[:va] == 'newbroni'  then 
-        redirect_to contracts_indexbroni_path 
-      else 
-        if @contract.flag == '3' then redirect_to contracts_indexarc_path else redirect_to contracts_path end
-      end
-    else
-      gon.cars = Car.all
-      gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
-                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")
-      if params[:va] == 'newbroni'  then render 'newbroni'  else  render 'new' end  
-    end 
+    #---happyend-----------------------------------------------
+    if params[:printfromedit] then  redirect_to contracts_show_path(:id => @contract.id, format: "pdf") and return end
+    if params[:va] == 'newbroni'  then 
+       redirect_to contracts_indexbroni_path 
+    else 
+       case @contract.flag when 3 then redirect_to contracts_indexarc_path
+                           when 1 then redirect_to contracts_indexbroni_path 
+                           else redirect_to contracts_path end
+    end
   end
      
   def update
-    #render inline: "<%= params.inspect %><br><br>" and return 
+    #render inline: "<%= params.inspect %><br><br>" and return          
     @contract = Contract.find(params[:id])
     @stdate = @contract.stdate
     @fenddate = @contract.fenddate
     @contract = contract_init(@contract)
+    #---driver1-----------------------------------------------
     unless params[:active].nil? then
+      @flag = 0
       @client = Client.new(client_params)
       @client = client_init(@client)
       client_save
-      @contract.client_id = @client.id        
+      @contract.client = @client     
+    else 
+       if params[:contract][:client_attributes] then
+         #render inline: "<%= params[:contract][:client_id].inspect %><br><br><%= @contract.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return  
+         if params[:contract][:client_id].nil? or params[:contract][:client_id] == "" then
+             @flag = 0
+             @client = Client.new
+             @client = contract_client_init(@client)
+             @contract.client = @client
+             if (@client.name!="" and @client.sname!="" and @client.name.length>3 and @client.sname.length>3) then
+                #render inline: "новый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return                 
+                client_save
+                @contract.client = @client
+             else
+                flash[:warning] = "Проверьте имя и фамилию клиента."
+             end     
+         else
+             @oclient = @client = @contract.client
+             @client = contract_client_init(@client)
+             if (@client.sname != @oclient.sname) or (@client.name != @oclient.name) or (@client.address != @oclient.address) or (@client.pseria != @oclient.pseria) or (@client.idno != @oclient.idno) or
+                (@client.dn != @oclient.dn) or (@client.de != @oclient.de) or (@client.tel != @oclient.tel) or (@client.bdate != @oclient.bdate) or (@client.pemail != @oclient.pemail) or
+                (@client.comments != @oclient.comments) then
+                   #render inline: "старый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return
+                   @flag = 0
+                   @contract.client = @client
+                   client_save
+             end 
+             #render inline: "<%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return   
+         end
+      end                      
     end
-    unless (params[:parcurs].nil? or params[:parcurs]=='') then
+    if (@flag == 0) then
+        gon.cars = Car.all
+        gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")       
+        gon.clients = Client.all
+        flash[:warning] = "Ошибка в клиенте."
+        render 'edit' and return       
+    end
+    #---driver2-----------------------------------------------
+    if params[:contract][:client2_attributes] then
+         #render inline: "<%= params[:contract][:client_id].inspect %><br><br><%= @contract.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return  
+         if params[:contract][:client2_id].nil? or params[:contract][:client2_id] == "" then
+             @contract.client2_id = nil
+             @client = Client.new
+             @client = contract_client2_init(@client)
+             if (@client.name.length>3 and @client.sname.length>3) then
+                #render inline: "новый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return                 
+                @flag = 0
+                @contract.client2 = @client
+                client_save
+                @contract.client2 = @client
+             else
+               if (@client.name!="" or @client.sname!="") then
+                @contract.client2 = @client  
+                @flag = 0
+                flash[:warning] = "Проверьте имя и фамилию второго водителя."
+               end 
+             end     
+         else
+             @oclient = @client = @contract.client2
+             @client = contract_client2_init(@client)
+             if (@client.sname != @oclient.sname) or (@client.name != @oclient.name) or (@client.address != @oclient.address) or (@client.pseria != @oclient.pseria) or (@client.idno != @oclient.idno) or
+                (@client.dn != @oclient.dn) or (@client.de != @oclient.de) or (@client.tel != @oclient.tel) or (@client.bdate != @oclient.bdate) or (@client.pemail != @oclient.pemail) or
+                (@client.comments != @oclient.comments) then
+                   #render inline: "старый <%= @contract.inspect %><br><br><%= @client.inspect %><br><br><%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return
+                   @flag = 0
+                   @contract.client2 = @client
+                   client_save
+             end 
+             #render inline: "<%= params[:contract].inspect %><br><br><%= params[:contract][:client_attributes].inspect %><br><br>" and return   
+         end
+    end
+    if (@flag == 0) then
+        gon.cars = Car.all
+        gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")       
+        gon.clients = Client.all
+        flash[:warning] = "Ошибка второго водителя."
+        render 'edit' and return       
+    end 
+    #---parcurs-----------------------------------------------                  
+    if (!params[:parcurs].nil? and params[:parcurs]!="" and @contract.flag == 2) then
       if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @stdate).count != 0 then 
         @wlong = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @stdate).last 
       else
@@ -82,17 +260,31 @@ class ContractsController < ApplicationController
       wlong_save 
       #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
     end
-    unless (params[:parcurse].nil? or params[:parcurse]=='') then
-      if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @fenddate).count != 0 then 
-        @wlong = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @fenddate).last 
-      else
-        @wlong = Wlong.new
+    @flag = nil
+    if @contract.flag == 3 then
+      @flag = 0
+      if (!params[:parcurse].nil? and params[:parcurse]!="") then
+        if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @fenddate).count != 0 then 
+          @wlong = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @fenddate).last 
+        else
+          @wlong = Wlong.new
+        end
+        @wlong = wlong_init1(@wlong)    
+        wlong_save 
+        #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
       end
-      @wlong = wlong_init1(@wlong)    
-      wlong_save 
-      #render inline: "<%= @wlong.inspect %><br><br><%= @contract.inspect %><br><br><%= @flag.inspect %><br><br>" and return         
-    end  
-    contract_save
+    end 
+    if (@flag == 0) then
+        gon.cars = Car.all
+        gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")       
+        gon.clients = Client.all
+        flash[:warning] = "Введите пробег на конец!!!"
+        render 'edit' and return       
+    end     
+    #---contract----------------------------------------------
+    @flag = 0                     
+    contract_save  
     if @flag == 1 then
       if params[:printfromedit] then  redirect_to contracts_show_path(:id => @contract.id, format: "pdf") and return end
       case @contract.flag when 1 then redirect_to contracts_indexbroni_path
@@ -101,7 +293,8 @@ class ContractsController < ApplicationController
     else
       gon.cars = Car.all
       gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
-                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")      
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)") 
+      gon.clients = Client.all                                     
       render 'edit'
     end
   end
@@ -113,7 +306,6 @@ class ContractsController < ApplicationController
     else 
       begin
         if contract.destroy! then 
-          flash.discard
           flash[:notice] = if contract.flag != 1 then "Контракт № #{contract.id}/#{contract.cnum} от #{contract.stdate.strftime('%d.%m.%Y')} удален." 
                            else "Бронь № #{contract.id}/#{contract.cnum} от #{contract.stdate.strftime('%d.%m.%Y')} удалена."end          
         end
@@ -128,12 +320,12 @@ class ContractsController < ApplicationController
   end  
    
   def new
+   gon.clients = Client.all 
    gon.cars = Car.all
    gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
                                       FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")
    #render inline: "<%= @wlongs.inspect %><br><br><%= @wlongs.count.inspect %><br><br>" and return
    @contract = Contract.new
-   @contract.client_id = params[:client_id]
    @contract.car_id = params[:car_id]
    @contract.order_date =  Date.today
    @contract.stdate = params[:stdate] ?  params[:stdate] : Date.today
@@ -155,14 +347,18 @@ class ContractsController < ApplicationController
    # suma valuta
    @contract.summ = (@contract.price.to_i * @contract.dperiod).round(2) 
    # suma lei 
-   @contract.costlei = ((@contract.price.to_i * @contract.dperiod).round(2) * @contract.curs.to_i).round(2)     
+   @contract.costlei = ((@contract.price.to_i * @contract.dperiod).round(2) * @contract.curs.to_i).round(2)
+   @contract.client = if params[:client_id] then Client.find(params[:client_id]) else Client.new end
+   @contract.client2 = Client.new   
    #render inline: "<%= @contract.inspect %><br><br>"  
   end
   
   def newbroni
    gon.cars = Car.all
+   gon.clients = Client.all
+   gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
+                                      FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)") 
    @contract = Contract.new
-   @contract.client_id = params[:client_id]
    @contract.car_id = params[:car_id]
    @contract.stdate = params[:stdate] ?  params[:stdate] : DateTime.now
    d = @contract.stdate + 1.day
@@ -174,7 +370,9 @@ class ContractsController < ApplicationController
    unless @contract.car_id.nil? then
      @contract.price = @contract.car.int1price   # price     
      @contract.garant_summ = @contract.car.gaj         # задаток    
-   end  
+   end
+   @contract.client = if params[:client_id] then Client.find(params[:client_id]) else Client.new end
+   @contract.client2 = Client.new   
   # render inline: "<%= params.inspect %><br><br>"  
   end
     
@@ -182,8 +380,11 @@ class ContractsController < ApplicationController
     gon.cars = Car.all
     gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
                                       FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")
+    gon.clients = Client.all                                  
     @contract = Contract.find(params[:id])
     @car = @contract.car
+    unless @contract.client2_id? then @contract.client2 = Client.new end
+    unless @contract.client_id? then @contract.client = Client.new end  
     @clients = Client.all.order(:sname,:name,:fname)
     # parcurs 
     if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @contract.stdate).count!=0 then 
@@ -200,7 +401,9 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
     @car = @contract.car
     @client = @contract.client
-    @client2 = @contract.client2
+    unless @contract.client2_id? then @contract.client2 = Client.new end
+    unless @contract.client_id? then @contract.client = Client.new end  
+      #render inline: "<%= @parcurs.inspect %><br><br>"  and return
     # parcurs 
     if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @contract.stdate).count!=0 then 
       @parcurs = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @contract.stdate).last.parcurs 
@@ -226,11 +429,14 @@ class ContractsController < ApplicationController
   def broni2contract
     #render inline: "<%= params.inspect %><br><br>"  and return 
     gon.cars = Car.all
+    gon.clients = Client.all
     gon.wlongs = Wlong.find_by_sql("SELECT t1.id, t1.car_id, t1.parcurs FROM (SELECT t.id, t.car_id, t.parcurs, max(wdate) wdate, updated_at  updated_at 
                                       FROM wlongs t group by t.car_id having t.wdate = max(wdate)) T1 group by t1.car_id having t1.updated_at = max(t1.updated_at)")    
     @contract = Contract.find(params[:id])
     @car = @contract.car
-    @client = @contract.client    
+    @client = @contract.client
+    unless @contract.client2_id? then @contract.client2 = Client.new end
+    unless @contract.client_id? then @contract.client = Client.new end   
     # пробег
     unless @car.wlongs.last.nil? then @lastparcurs = @car.wlongs.last.parcurs end       # parcurs
     #render inline: "<%= @parcurs.inspect %><br><br>"  and return  
@@ -296,6 +502,8 @@ class ContractsController < ApplicationController
     if @contract.user.nil? then @contract.user_id = current_user.id end
     @car = @contract.car
     @client = @contract.client
+    unless @contract.client2_id? then @contract.client2 = Client.new end
+    unless @contract.client_id? then @contract.client = Client.new end  
     # parcurs 
     if Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @contract.stdate).count!=0 then 
       @parcurs = Wlong.where("(contract_id is not null and contract_id= ? and car_id = ? AND wdate = ?)", @contract.id, @contract.car_id, @contract.stdate).last.parcurs 
@@ -333,6 +541,7 @@ class ContractsController < ApplicationController
   end  
   
   def wlong_save
+      @flag = 0 
       begin
         if @wlong.save! then 
           @flag = 1         
@@ -343,18 +552,20 @@ class ContractsController < ApplicationController
   end
     
   def contract_params
-    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:client2_id,:user,:stdate,:enddate,:fenddate,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs,:sttime,:endtime,:fendtime,:place)
+    params.require(:contract).permit(:cnum,:order_date,:flag,:car_id,:client_id,:client2_id,:user,:stdate,:enddate,:fenddate,:summ,:garant_summ,:costlei,:user_id,:zalog,:dperiod,:price,:curs,
+                                     :sttime,:endtime,:fendtime,:place,:comment, client2_attributes: [:id,:name,:sname,:fname,:address,:pseria,:idno,:dn,:de,:tel,:bdate,:pemail,:comments])
   end
     
   def contract_init(contract)
     contract.cnum = (contract_params[:cnum]).lstrip.rstrip
     contract.order_date = contract_params[:order_date]
     contract.flag = contract_params[:flag]
+    contract.comment = contract_params[:comment]
     contract.car_id = if contract_params[:car_id].nil? then params[:car_id] else contract_params[:car_id] end
-    contract.client_id = contract_params[:client_id]
-    contract.client2_id = contract_params[:client2_id]
+    if (!contract_params[:client_id].nil? and contract_params[:client_id] != "")  then contract.client_id = contract_params[:client_id] else contract.client = Client.new end
+    if contract_params[:client2_id] then contract.client2_id = contract_params[:client2_id] else contract.client2 = Client.new end
     contract.user_id= contract_params[:user_id]
-    contract.place= contract_params[:place]
+    contract.place = contract_params[:place]
     # stdate
     if params[:stdate] then
       d = (params[:stdate]).to_datetime.in_time_zone 
@@ -403,7 +614,6 @@ class ContractsController < ApplicationController
     else
       begin
         if @contract.save! then 
-          flash.discard
           flash[:notice] = "#{if @contract.flag==1 then 'Бронь' else 'Контракт' end} № #{@contract.id}/#{@contract.cnum} от #{@contract.stdate.strftime('%d.%m.%Y')} #{if @contract.flag==1 then 'сохранена' else 'сохранен' end}."
           @flag = 1         
         end
@@ -434,11 +644,43 @@ class ContractsController < ApplicationController
     client    
   end
   
+  def contract_client_init(client)
+    client.name  = if !params[:contract][:client_attributes][:name].nil? and params[:contract][:client_attributes][:name] !="" then (params[:contract][:client_attributes][:name]).lstrip.rstrip else "" end
+    client.sname = if !params[:contract][:client_attributes][:sname].nil? and params[:contract][:client_attributes][:sname]!="" then (params[:contract][:client_attributes][:sname]).lstrip.rstrip else "" end
+    client.fname = if !params[:contract][:client_attributes][:fname].nil? and params[:contract][:client_attributes][:fname]!="" then (params[:contract][:client_attributes][:fname]).lstrip.rstrip  else "" end   
+    client.address = params[:contract][:client_attributes][:address]
+    client.pseria = params[:contract][:client_attributes][:pseria]
+    client.idno = params[:contract][:client_attributes][:idno]
+    if params[:contract_client_attributes_bdate].nil? or params[:contract_client_attributes_bdate].empty? then client.bdate = nil else client.bdate = (params[:contract_client_attributes_bdate].to_date).to_formatted_s(:dday_month_year) end
+    if params[:contract_client_attributes_dn].nil? or params[:contract_client_attributes_dn].empty? then client.dn = nil else client.dn = (params[:contract_client_attributes_dn].to_date).to_formatted_s(:dday_month_year) end
+    client.de = params[:contract][:client_attributes][:de]
+    client.tel = params[:contract][:client_attributes][:tel]
+    client.pemail = params[:contract][:client_attributes][:pemail]
+    client.comments = params[:contract][:client_attributes][:comments]
+    client    
+  end
+  
+  def contract_client2_init(client)
+    client.name  = if !params[:contract][:client2_attributes][:name].nil? and params[:contract][:client2_attributes][:name] !="" then (params[:contract][:client2_attributes][:name]).lstrip.rstrip else "" end
+    client.sname = if !params[:contract][:client2_attributes][:sname].nil? and params[:contract][:client2_attributes][:sname]!="" then (params[:contract][:client2_attributes][:sname]).lstrip.rstrip else "" end
+    client.fname = if !params[:contract][:client2_attributes][:fname].nil? and params[:contract][:client2_attributes][:fname]!="" then (params[:contract][:client2_attributes][:fname]).lstrip.rstrip  else "" end   
+    client.address = params[:contract][:client2_attributes][:address]
+    client.pseria = params[:contract][:client2_attributes][:pseria]
+    client.idno = params[:contract][:client2_attributes][:idno]
+    if params[:contract_client2_attributes_bdate].nil? or params[:contract_client2_attributes_bdate].empty? then client.bdate = nil else client.bdate = (params[:contract_client2_attributes_bdate].to_date).to_formatted_s(:dday_month_year) end
+    if params[:contract_client2_attributes_dn].nil? or params[:contract_client2_attributes_dn].empty? then client.dn = nil else client.dn = (params[:contract_client2_attributes_dn].to_date).to_formatted_s(:dday_month_year) end
+    client.de = params[:contract][:client2_attributes][:de]
+    client.tel = params[:contract][:client2_attributes][:tel]
+    client.pemail = params[:contract][:client2_attributes][:pemail]
+    client.comments = params[:contract][:client2_attributes][:comments]
+    client    
+  end  
+  
   def client_save
-    t = Client.where("(? is null or id !=?) and UPPER(sname) = ? and UPPER(name) = ? and UPPER(fname) = ? ", 
-                      @client.id, @client.id, (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase).count
-    c = Client.where("(? is null or id !=?) and UPPER(sname) = ? and UPPER(name) = ? and UPPER(fname) = ? ", 
-                      @client.id, @client.id, (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase).last                      
+    t = Client.where("(? is null or id !=?) and UPPER(sname) = ? and UPPER(name) = ? and (fname is not null and UPPER(fname) = ? or fname is null and ? = '') ", 
+                      @client.id, @client.id, (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase, @client.fname).count
+    c = Client.where("(? is null or id !=?) and UPPER(sname) = ? and UPPER(name) = ? and (fname is not null and UPPER(fname) = ? or fname is null and ? = '') ", 
+                      @client.id, @client.id, (@client.sname).upcase, (@client.name).upcase, (@client.fname).upcase, @client.fname).last                      
     if (t != 0) then
       flash[:warning] = "Клиент № #{c.id} #{c.sname} #{c.name} #{c.fname} уже существует. Проверьте правильность ввода."            
     else
@@ -459,7 +701,6 @@ class ContractsController < ApplicationController
     if params[:printfromshow] then  redirect_to contracts_show_path(:id => params[:id], format: "pdf") and return end     
     # when calcel
     if params[:cancel] then
-      flash.discard
       #render inline: "<%= (params[:contract][:flag]).inspect %><br><br>" and return
       case when (params[:va] == 'broni2contract') then redirect_to root_path
            when (params[:va] == 'newbroni' or params[:flag] == '1') then redirect_to contracts_indexbroni_path

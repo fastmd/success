@@ -6,8 +6,9 @@
   	  <div class="panel panel-info">
   	  	<div class="panel-heading"><strong>Новый курс:</strong></div>
   	  	<div class="panel-body">
-		<%= simple_form_for(:cparam, url: cparams_path, html: { class: 'form-inline' }) do |f| %>
-		  <%= f.input :curs, label: "Курс #{$valuta}", placeholder: @cparam, as: :decimal %><br><br>
+		<%= simple_form_for(:cparam, url: cparams_path) do |f| %>
+		  <%= f.input :curs, label: "Курс #{$valuta}", placeholder: @cparam, as: :decimal %>
+		  <%= f.input :comment, label: "Комментарий", placeholder: " ", as: :text %>
 		  <div  align="center"><%= button_tag "Сохранить", type: 'submit', class: "btn btn-primary glyphicon glyphicon-ok pull-center" %>
 		  	                   <%= button_tag "Домой", type: 'submit', class: "btn btn-warning glyphicon glyphicon-home pull-center", name: "cancel" %>  
           </div>  
@@ -69,22 +70,17 @@ $(document).ready(function() {
 </script>	  	  
  
  <table id="pstable" class="table table-bordered table-condensed table-hover table-striped dt-responsive nowrap compact" style="width:100%">
-  <thead>
+   <% 2.times do |i| %>	
+   <% if i==0 then %><thead><% else %><tfoot><% end %>
     <tr class="info">
       <th style="width:3%"></th>
       <th style="width:2%" class="all">№</th>
       <th class="all">Дата</th>	
       <th class="all">Курс, MDL</th> 
-    </tr>
-  </thead>
-  <tfoot>
-    <tr class="info">
-      <th style="width:3%"></th>
-      <th style="width:2%" class="all">№</th>	
-      <th class="all">Дата</th>	
-      <th class="all">Курс, MDL</th> 
-    </tr>
-  </tfoot>  
+	  <th>Комментарий</th>		   			   
+	</tr>	
+   <% if i==0 then %></thead><% else %></tfoot><% end %>
+   <% end %>  
   <tbody>
   <% @cparams.each do |item| %>
     <% if item.updated_at > (Time.now.ago($GreenDelay)) %><tr class="success"><% else %><tr><% end %>
@@ -92,6 +88,7 @@ $(document).ready(function() {
     	<td></td>
         <td><%= item.created_at.strftime('%d.%m.%Y %R') %></td>	
 	  	<td><%= number_to_currency(item.curs,:unit=>'') %></td>
+	  	<td><%= item.comment %></td>
     </tr>
   <% end %>    
   </tbody>

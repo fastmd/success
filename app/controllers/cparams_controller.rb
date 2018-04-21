@@ -22,7 +22,7 @@ class CparamsController < ApplicationController
   
 private
   def cparam_params
-    params.require(:cparam).permit(:curs)
+    params.require(:cparam).permit(:curs,:comment)
   end
   
   def redirect_cancel
