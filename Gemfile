@@ -74,6 +74,9 @@ gem 'simple_form', '~> 3.4'
 gem 'cancancan', '~> 2.1', '>= 2.1.4'
 gem 'toastr-rails', '~> 1.0', '>= 1.0.3'
 
+gem 'mail', '~> 2.7'
+gem 'rufus-scheduler', '~> 3.2'
+
 #gem 'jquery-datatables-rails', '~> 3.4.0', github: 'rweng/jquery-datatables-rails'
 
 #gem 'will_paginate'

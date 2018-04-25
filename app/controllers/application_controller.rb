@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
   before_action :rusdayofweek
   $GreenDelay = 12*60*60
   $valuta = "EUR"
+  $maxparcursoil = 10000
+  $mesparcursoil = 8000
+  $maxparcursto = 10000
+  $mesparcursto = 8000
   
   around_action :with_time_zone, if: 'current_user.try(:time_zone)'
 

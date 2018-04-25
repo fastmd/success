@@ -397,11 +397,11 @@ class ContractsController < ApplicationController
     end
   end
   
-  def show    
-    @contract = Contract.find(params[:id])
+  def show  
+    @contract = Contract.find(params[:id])   
     @car = @contract.car
     @client = @contract.client
-    unless @contract.client2_id? then @contract.client2 = Client.new end
+    if (!@contract.client2_id? and @contract.flag != 3)  then @contract.client2 = Client.new end
     unless @contract.client_id? then @contract.client = Client.new end  
       #render inline: "<%= @parcurs.inspect %><br><br>"  and return
     # parcurs 
@@ -605,12 +605,12 @@ class ContractsController < ApplicationController
     if @contract.flag == 3 and (params[:parcurse].nil? or params[:parcurse]=='') then
       flash[:warning] = "Введите пробег на конец!!!"
     else 
-    t = Contract.where("(? is null or id !=?) and flag in (1,2) and car_id = ? and ((stdate between ? and ?) or (enddate between ? and ?) or (? between stdate and enddate) or (? between stdate and enddate))", 
-                       @contract.id, @contract.id, @contract.car_id, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate)
-    c = Contract.where("(? is null or id !=?) and flag in (1,2) and car_id = ? and ((stdate between ? and ?) or (enddate between ? and ?) or (? between stdate and enddate) or (? between stdate and enddate))", 
-                       @contract.id, @contract.id, @contract.car_id, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate).last                   
-    if (!t.nil? and t.count != 0) then
-      flash[:warning] = "Авто занято -  #{if c.flag==1 then 'Бронь' else 'Контракт' end} № #{c.id}/#{c.cnum} от #{c.stdate.strftime('%d.%m.%Y')} с #{c.stdate.strftime('%d.%m.%Y %R')} по #{c.enddate.strftime('%d.%m.%Y %R')}. Проверьте правильность ввода."        
+    t = Contract.where("(? is null or id !=?) and car_id = ? and ((flag in (1,2) and ((stdate between ? and ?) or (enddate between ? and ?) or (? between stdate and enddate) or (? between stdate and enddate))) or (flag in (3) and ((stdate between ? and ?) or (fenddate between ? and ?) or (? between stdate and fenddate) or (? between stdate and fenddate))))", 
+                       @contract.id, @contract.id, @contract.car_id, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate).count
+    c = Contract.where("(? is null or id !=?) and car_id = ? and ((flag in (1,2) and ((stdate between ? and ?) or (enddate between ? and ?) or (? between stdate and enddate) or (? between stdate and enddate))) or (flag in (3) and ((stdate between ? and ?) or (fenddate between ? and ?) or (? between stdate and fenddate) or (? between stdate and fenddate))))", 
+                       @contract.id, @contract.id, @contract.car_id, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate, @contract.stdate, @contract.enddate).last                   
+    if (t != 0) then
+      flash[:warning] = "Авто занято -  #{if c.flag==1 then 'Бронь' else 'Контракт' end} № #{c.id}/#{c.cnum} с #{c.stdate.strftime('%d.%m.%Y %R')} по #{c.enddate.strftime('%d.%m.%Y %R')}(#{c.enddate.strftime('%d.%m.%Y %R')}). Проверьте правильность ввода."        
     else
       begin
         if @contract.save! then 
@@ -697,6 +697,7 @@ class ContractsController < ApplicationController
   
   def redirect_cancel
     if params[:editfromshow] then  redirect_to contracts_edit_path(:id => params[:id]) and return end
+    if params[:close] then  redirect_to contracts_contract2arh_path(:id => params[:id]) and return end  
     #render inline: "<%= params.inspect %><br><br>" and return
     if params[:printfromshow] then  redirect_to contracts_show_path(:id => params[:id], format: "pdf") and return end     
     # when calcel

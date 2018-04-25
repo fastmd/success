@@ -10,15 +10,20 @@ config.action_mailer.smtp_settings = {
   :address        => 'smtp.yandex.ru',
   :port           => 25,
   :domain         => 'www.yandex.ru',
-  :authentication => :login,
+    :authentication       => "login",
+    :enable_starttls_auto => true,
   :user_name      => 'sergelus',
   :password       => 'Fast@2016'
 }
 
+#smtp = { :address => 'smtp.yandex.ru',  :port => 25, :domain => 'www.yandex.ru',  :user_name => 'sergelus', :password => 'Fast@2016', :enable_starttls_auto => 'true' , :authentication =>:login}
+smtp = { :address => 'smtp.gmail.com',  :port => 587, :domain => 'gmail.com',  :user_name => 'jdanovalarisa7@gmail.com', :password => ',thnfrepb[f', :enable_starttls_auto => 'true', :authentication=>:plain}
+Mail.defaults { delivery_method :smtp, smtp }
+
 config.action_mailer.perform_deliveries = true
 config.action_mailer.raise_delivery_errors = true
 
- config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+ #config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 #config.assets.precompile += %w( vendor/modernizr.js )
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

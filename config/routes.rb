@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   get 'clients/index'   
   
   get 'contracts/new'
-  post 'contracts/new'
+  post 'contracts/new' 
   get 'contracts/show'
   post 'contracts/show'
   get 'contracts/update'

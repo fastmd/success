@@ -656,10 +656,12 @@ Click this link to show the current <%= link_to "time", contracts_newbroni_path,
  		<%= render 'newclient' %>
  		</div>	<!--row-->
  		
+	    <center>
 	    <% if controller.action_name != 'show' then %>
-	    <center><%= submit_tag('Сохранить', class: "btn btn-primary") %> <%= f.button :submit, "Печать", class: "btn btn-info", name: "printfromedit" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
+	    	<%= submit_tag('Сохранить', class: "btn btn-primary") %> <%= f.button :submit, "Печать", class: "btn btn-info", name: "printfromedit" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
 		<% else %>
-		<center><%= f.button :submit, "Редактировать", class: "btn btn-primary", name: "editfromshow" %> <%= f.button :submit, "Печать", class: "btn btn-info", name: "printfromshow" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
+		    <% if @contract.flag == 2 then %><%= f.button :submit, "Закрыть", class: "btn btn-success", name: "close" %><% end %>
+			<%= f.button :submit, "Редактировать", class: "btn btn-primary", name: "editfromshow" %> <%= f.button :submit, "Печать", class: "btn btn-info", name: "printfromshow" %> <%= f.button :submit, "Отмена", class: "btn btn-warning", name: "cancel" %></center>
 		<% end %>
 			
 		</div> <!--panel-body--->    

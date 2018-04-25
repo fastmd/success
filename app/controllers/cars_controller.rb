@@ -75,7 +75,14 @@ class CarsController < ApplicationController
          if maxtosdate then
           toparcurs = Wlong.where("car_id = ? and wdate is not null and wdate <= ?", caritem.id, maxtosdate).order(:wdate).last
           if toparcurs and lastparcurs then
-            dtto = (lastparcurs.parcurs.to_i - toparcurs.parcurs.to_i).abs
+            dtto = (lastparcurs.parcurs.to_i - toparcurs.parcurs.to_i)
+            if dtto < 0 then 
+              if    toparcurs.parcurs.to_i < 10000    then dtto += 10000
+              elsif toparcurs.parcurs.to_i < 100000   then dtto += 100000
+              elsif toparcurs.parcurs.to_i < 1000000  then dtto += 1000000
+              elsif toparcurs.parcurs.to_i < 10000000 then dtto += 10000000
+              else dtto += 100000000 end   
+            end    
           end
          end
          if (dtto and dtto > 10000) or dtto.nil? then
@@ -86,11 +93,18 @@ class CarsController < ApplicationController
          if maxoilsdate then
           oilparcurs = Wlong.where("car_id = ? and wdate is not null and wdate <= ?", caritem.id, maxoilsdate).order(:wdate).last
           if oilparcurs and lastparcurs then
-            dtoil = (lastparcurs.parcurs.to_i - oilparcurs.parcurs.to_i).abs
+            dtoil = (lastparcurs.parcurs.to_i - oilparcurs.parcurs.to_i)
+            if dtoil < 0 then 
+              if    oilparcurs.parcurs.to_i < 10000    then dtoil += 10000
+              elsif oilparcurs.parcurs.to_i < 100000   then dtoil += 100000
+              elsif oilparcurs.parcurs.to_i < 1000000  then dtoil += 1000000
+              elsif oilparcurs.parcurs.to_i < 10000000 then dtoil += 10000000
+              else dtoil += 100000000 end   
+            end            
           end          
          end
-         if (dtoil and dtoil > 5000) or dtoil.nil? then
-           oilred = 1
+         if (dtoil and dtoil > 10000) or dtoil.nil? then
+           oilred = 1             
          end
          #----asigurare-------------         
          maxasigsdate = Tehservice.where("car_id = ? and sdate is not null and stype=2", caritem.id).maximum(:sdate)
@@ -116,6 +130,7 @@ class CarsController < ApplicationController
                         :asig => {:maxasigsdate => if maxasigsdate then maxasigsdate.strftime('%d.%m.%Y') else nil end, :asigdt => if asigdt then "#{asigdt} дней" else nil end, :asigred => asigred }, 
                         :tosm => {:maxtosmsdate => if maxtosmsdate then maxtosmsdate.strftime('%d.%m.%Y') else nil end, :tosmdt => if tosmdt then "#{tosmdt} дней" else nil end, :tosmred => tosmred},  
                         :monthsprice => monthsprice, :yearsprice => yearsprice, 
+                        :dtto => dtto, :dtoil => dtoil, 
                         :parcurs =>{:parcurs => if lastparcurs then "#{lastparcurs.parcurs}" else nil end, :wdate => if lastparcurs then "#{lastparcurs.wdate.strftime('%d.%m.%Y')}" else nil end }
                        }                                                   
          i += 1
@@ -143,12 +158,12 @@ class CarsController < ApplicationController
     end 
    @fmarcas = Car.select(:marca).distinct.order(:marca).pluck(:marca) 
    #---month------------ 
-   @year = Date.today.year.to_i
-   @month = Date.today.month.to_i
-   @day = Date.today.day.to_i
+   @year = Date.current.year.to_i
+   @month = Date.current.month.to_i
+   @day = Date.current.day.to_i
    #--------------------
    @mn = @month
-   @currentdate = Date.today.change(day: 1) 
+   @currentdate = Date.current.change(day: 1) 
    #----month-from-params----------
    if params[:imonth] then @imonth = params[:imonth].to_i else @imonth = 6 end
    if @imonth < 1 or @imonth > 12 then @imonth = 6 end    
@@ -156,18 +171,19 @@ class CarsController < ApplicationController
    @months = Array[]
    @title1 = Array[]
    @report1 = Array[]
-   perioddateb = Date.today.change(day: 1) - 6.month     #begin of the period
+   perioddateb = Date.current.change(day: 1) - 6.month     #begin of the period
    (1..12).each do |monthitem|
      @ddateb = perioddateb + monthitem.month             #begin of the month
-     @ddatee = @ddateb + 1.month - 1.day                 #end of the month 
-     @daycount = (@ddatee - @ddateb + 1).to_i            #number of days between report dates   
+     @ddatee = @ddateb + 1.month                 #end of the month 
+    #  render inline: "t=#{(@ddatee - @ddateb + 1).to_i}" and return 
+     @daycount = (@ddatee - @ddateb).to_i            #number of days between report dates   
      #------------
      @title = Array[]
      report_rind = Array.new((@daycount+2), nil)
      (1..@daycount).each do |ditem|
          testdate = @ddateb.change(day: ditem)
          if (testdate.wday == 6 or testdate.wday == 0) then report_rind[ditem + 1] = 1 end
-         if (testdate == Date.today) then report_rind[ditem + 1] = 2 end  
+         if (testdate == Date.current) then report_rind[ditem + 1] = 2 end  
      end 
      @title = report_rind[0..(@daycount+2)]  
      #------------
@@ -191,7 +207,9 @@ class CarsController < ApplicationController
      i = 1
      if @cars.count != 0 then
         @cars.each do |caritem|
-           @contracts = Contract.where("(car_id = ? AND ((stdate between ? AND ?) OR (enddate between ? AND ?)))", caritem.id, @ddateb, @ddatee, @ddateb, @ddatee).order(:stdate, :enddate)
+           @contracts = Contract.where("( car_id = ? AND ((stdate >= ? AND stdate < ?) OR (enddate >= ? AND enddate < ?) OR (fenddate IS NOT NULL AND fenddate >= ? AND fenddate < ?)) )", 
+                                 caritem.id, @ddateb.in_time_zone, @ddatee.in_time_zone, @ddateb.in_time_zone, @ddatee.in_time_zone, @ddateb.in_time_zone, @ddatee.in_time_zone).order(:stdate, :enddate)
+           #render inline: "<%= @ddateb.inspect %> <%= @ddatee.inspect %>  <%= @contracts.inspect %>" and return 
            report_rind = Array.new((@daycount+3), nil)
            report_rind[0] = i
            report_rind[1] = "#{caritem.marca} #{caritem.gnum}"
@@ -201,7 +219,7 @@ class CarsController < ApplicationController
                 (1..@daycount).each do |ditem|
                   testdate = @ddateb.change(day: ditem)
                   #if (testdate >= contritem.order_date.to_date and testdate <= contritem.diff.to_date) then report_rind[ditem + 1] = contritem.flag end
-                  if (testdate >= contritem.stdate.to_date and testdate <= contritem.enddate.to_date) then 
+                  if (testdate >= contritem.stdate.to_date and ((contritem.fenddate.nil? and testdate <= contritem.enddate.to_date) or (!contritem.fenddate.nil? and testdate <= contritem.fenddate.to_date))) then 
                     report_rind[ditem + 1] = {:flag => contritem.flag, 
                                               :client => " #{contritem.client.sname} #{contritem.client.name} #{contritem.client.fname}",
                                               :contract_id => contritem.id,
@@ -215,11 +233,12 @@ class CarsController < ApplicationController
                                                            " № #{contritem.id}" + if contritem.cnum!='' then "/#{contritem.cnum} " else " " end + 
                                                            #"от #{contritem.order_date.to_date.to_formatted_s(:dday_month_year)}" +
                                                            unless contritem.stdate.nil? then " с #{contritem.stdate.strftime('%d.%m.%Y %R')}" else "" end +
-                                                           unless contritem.enddate.nil? then " по #{contritem.enddate.strftime('%d.%m.%Y %R')}" else "" end,
+                                                           unless contritem.enddate.nil? then " по #{contritem.enddate.strftime('%d.%m.%Y %R')}" else "" end +
+                                                           unless contritem.fenddate.nil? then "(#{contritem.fenddate.strftime('%d.%m.%Y %R')})" else "" end,
                                               :beflag => case when (testdate == contritem.stdate.to_date and (report_rind[ditem+1].nil? or report_rind[ditem+1][:beflag]=='b')) then 'b'
                                                               when (testdate == contritem.stdate.to_date and (!report_rind[ditem+1].nil? and report_rind[ditem+1][:beflag]!='b')) then 'be'  
-                                                              when (testdate == contritem.enddate.to_date and (report_rind[ditem+1].nil? or report_rind[ditem+1][:beflag]=='e')) then 'e'
-                                                              when (testdate == contritem.enddate.to_date and (!report_rind[ditem+1].nil? and report_rind[ditem+1][:beflag]!='e')) then 'be'   
+                                                              when (((contritem.fenddate.nil? and (testdate == contritem.enddate.to_date)) or (!contritem.fenddate.nil? and (testdate == contritem.fenddate.to_date))) and (report_rind[ditem+1].nil? or report_rind[ditem+1][:beflag]=='e')) then 'e'
+                                                              when (((contritem.fenddate.nil? and (testdate == contritem.enddate.to_date)) or (!contritem.fenddate.nil? and (testdate == contritem.fenddate.to_date))) and (!report_rind[ditem+1].nil? and report_rind[ditem+1][:beflag]!='e')) then 'be'   
                                                               else nil end}   
                   end  # if testdate
                 end   # daicount.each 
@@ -239,13 +258,13 @@ class CarsController < ApplicationController
    #-----------      
    @cars = Car.all.order(:marca,:id)
    #---broni-today---------        
-   @broni_today = Contract.where("(car_id is not null AND (stdate < ?) AND flag = 1)", Date.tomorrow).order(:car_id)
+   @broni_today = Contract.where("(car_id is not null AND (stdate < ?) AND flag = 1)", Date.tomorrow.in_time_zone).order(:car_id)
    if !@broni_today.nil? and @broni_today.count > 0 then @fl = 1 else @fl = 0 end     
    #---broni-tomorrow---------
-   @broni_tomorrow = Contract.where("(car_id is not null AND (stdate >= ? AND stdate < ?) AND flag = 1)", (Date.tomorrow), (Date.tomorrow+1.day)).order(:car_id)
+   @broni_tomorrow = Contract.where("(car_id is not null AND (stdate >= ? AND stdate < ?) AND flag = 1)", (Date.tomorrow.in_time_zone), (Date.tomorrow.in_time_zone+1.day)).order(:car_id)
    if !@broni_tomorrow.nil? and @broni_tomorrow.count > 0 then @fl2 = 1 else @fl2 = 0 end 
    #----contract-today---------
-   @contracts_close_today = Contract.where("(car_id is not null AND (enddate < ?) AND flag = 2)", Date.tomorrow).order(:car_id)
+   @contracts_close_today = Contract.where("(car_id is not null AND (enddate < ?) AND flag = 2)", Date.tomorrow.in_time_zone).order(:car_id)
    if !@contracts_close_today.nil? and @contracts_close_today.count > 0 then @fl1 = 2 else @fl1 = 0 end 
    #---------------------------      
    #render inline: "<%= @report1.inspect %><br><br>" 
