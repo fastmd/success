@@ -39,10 +39,10 @@ scheduler.every '12h', :first_at => Time.now + 60*1 do
       begin
           if mail.deliver! then 
              #flash[:notice] = "Mail Contracts delivered."
-             mylog.description = "Mail Contracts delivered"      
+             mylog.description = "Mail Contracts delivered bounced=#{mail.bounced?} rec=#{mail.final_recipient} action=#{mail.action}."      
           end
         rescue => e
-          mylog.description = "Mail Contracts delivering error because #{e.message}!"
+          mylog.description = "Mail Contracts delivering error because #{e.message} bounced=#{mail.bounced?} rec=#{mail.final_recipient} action=#{mail.action} erstatus=#{mail.error_status} dcode=#{mail.diagnostic_code}!"
           #flash[:warning] = "Mail  Contracts delivering error because #{e.message}!"             
       end
       mylog.save
@@ -82,10 +82,10 @@ scheduler.every '12h', :first_at => Time.now + 60*1 do
       begin
           if mailto.deliver! then 
            #flash[:notice] = "Mail TOs delivered."
-           mylog.description = "Mail TOs delivered."        
+           mylog.description = "Mail TOs delivered bounced=#{mailto.bounced?} rec=#{mailto.final_recipient} action=#{mailto.action}."        
           end
         rescue => e
-          mylog.description = "Mail TOs delivering error because #{e.message}!"
+          mylog.description = "Mail TOs delivering error because #{e.message} bounced=#{mailto.bounced?} rec=#{mailto.final_recipient} action=#{mailto.action} erstatus=#{mailto.error_status} dcode=#{mailto.diagnostic_code}!"
           #flash[:warning] = "Mail TOs delivering error because #{e.message}!"             
       end
       mylog.save
