@@ -207,8 +207,8 @@ class CarsController < ApplicationController
      i = 1
      if @cars.count != 0 then
         @cars.each do |caritem|
-           @contracts = Contract.where("( car_id = ? AND ((stdate >= ? AND stdate < ?) OR (enddate >= ? AND enddate < ?) OR (fenddate IS NOT NULL AND fenddate >= ? AND fenddate < ?)) )", 
-                                 caritem.id, @ddateb.in_time_zone, @ddatee.in_time_zone, @ddateb.in_time_zone, @ddatee.in_time_zone, @ddateb.in_time_zone, @ddatee.in_time_zone).order(:stdate, :enddate)
+           @contracts = Contract.where(" car_id = ? AND (stdate < ? AND (fenddate IS NULL AND enddate >= ? OR fenddate IS NOT NULL AND fenddate >= ?)) ", 
+                                 caritem.id, @ddatee.in_time_zone, @ddateb.in_time_zone, @ddateb.in_time_zone).order(:stdate, :enddate)
            #render inline: "<%= @ddateb.inspect %> <%= @ddatee.inspect %>  <%= @contracts.inspect %>" and return 
            report_rind = Array.new((@daycount+3), nil)
            report_rind[0] = i

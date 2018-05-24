@@ -3,14 +3,36 @@ include ContractsHelper
 
 # Let's use the rufus-scheduler singleton
 #
-scheduler = Rufus::Scheduler.singleton
-schedulerto = Rufus::Scheduler.singleton
+scheduler = Rufus::Scheduler.new
+schedulerto = Rufus::Scheduler.new
+schedulertest = Rufus::Scheduler.new
 
 # Stupid recurrent task...
+schedulertest.every '1h', 
+:overlap => false, 
+:timeout => '1m',
+:first_at => Time.now + 60*1 do
+  begin
+      # ... do something
+      mylog = Mylog.new
+      mylog.name = 'test'             
+      mylog.description = "Hello! It's time to work #{Time.now}."        
+      mylog.save    
+  rescue Rufus::Scheduler::TimeoutError
+      # ... that something got interrupted after timeout
+      mylog = Mylog.new
+      mylog.name = 'test'             
+      mylog.description = "TimeoutError #{Time.now}."        
+      mylog.save
+  end        
+end
 
-scheduler.every '12h', :first_at => Time.now + 60*1 do
-   # if (Time.now.strftime("%H")=='00' or Time.now.strftime("%H")=='12') then      
-    #-------------mail-b-------------------------
+scheduler.every '12h', 
+#:overlap => false, 
+#:timeout => '3m', 
+:first_at => Time.now + 60*10 do
+  begin      
+      #-------------mail-b-------------------------
       mailtextbody = '#{Time.now}'#mailcontractstext
       mailhtmlbody = mailcontractshtml
           
@@ -18,7 +40,7 @@ scheduler.every '12h', :first_at => Time.now + 60*1 do
         from     'jdanovalarisa7@gmail.com'
         #to       'jdanova@moldelectrica.md;successavto@gmail.com;octavian.ciobirca@fast.md'
         #to       'jdanova@moldelectrica.md;octavian.ciobirca@fast.md'
-        to       'jdanova@moldelectrica.md'
+        to       'jdanova@moldelectrica.md;successavto@gmail.com;octavian.ciobirca@fast.md;sergelus@yandex.ru'
         subject  "contracts AUTO10 #{Time.now.strftime('%d.%m.%Y %R')}"
       end
       
@@ -48,11 +70,21 @@ scheduler.every '12h', :first_at => Time.now + 60*1 do
       mylog.save
       #Rails.logger.info "Contracts #{Time.now.strftime('%d.%m.%Y %R')}"
       #Rails.logger.flush   
-    #-------------mail-e-------------------------
+      #-------------mail-e-------------------------
+   rescue Rufus::Scheduler::TimeoutError
+      # ... that something got interrupted after timeout
+      mylog = Mylog.new
+      mylog.name = 'email'             
+      mylog.description = "TimeoutError #{Time.now} during Mail Contracts."        
+      mylog.save        
+   end  
  end
  
- schedulerto.every '1d', :first_at => Time.now + 60*2 do
-    #if (Time.now.strftime("%H")=='07')
+ schedulerto.every '1d', 
+ :overlap => false, 
+ :timeout => '3m', 
+ :first_at => Time.now + 60*20 do
+  begin   
     #-------------mail-b-------------------------
       mailtextbody = '' #mailtoshtml
       mailhtmlbody = mailtoshtml #'<h1>'+"Брони и контракты AUTO10 на #{Time.now.strftime('%d.%m.%Y %R')}"+'</h1>'
@@ -61,7 +93,7 @@ scheduler.every '12h', :first_at => Time.now + 60*1 do
         from     'jdanovalarisa7@gmail.com'
         #to       'jdanova@moldelectrica.md;successavto@gmail.com;octavian.ciobirca@fast.md'
         #to       'jdanova@moldelectrica.md;octavian.ciobirca@fast.md'
-        to       'jdanova@moldelectrica.md'
+        to       'jdanova@moldelectrica.md;successavto@gmail.com;octavian.ciobirca@fast.md;sergelus@yandex.ru'
         subject  "TO AUTO10 #{Time.now.strftime('%d.%m.%Y %R')}"
       end
       
@@ -93,5 +125,13 @@ scheduler.every '12h', :first_at => Time.now + 60*1 do
       #Rails.logger.flush
     #-------------mail-e-------------------------      
     #Rails.logger.info "#{Time.now.strftime('%d.%m.%Y %R')}"
-    #Rails.logger.flush  
+    #Rails.logger.flush
+    rescue Rufus::Scheduler::TimeoutError
+      # ... that something got interrupted after timeout
+      mylog = Mylog.new
+      mylog.name = 'email'             
+      mylog.description = "TimeoutError #{Time.now} during Mail TOs."        
+      mylog.save         
+   end    
 end
+

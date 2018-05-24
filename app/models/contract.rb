@@ -1,6 +1,6 @@
 class Contract < ActiveRecord::Base
   belongs_to :client, class_name: "Client", inverse_of: :contracts, foreign_key: "client_id"
-  belongs_to :client2, class_name: "Client", inverse_of: :contracts, foreign_key: "client2_id"
+  belongs_to :client2, class_name: "Client", inverse_of: :contracts, foreign_key: "client2_id"#, optional: true
   belongs_to :car, inverse_of: :contracts
   belongs_to :user, inverse_of: :contracts
   has_many :wlongs, inverse_of: :contract
